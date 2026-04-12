@@ -1,0 +1,583 @@
+---
+title: "GTP0: Programación en C++ para Ciencia e Ingeniería"
+page-layout: full
+format:
+  html:
+    theme: litera	
+    toc: true
+    toc-location: left    # Ubica el índice en la barra lateral
+    toc-title: "Ejercicios" # Título de la barra lateral
+    toc-depth: 2          # Solo incluye los títulos ## en el índice
+    smooth-scroll: true   # Desplazamiento suave al hacer clic en el índice
+    code-line-numbers: true # Agrega números de línea a los bloques de código
+---
+
+<style>
+/* Estilo para el borde y el fondo general del callout */
+div.callout.consola-terminal {
+    background-color: #1e1e1e !important; /* Gris muy oscuro, estilo VS Code */
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra del título */
+div.callout.consola-terminal .callout-header {
+    background-color: #2d2d2d !important;
+    color: #cccccc !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Estilo para el texto de la salida (cuerpo) */
+div.callout.consola-terminal .callout-body-container {
+    color: #10B981 !important; /* Verde brillante estilo Matrix/Consola clásica */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+</style>
+
+# Estanislao Claucich
+
+A continuación se presentan las soluciones a los ejercicios propuestos en el GTP0.
+
+
+## Ejercicio 1: Palabras
+
+::: {.callout-tip title="Archivo de texto"}
+En los primeros ejericios se debe trabajr sobre un archivo de texto, para esto se utilizan 8 línea del texto *lorem ipsum* como sigue:
+```{.text}
+Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+sed do eiusmod tempor incididunt ut labore et dolore
+magna aliqua. Ut enim ad minim veniam, quis nostrud 
+exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate
+velit esse cillum dolore eu fugiat nulla pariatur. Excepteur
+sint occaecat cupidatat non proident, sunt in culpa qui 
+officia deserunt mollit anim id est laborum.
+```
+:::
+
+::: {.callout-note title="Consigna"}
+Crear un programa que abre un archivo y cuenta las palabras (separadas por whitespace).
+:::
+
+Para trabajar con archivos en modo lectura utilizamos `ifstream`. Siempre que se trabaje con archivos verificaremos si efectivamente el archivo existe y se pudo abrir correctamente.  
+
+Con el operador `>>` podemos leer el archivo hasta encontrar un espacio en blanco. Con el bucle `while` repetimos la operación hasta el `eof`.
+
+Por buenas prácticas, al terminar de utilizar un archivo, lo cerramos con `close()`.
+
+### Código Fuente (`ej1.cpp`)
+
+```cpp
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main() {
+	
+	string nombreArchivo = "texto.txt"; 
+	
+	ifstream archivo(nombreArchivo);
+	
+	if (!archivo.is_open()) {
+		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		return 1;
+	}
+	
+	string palabra;
+	int contadorPalabras = 0;
+	
+	while (archivo >> palabra) {
+		contadorPalabras++;
+	}
+	
+	archivo.close();
+	
+	cout << "El archivo contiene " << contadorPalabras << " palabras." << endl;
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej1.cpp  
+El archivo contiene 69 palabras.  
+:::
+
+
+## Ejercicio 2: Caracteres
+
+::: {.callout-note title="Consigna"}
+Crear un programa que cuenta la cantidad de caracteres que tiene un archivo.
+:::
+
+En este caso, para contar caracteres, no podemos usar el operador `>>` porque este solo se detiene al encontrar un espacio en blanco. En su lugar, utilizamos la función `get()` que lee un carácter a la vez, incluyendo espacios y saltos de línea.
+
+```cpp
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main() {
+	
+	string nombreArchivo = "texto.txt"; 
+	
+	ifstream archivo(nombreArchivo);
+	
+	if (!archivo.is_open()) {
+		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		return 1; 
+	}
+	
+	char caracter;
+	int contadorCaracteres = 0;
+	
+	while (archivo.get(caracter)) {
+		contadorCaracteres++;
+	}
+	
+	archivo.close();
+	
+	cout << "El archivo contiene " << contadorCaracteres << " caracteres." << endl;
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej2.cpp  
+El archivo contiene 445 caracteres.  
+:::
+
+
+## Ejercicio 3: Ocurrencias
+
+::: {.callout-note title="Consigna"}
+Crear un programa que cuenta la cantidad de ocurrencias de una palabra específica en un archivo.
+:::
+
+Este caso es muy similar al ejercicio 1, pero en lugar de contar todas las palabras, solo incrementamos el contador cuando la palabra leída coincide con la palabra objetivo que queremos contar.
+
+```cpp
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main() {
+	
+	string nombreArchivo = "texto.txt"; 
+	
+	string palabraObjetivo = "dolor"; 
+	
+	ifstream archivo(nombreArchivo);
+	
+	if (!archivo.is_open()) {
+		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		return 1; 
+	}
+	
+	string palabraLeida;
+	int contadorOcurrencias = 0;
+	
+	while (archivo >> palabraLeida) {
+		if (palabraLeida == palabraObjetivo) {
+			contadorOcurrencias++;
+		}
+	}
+	
+	archivo.close();
+	
+	cout << "La palabra '" << palabraObjetivo << "' aparece " << contadorOcurrencias << " veces en el archivo." << endl;
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej3.cpp  
+La palabra 'dolor' aparece 2 veces en el archivo.
+:::
+
+
+## Ejercicio 4: Archivo inverso
+
+::: {.callout-note title="Consigna"}
+Escribir un programa que imprime las líneas de un archivo de texto en orden inverso.
+:::
+
+En este caso utilizamos un `vector<string>` para almacenar todas las líneas del archivo, ya que no podemos leerlo fácilmente al revés. Una vez que tenemos todas las líneas, podemos recorrer el vector desde el final hacia el principio para imprimirlas en orden inverso.  
+
+Para extraer la línea completa, incluyendo espacios, utilizamos `std::getline()` en lugar del operador `>>`. Y luego para ir agregando cada línea al vector, usamos `push_back()`.
+
+```cpp
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+int main() {
+	
+	string nombreArchivo = "texto.txt"; 
+	
+	ifstream archivo(nombreArchivo);
+	
+	if (!archivo.is_open()) {
+		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		return 1; 
+	}
+	
+	vector<string> lineas;
+	string lineaActual;
+	
+	while (getline(archivo, lineaActual)) {
+		lineas.push_back(lineaActual); 
+	}
+	
+	archivo.close();
+	
+	for (int i = lineas.size() - 1; i >= 0; i--) {
+		cout << lineas[i] << endl;
+	}
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej4.cpp  
+officia deserunt mollit anim id est laborum.  
+sint occaecat cupidatat non proident, sunt in culpa qui  
+velit esse cillum dolore eu fugiat nulla pariatur. Excepteur  
+consequat. Duis aute irure dolor in reprehenderit in voluptate  
+exercitation ullamco laboris nisi ut aliquip ex ea commodo  
+magna aliqua. Ut enim ad minim veniam, quis nostrud  
+sed do eiusmod tempor incididunt ut labore et dolore  
+Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+:::
+
+## Ejercicio 5: Static
+
+::: {.callout-note title="Consigna"}
+Considerar un programa `static.bin` que contiene el código dividido en dos CPP (`static.cpp` y `static2.cpp`) Intenta compilar y enlazar los dos archivos. ¿Qué significa el mensaje de error resultante? Probar lo mismo removiendo el keyword `static`. ¿Qué pasa?
+:::
+
+```cpp
+//static.cpp ("malo")
+static int fs;  
+int main() {  
+	fs = 1;  
+}
+```
+
+```cpp
+//static2.cpp
+extern int fs;  
+void func() {  
+	fs = 100;  
+}
+```
+
+Al intentar compilar y enlazar los dos archivos al mismo tiempo, ejecutando `g++ static.cpp static2.cpp -o static.bin`, el compilador pasará sin problemas, pero se obtendrá un error de enlace:
+
+::: {.callout-caution title="Error de enlace"}
+/usr/bin/ld: /tmp/ccSmAbsB.o: warning: relocation against `fs' in read-only section`.text'  
+/usr/bin/ld: /tmp/ccSmAbsB.o: en la función `func()':  
+static2.cpp:(.text+0xa): undefined reference to `fs'  
+/usr/bin/ld: warning: creating DT_TEXTREL in a PIE  
+collect2: error: ld returned 1 exit status
+:::
+
+Este error se debe a que la variable `fs` está declarada como `static` en ambos archivos, lo que hace que cada archivo tenga su propia copia de la variable. Al intentar enlazar los dos archivos, el linker no puede resolver la referencia a `fs` porque cada archivo tiene su propia versión de la variable, y no hay una definición global de `fs` que pueda ser compartida entre los archivos.
+
+Cuando se remueve el keyword `static`, la variable `fs` se convierte en una variable global, lo que permite que ambos archivos compartan la misma variable. En este caso, el programa compilará y enlazará correctamente sin errores, ya que ahora hay una única definición de `fs` que ambos archivos pueden usar.
+
+```cpp
+//static.cpp ("bueno")
+int fs;  
+int main() {  
+	fs = 1;  
+}
+```
+
+## Ejercicio 6: Namespaces
+
+::: {.callout-note title="Consigna"}
+Probar los namespaces: Escribir un programa que tiene una función `void f() global` y una `void my_namespace::f()`. Verificar que compila correctamente (a pesar de que hay dos funciones con el mismo nombre). Imprimir los punteros a las dos funciones para constatar que son dos funciones diferentes.
+:::
+
+Los `namespaces` en C++ permiten organizar el código y evitar conflictos de nombres. En este ejercicio, definimos dos funciones con el mismo nombre `f()`, pero una está en el espacio de nombres global y la otra dentro de `my_namespace`. Al usar el operador `::`, podemos especificar a cuál función queremos llamar.  
+
+Para poder imprimir efectivamente los punteros a funciones, debemos hacer un cast a `void*` para evitar que el compilador intente interpretar la función como una llamada en lugar de una dirección de memoria.
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+// f() global
+void f() {
+	cout << "Ejecutando la funcion f() global." << endl;
+}
+
+// namespace y su propia funcion f()
+namespace my_namespace {
+	void f() {
+		cout << "Ejecutando la funcion f() dentro de my_namespace." << endl;
+	}
+}
+
+int main() {
+	
+	cout << "Llamando a las funciones:" << endl;
+	f();
+	my_namespace::f();	
+	
+	cout << "\nComparando las direcciones de memoria:" << endl;
+	
+	cout << "Puntero de f (global):        " << (void*)f << endl;
+	
+	cout << "Puntero de my_namespace::f:   " << (void*)(my_namespace::f) << endl;
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej6.cpp  
+Llamando a las funciones:  
+Ejecutando la funcion f() global.  
+Ejecutando la funcion f() dentro de my_namespace.  
+
+Comparando las direcciones de memoria:  
+Puntero de f (global):        0x606459ee5189  
+Puntero de my_namespace::f:   0x606459ee51bf
+:::
+
+
+## Ejercicio 7: Potencia entera
+
+::: {.callout-note title="Consigna"}
+Escribir una función `double intpow(double x,int p);` que calcula la potencia entera $p$ de $x$ o sea $x^p$, recursivamente
+:::
+
+Podemos expresar la potencia entera $p$ de $x$ de forma recursiva. Si $p$ es par, por ejemplo, $8$, entonces se calcula recursivamente $z=x^4$. Cuando se obtiene ese resultado se devuelve $z.z$, es decir, $x^4.x^4=x^8$. Luego $x^4$ se calcula recursivamente de la misma forma, hasta que la potencia en cuestión sea $1$, caso en el cual se devuelve $x$.  
+
+En el caso de que $p$ sea impar, por ejemplo $5$, se calcula recursicamente la potencia par anterior, de la misma forma que en el caso par. Nuevamente, cuando se llega al caso $p=1$, tendremos $x^4$ por lo que faltaría multiplicar una vez más por $x$ para obtener $x^5$. Es decir, se devuelve $z.z.x$.  
+
+Se agrega a su vez el caso especial donde $p=0$, ya que cualquier número elevado a la potencia $0$ es igual a $1$. En tal caso, directamente se devuelve $1$ sin necesidad de ninguna recursión.
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+
+double intpow(double x, int p) {
+
+	if (p == 1) {
+		return x;
+	}
+
+	if (p == 0) {
+		return 1;
+	}
+	
+	if (p % 2 == 0) {
+		double z = intpow(x, p / 2);
+		return z * z;
+	} 
+	else {
+		double z = intpow(x, (p - 1) / 2);
+		return z * z * x;
+	}
+}
+
+int main() {
+	int base = 2;
+	int exponentePar = 4;
+	int exponenteImpar = 5;
+	
+	cout << "Calculando " << base << "^" << exponentePar << ":" << endl;
+	cout << "Resultado: " << intpow(base, exponentePar) << "\n\n";
+	
+	cout << "Calculando " << base << "^" << exponenteImpar << ":" << endl;
+	cout << "Resultado: " << intpow(base, exponenteImpar) << "\n";
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej7.cpp  
+Calculando 2^4:  
+Resultado: 16  
+
+Calculando 2^5:  
+Resultado: 32
+:::
+
+
+## Ejercicio 8: Números primos
+
+::: {.callout-note title="Consigna"}
+Escribir un código que imprime los primeros `N` números primos.
+:::
+
+En el `main` iremos imprimiendo los números primos uno a uno, utilizando la función `next_prime(n)` para obtener el siguiente primo a partir del último número primo encontrado. Para verificar si un número es primo, utilizamos la función `is_prime(n)`, que prueba si el número es divisible por algún número entre `2` y `n-1`. Si encuentra un divisor, devuelve `false`, indicando que no es primo. Si no encuentra ningún divisor, devuelve `true`, indicando que es primo.
+
+```cpp
+#include <iostream>
+
+using namespace std;
+
+bool is_prime(int n);
+int next_prime(int n);
+
+int main() {
+	int n = 1, N = 10;
+	
+	cout << "Primeros " << N << " numeros primos:" << endl;
+	
+	for (int k = 0; k < N; k++) {
+		n = next_prime(n);
+		cout << n << endl; 
+	}
+	
+	return 0;
+}
+
+bool is_prime(int n) {
+	if (n <= 1) {
+		return false;
+	}
+	
+	for (int i = 2; i < n; i++) {
+		if (n % i == 0) {
+			return false;
+		}
+	}
+	
+	return true;
+}
+
+int next_prime(int n) {
+	int candidato = n + 1;
+	
+	while (!is_prime(candidato)) {
+		candidato++;
+	}
+	
+	return candidato;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej8.cpp  
+Primeros 10 numeros primos:  
+2  
+3  
+5  
+7  
+11  
+13  
+17  
+19  
+23  
+29  
+:::
+
+
+## Ejercicio 9: Duplicar máximo
+
+::: {.callout-note title="Consigna"}
+Escribir una función `dup(v)` que duplica el elemento máximo del vector.
+Implementarlo con:
+1. Paso por puntero: `void dup(vector<int> *a)`
+2. Paso por referencia: `void dup(vector<int> &a)`
+3. Retorno de valor: `vector<int> dup(vector<int> a)`
+4. ¿Se puede hacer con paso por copia?
+:::
+
+En este ejericcio, necesitamos calcular el máximo de un vector. Para esto, utilizamos la función `max_element` de la biblioteca `<algorithm>`, que devuelve un iterador apuntando al elemento máximo del vector. Luego, desreferenciamos ese iterador para acceder al valor y lo multiplicamos por 2 para duplicarlo.  
+
+1. Al trabajar con paso por puntero, la función recibe un puntero al vector, por lo que debemos verificar que el puntero no sea nulo y que el vector no esté vacío antes de intentar acceder a sus elementos. Luego, utilizamos `->` para acceder a los miembros del vector a través del puntero. El operador `->` es equivalente a desreferenciar el puntero y luego acceder al miembro, es decir, `(*a).begin()` es lo mismo que `a->begin()`.  
+
+2. En el caso de paso por referencia, la función recibe una referencia al vector, lo que nos permite trabajar directamente con el vector sin necesidad de desreferenciar un puntero. No es necesario verificar si la referencia es nula, pero sí debemos verificar que el vector no esté vacío antes de intentar acceder a sus elementos. 
+
+3. Para el caso de retorno de valor, la función recibe una copia del vector, por lo que cualquier modificación que hagamos dentro de la función no afectará al vector original fuera de la función. Sin embargo, al retornar el vector modificado, podemos asignarlo a una variable en el `main` para obtener el resultado con el elemento máximo duplicado.  
+
+4. No es posible hacer esto con paso por copia sin retornar el vector modificado, ya que cualquier cambio que hagamos dentro de la función no afectará al vector original fuera de la función. Si intentamos modificar el vector pasado por copia sin retornar el resultado, simplemente estaríamos modificando una copia local dentro de la función, y el vector original permanecería sin cambios.
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+// Paso por puntero
+void dup(vector<int> *a) {
+	if (a == nullptr || a->empty()) return; 
+	
+	auto it = max_element(a->begin(), a->end());
+	
+	*it = (*it) * 2; 
+}
+
+// Paso por referencia
+void dup(vector<int> &a) {
+	if (a.empty()) return;
+	
+	auto it = max_element(a.begin(), a.end());
+	*it = (*it) * 2; 
+}
+
+// Retorno de valor
+vector<int> dup_return(vector<int> a) {
+	if (a.empty()) return a;
+	
+	auto it = max_element(a.begin(), a.end());
+	*it = (*it) * 2; 
+	
+	return a; 
+}
+
+int main() {
+	vector<int> v1 = {1, 5, 3};
+	vector<int> v2 = {1, 5, 3};
+	vector<int> v3 = {1, 5, 3};
+	
+	dup(&v1);
+	cout << "Puntero: ";
+	for(int x : v1) cout << x << " ";
+	cout << endl;
+	
+	dup(v2);
+	cout << "Referencia: ";
+	for(int x : v2) cout << x << " ";
+	cout << endl;
+	
+	v3 = dup_return(v3);
+	cout << "Retorno: ";
+	for(int x : v3) cout << x << " ";
+	cout << endl;
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+$ ./ej9.cpp  
+Puntero: 1 10 3  
+Referencia: 1 10 3  
+Retorno: 1 10 3
+:::

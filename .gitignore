@@ -1,0 +1,5 @@
+Debug
+output_files
+*.out
+*.bin
+.quarto/
