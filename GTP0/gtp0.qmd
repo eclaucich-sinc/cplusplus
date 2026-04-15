@@ -10,6 +10,17 @@ format:
     toc-depth: 2          # Solo incluye los títulos ## en el índice
     smooth-scroll: true   # Desplazamiento suave al hacer clic en el índice
     code-line-numbers: true # Agrega números de línea a los bloques de código
+resources:
+    - ej1.cpp
+    - ej2.cpp
+    - ej3.cpp
+    - ej4.cpp
+    - static.cpp
+    - static2.cpp
+    - ej6.cpp
+    - ej7.cpp
+    - ej8.cpp
+    - ej9.cpp
 ---
 
 <style>
@@ -34,7 +45,84 @@ div.callout.consola-terminal .callout-body-container {
     font-family: 'Consolas', 'Courier New', monospace;
     font-size: 0.95em;
 }
+
+/* Contenedor título + botón de descarga */
+.exercise-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
+.exercise-download-btn {
+	font-size: 0.85rem;
+	text-decoration: none;
+	border: 1px solid #0d6efd;
+	color: #0d6efd;
+	border-radius: 6px;
+	padding: 0.2rem 0.55rem;
+	line-height: 1.2;
+	transition: all 0.15s ease;
+}
+
+.exercise-download-btn:hover {
+	background-color: #0d6efd;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+@media (max-width: 640px) {
+	.exercise-download-btn {
+		font-size: 0.8rem;
+	}
+}
 </style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	const downloadMap = {
+		"Ejercicio 1: Palabras": [{ file: "ej1.cpp", label: "Descargar ej1.cpp" }],
+		"Ejercicio 2: Caracteres": [{ file: "ej2.cpp", label: "Descargar ej2.cpp" }],
+		"Ejercicio 3: Ocurrencias": [{ file: "ej3.cpp", label: "Descargar ej3.cpp" }],
+		"Ejercicio 4: Archivo inverso": [{ file: "ej4.cpp", label: "Descargar ej4.cpp" }],
+		"Ejercicio 5: Static": [
+			{ file: "static.cpp", label: "Descargar static.cpp" },
+			{ file: "static2.cpp", label: "Descargar static2.cpp" }
+		],
+		"Ejercicio 6: Namespaces": [{ file: "ej6.cpp", label: "Descargar ej6.cpp" }],
+		"Ejercicio 7: Potencia entera": [{ file: "ej7.cpp", label: "Descargar ej7.cpp" }],
+		"Ejercicio 8: Números primos": [{ file: "ej8.cpp", label: "Descargar ej8.cpp" }],
+		"Ejercicio 9: Duplicar máximo": [{ file: "ej9.cpp", label: "Descargar ej9.cpp" }]
+	};
+
+	const headings = document.querySelectorAll("main h2");
+
+	headings.forEach((h2) => {
+		const title = h2.textContent.trim();
+		const files = downloadMap[title];
+		if (!files) return;
+
+		const row = document.createElement("span");
+		row.className = "exercise-title-row";
+
+		const titleSpan = document.createElement("span");
+		titleSpan.textContent = title;
+		row.appendChild(titleSpan);
+
+		files.forEach((item) => {
+			const link = document.createElement("a");
+			link.href = item.file;
+			link.download = item.file;
+			link.className = "exercise-download-btn";
+			link.textContent = item.label;
+			row.appendChild(link);
+		});
+
+		h2.textContent = "";
+		h2.appendChild(row);
+	});
+});
+</script>
 
 # Estanislao Claucich
 

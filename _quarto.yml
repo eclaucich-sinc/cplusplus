@@ -1,0 +1,18 @@
+project:
+  type: website
+
+website:
+  title: "GTPS"
+  sidebar:
+    style: "floating"
+    search: false
+    # contents:
+    #   - section: "Trabajos"
+    #     contents:
+    #       - output.qmd
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    code-copy: true

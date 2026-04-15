@@ -3,3 +3,6 @@ output_files
 *.out
 *.bin
 .quarto/
+/.quarto/
+**/*.quarto_ipynb
+/_site
