@@ -2,7 +2,7 @@
 title: "GTP0: Programación en C++ para Ciencia e Ingeniería"
 page-layout: full
 format:
-  html:
+  pdf: #html:
     theme: litera	
     toc: true
     toc-location: left    # Ubica el índice en la barra lateral
@@ -132,7 +132,7 @@ A continuación se presentan las soluciones a los ejercicios propuestos en el GT
 ## Ejercicio 1: Palabras
 
 ::: {.callout-tip title="Archivo de texto"}
-En los primeros ejericios se debe trabajr sobre un archivo de texto, para esto se utilizan 8 línea del texto *lorem ipsum* como sigue:
+En los primeros ejericios se debe trabajar sobre un archivo de texto, para esto se utilizan 8 línea del texto *lorem ipsum* como sigue:
 ```{.text}
 Lorem ipsum dolor sit amet, consectetur adipiscing elit,
 sed do eiusmod tempor incididunt ut labore et dolore
@@ -155,8 +155,6 @@ Con el operador `>>` podemos leer el archivo hasta encontrar un espacio en blanc
 
 Por buenas prácticas, al terminar de utilizar un archivo, lo cerramos con `close()`.
 
-### Código Fuente (`ej1.cpp`)
-
 ```cpp
 #include <iostream>
 #include <fstream>
@@ -171,7 +169,8 @@ int main() {
 	ifstream archivo(nombreArchivo);
 	
 	if (!archivo.is_open()) {
-		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		cerr << "Error: No se pudo abrir el archivo '" 
+						<< nombreArchivo << "'." << endl;
 		return 1;
 	}
 	
@@ -184,7 +183,8 @@ int main() {
 	
 	archivo.close();
 	
-	cout << "El archivo contiene " << contadorPalabras << " palabras." << endl;
+	cout << "El archivo contiene " 
+				<< contadorPalabras << " palabras." << endl;
 	
 	return 0;
 }
@@ -218,7 +218,8 @@ int main() {
 	ifstream archivo(nombreArchivo);
 	
 	if (!archivo.is_open()) {
-		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		cerr << "Error: No se pudo abrir el archivo '"
+							 << nombreArchivo << "'." << endl;
 		return 1; 
 	}
 	
@@ -231,7 +232,8 @@ int main() {
 	
 	archivo.close();
 	
-	cout << "El archivo contiene " << contadorCaracteres << " caracteres." << endl;
+	cout << "El archivo contiene " 
+				<< contadorCaracteres << " caracteres." << endl;
 	
 	return 0;
 }
@@ -267,7 +269,8 @@ int main() {
 	ifstream archivo(nombreArchivo);
 	
 	if (!archivo.is_open()) {
-		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		cerr << "Error: No se pudo abrir el archivo '" 
+							<< nombreArchivo << "'." << endl;
 		return 1; 
 	}
 	
@@ -282,7 +285,8 @@ int main() {
 	
 	archivo.close();
 	
-	cout << "La palabra '" << palabraObjetivo << "' aparece " << contadorOcurrencias << " veces en el archivo." << endl;
+	cout << "La palabra '" << palabraObjetivo << "' aparece " 
+				<< contadorOcurrencias << " veces en el archivo." << endl;
 	
 	return 0;
 }
@@ -319,7 +323,8 @@ int main() {
 	ifstream archivo(nombreArchivo);
 	
 	if (!archivo.is_open()) {
-		cerr << "Error: No se pudo abrir el archivo '" << nombreArchivo << "'." << endl;
+		cerr << "Error: No se pudo abrir el archivo '"
+							 << nombreArchivo << "'." << endl;
 		return 1; 
 	}
 	
@@ -431,9 +436,9 @@ int main() {
 	
 	cout << "\nComparando las direcciones de memoria:" << endl;
 	
-	cout << "Puntero de f (global):        " << (void*)f << endl;
+	cout<<"Puntero de f (global):      " << (void*)f << endl;
 	
-	cout << "Puntero de my_namespace::f:   " << (void*)(my_namespace::f) << endl;
+	cout<<"Puntero de my_namespace::f: " << (void*)(my_namespace::f) << endl;
 	
 	return 0;
 }
