@@ -2,7 +2,8 @@
 title: "GTP0: Programación en C++ para Ciencia e Ingeniería"
 page-layout: full
 format:
-  pdf: #html:
+  #pdf:
+  html:
     theme: litera	
     toc: true
     toc-location: left    # Ubica el índice en la barra lateral
