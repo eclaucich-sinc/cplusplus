@@ -6,11 +6,13 @@ website:
   sidebar:
     style: "floating"
     search: false
-    # contents:
-    #   - section: "Trabajos"
-    #     contents:
-    #       - output.qmd
-
+    contents:
+      - section: "GTP 0"
+        contents:
+          - GTP0/gtp0.qmd
+      - section: "GTP 1"
+        contents:
+          - GTP1/gtp1.qmd
 format:
   html:
     theme: cosmo
