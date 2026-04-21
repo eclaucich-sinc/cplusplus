@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>GTP1: Programación en C++ para Ciencia e Ingeniería – GTPS</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-43aec3b92b08ed3f3cc1271c45447476.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      GTPS
+      </li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">GTPS</a> 
+    </div>
+      </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Ejercicios</h2>
+   
+  <ul class="collapse">
+  <li><a href="#estanislao-claucich" id="toc-estanislao-claucich" class="nav-link active" data-scroll-target="#estanislao-claucich">Estanislao Claucich</a>
+  <ul class="collapse">
+  <li><a href="#ejercicio-1-recursión" id="toc-ejercicio-1-recursión" class="nav-link" data-scroll-target="#ejercicio-1-recursión">Ejercicio 1: Recursión</a></li>
+  <li><a href="#ejercicio-2-similitud" id="toc-ejercicio-2-similitud" class="nav-link" data-scroll-target="#ejercicio-2-similitud">Ejercicio 2: Similitud</a></li>
+  <li><a href="#ejercicio-3-problema-de-la-mochila" id="toc-ejercicio-3-problema-de-la-mochila" class="nav-link" data-scroll-target="#ejercicio-3-problema-de-la-mochila">Ejercicio 3: Problema de la mochila</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">GTP1: Programación en C++ para Ciencia e Ingeniería</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+/* Estilo para el borde y el fondo general del callout */
+div.callout.consola-terminal {
+    background-color: #1e1e1e !important; /* Gris muy oscuro, estilo VS Code */
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra del título */
+div.callout.consola-terminal .callout-header {
+    background-color: #2d2d2d !important;
+    color: #cccccc !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Estilo para el texto de la salida (cuerpo) */
+div.callout.consola-terminal .callout-body-container {
+    color: #10B981 !important; /* Verde brillante estilo Matrix/Consola clásica */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+/* Contenedor título + botón de descarga */
+.exercise-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.exercise-download-btn {
+    font-size: 0.85rem;
+    text-decoration: none;
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    line-height: 1.2;
+    transition: all 0.15s ease;
+}
+
+.exercise-download-btn:hover {
+    background-color: #0d6efd;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+@media (max-width: 640px) {
+    .exercise-download-btn {
+        font-size: 0.8rem;
+    }
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const downloadMap = {
+        "Ejercicio 1: Recursión": [{ file: "ej1.cpp", label: "Descargar ej1.cpp" }],
+        "Ejercicio 2: Similitud": [
+            { file: "ej2_goto.cpp", label: "Descargar ej2_goto.cpp" },
+            { file: "ej2_break.cpp", label: "Descargar ej2_break.cpp" },
+            { file: "ej2_opt.cpp", label: "Descargar ej2_opt.cpp" },
+            { file: "f1.txt", label: "Descargar f1.txt" },
+            { file: "f2.txt", label: "Descargar f2.txt" },
+            { file: "f3.txt", label: "Descargar f3.txt" },
+            { file: "f4.txt", label: "Descargar f4.txt" },
+        ],
+        "Ejercicio 3: Problema de la mochila": [{ file: "ej3.cpp", label: "Descargar ej3.cpp" }],
+    };
+
+    const headings = document.querySelectorAll("main h2");
+
+    headings.forEach((h2) => {
+        const title = h2.textContent.trim();
+        const files = downloadMap[title];
+        if (!files) return;
+
+        const row = document.createElement("span");
+        row.className = "exercise-title-row";
+
+        const titleSpan = document.createElement("span");
+        titleSpan.textContent = title;
+        row.appendChild(titleSpan);
+
+        files.forEach((item) => {
+            const link = document.createElement("a");
+            link.href = item.file;
+            link.download = item.file;
+            link.className = "exercise-download-btn";
+            link.textContent = item.label;
+            row.appendChild(link);
+        });
+
+        h2.textContent = "";
+        h2.appendChild(row);
+    });
+});
+</script>
+<section id="estanislao-claucich" class="level1">
+<h1>Estanislao Claucich</h1>
+<p>A continuación se presentan las soluciones a los ejercicios propuestos en el GTP1.</p>
+<section id="ejercicio-1-recursión" class="level2">
+<h2 class="anchored" data-anchor-id="ejercicio-1-recursión">Ejercicio 1: Recursión</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Consigna">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Consigna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Utilizar una variable global <code>NCALLS</code> para contar el número de llamadas a la función <code>intpow</code> realizada en el GTP0.</p>
+</div>
+</div>
+<p>Cada vez que se llama a <code>intpow</code>, se incrementa <code>NCALLS</code> y se imprime su valor. Luego, se ejecuta el programa para calcular <code>1^100</code>, <code>1^1000</code> y <code>1^10000</code> y se observa el número de llamadas realizadas en cada caso.</p>
+<p>La cantidad de operaciones esperadas en esta implementación recursiva de potencia es del orden de <code>O(log p)</code>, donde <code>p</code> es el exponente. Esto se debe a que en cada llamada recursiva, el exponente se reduce aproximadamente a la mitad (en el caso de exponentes pares) o a la mitad menos uno (en el caso de exponentes impares). Por lo tanto, el número de llamadas a la función crecerá logarítmicamente con respecto al valor del exponente.</p>
+<p>Para demostrar esto, se ejecuta el cálculo de <span class="math inline">\(1^{100}\)</span>, <span class="math inline">\(1^{1000}\)</span> y <span class="math inline">\(1^{10000}\)</span>, y se observa el número de llamadas realizadas en cada caso. Como se puede ver en la salida obtenida, el número de llamadas es <span class="math inline">\(log_2(100)=7\)</span>, <span class="math inline">\(log_2(1000)=10\)</span> y <span class="math inline">\(log_2(10000)=14\)</span>, respectivamente, lo que confirma la eficiencia de esta implementación recursiva de potencia.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="dt">int</span> NCALLS <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="dt">double</span> intpow<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span> <span class="dt">int</span> p<span class="op">,</span> <span class="dt">bool</span> vrbs<span class="op">=</span><span class="kw">false</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a>    NCALLS <span class="op">+=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>    <span class="cf">if</span> <span class="op">(</span>vrbs<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Llamada número "</span> <span class="op">&lt;&lt;</span> NCALLS <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a>    <span class="op">}</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a>    <span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> <span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-15"><a href="#cb1-15"></a>        <span class="cf">return</span> x<span class="op">;</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a>    <span class="op">}</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>    </span>
+<span id="cb1-18"><a href="#cb1-18"></a>    <span class="cf">if</span> <span class="op">(</span>p <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>        <span class="cf">return</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-20"><a href="#cb1-20"></a>    <span class="op">}</span></span>
+<span id="cb1-21"><a href="#cb1-21"></a>    </span>
+<span id="cb1-22"><a href="#cb1-22"></a>    <span class="cf">if</span> <span class="op">(</span>p <span class="op">%</span> <span class="dv">2</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a>        <span class="dt">double</span> z <span class="op">=</span> intpow<span class="op">(</span>x<span class="op">,</span> p <span class="op">/</span> <span class="dv">2</span><span class="op">,</span> vrbs<span class="op">);</span></span>
+<span id="cb1-24"><a href="#cb1-24"></a>        <span class="cf">return</span> z <span class="op">*</span> z<span class="op">;</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>    <span class="op">}</span> </span>
+<span id="cb1-26"><a href="#cb1-26"></a>    <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a>        <span class="dt">double</span> z <span class="op">=</span> intpow<span class="op">(</span>x<span class="op">,</span> <span class="op">(</span>p <span class="op">-</span> <span class="dv">1</span><span class="op">)</span> <span class="op">/</span> <span class="dv">2</span><span class="op">,</span> vrbs<span class="op">);</span></span>
+<span id="cb1-28"><a href="#cb1-28"></a>        <span class="cf">return</span> z <span class="op">*</span> z <span class="op">*</span> x<span class="op">;</span></span>
+<span id="cb1-29"><a href="#cb1-29"></a>    <span class="op">}</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a><span class="op">}</span></span>
+<span id="cb1-31"><a href="#cb1-31"></a></span>
+<span id="cb1-32"><a href="#cb1-32"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>    <span class="dt">int</span> base <span class="op">=</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb1-34"><a href="#cb1-34"></a>    </span>
+<span id="cb1-35"><a href="#cb1-35"></a>    NCALLS <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-36"><a href="#cb1-36"></a>    <span class="dt">int</span> exponente <span class="op">=</span> <span class="dv">100</span><span class="op">;</span></span>
+<span id="cb1-37"><a href="#cb1-37"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Calculando "</span> <span class="op">&lt;&lt;</span> base <span class="op">&lt;&lt;</span> <span class="st">"^"</span> <span class="op">&lt;&lt;</span> exponente <span class="op">&lt;&lt;</span> <span class="st">":"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb1-38"><a href="#cb1-38"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Resultado: "</span> <span class="op">&lt;&lt;</span> intpow<span class="op">(</span>base<span class="op">,</span> exponente<span class="op">,</span> <span class="kw">true</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb1-39"><a href="#cb1-39"></a></span>
+<span id="cb1-40"><a href="#cb1-40"></a>    NCALLS <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-41"><a href="#cb1-41"></a>    exponente <span class="op">=</span> <span class="dv">1000</span><span class="op">;</span></span>
+<span id="cb1-42"><a href="#cb1-42"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Calculando "</span> <span class="op">&lt;&lt;</span> base <span class="op">&lt;&lt;</span> <span class="st">"^"</span> <span class="op">&lt;&lt;</span> exponente <span class="op">&lt;&lt;</span> <span class="st">":"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb1-43"><a href="#cb1-43"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Resultado: "</span> <span class="op">&lt;&lt;</span> intpow<span class="op">(</span>base<span class="op">,</span> exponente<span class="op">,</span> <span class="kw">true</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb1-44"><a href="#cb1-44"></a></span>
+<span id="cb1-45"><a href="#cb1-45"></a>    NCALLS <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-46"><a href="#cb1-46"></a>    exponente <span class="op">=</span> <span class="dv">10000</span><span class="op">;</span></span>
+<span id="cb1-47"><a href="#cb1-47"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Calculando "</span> <span class="op">&lt;&lt;</span> base <span class="op">&lt;&lt;</span> <span class="st">"^"</span> <span class="op">&lt;&lt;</span> exponente <span class="op">&lt;&lt;</span> <span class="st">":"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb1-48"><a href="#cb1-48"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Resultado: "</span> <span class="op">&lt;&lt;</span> intpow<span class="op">(</span>base<span class="op">,</span> exponente<span class="op">,</span> <span class="kw">true</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb1-49"><a href="#cb1-49"></a>    </span>
+<span id="cb1-50"><a href="#cb1-50"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-51"><a href="#cb1-51"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>$ ./ej1.cpp<br>
+Calculando 1^100:<br>
+Resultado: Llamada número 1<br>
+Llamada número 2<br>
+Llamada número 3<br>
+Llamada número 4<br>
+Llamada número 5<br>
+Llamada número 6<br>
+Llamada número 7<br>
+1</p>
+<p>Calculando 1^1000:<br>
+Resultado: Llamada número 1<br>
+Llamada número 2<br>
+Llamada número 3<br>
+Llamada número 4<br>
+Llamada número 5<br>
+Llamada número 6<br>
+Llamada número 7<br>
+Llamada número 8<br>
+Llamada número 9<br>
+Llamada número 10<br>
+1</p>
+<p>Calculando 1^10000: Resultado: Llamada número 1<br>
+Llamada número 2<br>
+Llamada número 3<br>
+Llamada número 4<br>
+Llamada número 5<br>
+Llamada número 6<br>
+Llamada número 7<br>
+Llamada número 8<br>
+Llamada número 9<br>
+Llamada número 10<br>
+Llamada número 11<br>
+Llamada número 12<br>
+Llamada número 13<br>
+Llamada número 14<br>
+1</p>
+</div>
+</div>
+</section>
+<section id="ejercicio-2-similitud" class="level2">
+<h2 class="anchored" data-anchor-id="ejercicio-2-similitud">Ejercicio 2: Similitud</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Consigna">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Consigna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Escribir un programa que, dados 4 vectores de enteros <span class="math inline">\(v1, v2, v3, v4\)</span> busca el primer elemento que está en los cuatro vectores.</p>
+<p>Utilizar los vectores almacenados en los archivos <code>f*.txt</code> y escribir una función <code>vector&lt;int&gt; readfile(string filename);</code> que lee los enteros del archivo <code>filename</code>.</p>
+<p>Realizar 3 versiones: - <code>GOTO</code>: utilizando <code>goto</code> para salir de los bucles anidados. - <code>BREAK</code>: utilizando <code>break</code> para salir de los bucles anidados. - <code>OPT</code>: versión optimizada del algoritmo, sin utilizar <code>goto</code> ni <code>break</code>.</p>
+</div>
+</div>
+<p>El primer caso, utilizando <code>GOTO</code>, se implementa mediante 4 bucles anidados, uno por cada vector de enteros. Se posee una etiqueta <code>found</code> a la que se salta mediante <code>goto</code> cuando se encuentra el elemento común en los cuatro vectores (en el bucle más interno).</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Tiempo de ejecución">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Tiempo de ejecución
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Para poder comparar el tiempo de ejecución de cada versión, se utiliza la biblioteca <code>&lt;chrono&gt;</code> para medir el tiempo transcurrido desde el inicio hasta el final de la búsqueda del elemento común. Esto permite evaluar la eficiencia de cada implementación y observar las diferencias en el rendimiento entre ellas.</p>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> readfile<span class="op">(</span>string filename<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values<span class="op">;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>    ifstream file<span class="op">(</span>filename<span class="op">);</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a></span>
+<span id="cb2-13"><a href="#cb2-13"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>    <span class="cf">while</span> <span class="op">(</span>file <span class="op">&gt;&gt;</span> number<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>        values<span class="op">.</span>push_back<span class="op">(</span>number<span class="op">);</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>    <span class="op">}</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a></span>
+<span id="cb2-18"><a href="#cb2-18"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="op">}</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
+<span id="cb2-21"><a href="#cb2-21"></a></span>
+<span id="cb2-22"><a href="#cb2-22"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-23"><a href="#cb2-23"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values1 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f1.txt"</span><span class="op">);</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values2 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f2.txt"</span><span class="op">);</span></span>
+<span id="cb2-25"><a href="#cb2-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
+<span id="cb2-26"><a href="#cb2-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a></span>
+<span id="cb2-28"><a href="#cb2-28"></a>    <span class="dt">bool</span> FOUND<span class="op">;</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb2-30"><a href="#cb2-30"></a></span>
+<span id="cb2-31"><a href="#cb2-31"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb2-32"><a href="#cb2-32"></a></span>
+<span id="cb2-33"><a href="#cb2-33"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> v1 <span class="op">:</span> values1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v2 <span class="op">:</span> values2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a>            <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v3 <span class="op">:</span> values3<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-36"><a href="#cb2-36"></a>                <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v4 <span class="op">:</span> values4<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-37"><a href="#cb2-37"></a>                    <span class="cf">if</span> <span class="op">(</span>v1<span class="op">==</span>v2 <span class="op">&amp;&amp;</span> v2<span class="op">==</span>v3 <span class="op">&amp;&amp;</span> v3<span class="op">==</span>v4<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-38"><a href="#cb2-38"></a>                        encontrado <span class="op">=</span> v4<span class="op">;</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a>                        <span class="cf">goto</span> FOUND<span class="op">;</span></span>
+<span id="cb2-40"><a href="#cb2-40"></a>                    <span class="op">}</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a>                <span class="op">}</span></span>
+<span id="cb2-42"><a href="#cb2-42"></a>            <span class="op">}</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a>        <span class="op">}</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a>    <span class="op">}</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a></span>
+<span id="cb2-46"><a href="#cb2-46"></a>    </span>
+<span id="cb2-47"><a href="#cb2-47"></a>    FOUND<span class="op">:</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb2-51"><a href="#cb2-51"></a></span>
+<span id="cb2-52"><a href="#cb2-52"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-53"><a href="#cb2-53"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb2-54"><a href="#cb2-54"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb2-55"><a href="#cb2-55"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb2-56"><a href="#cb2-56"></a>    <span class="op">}</span></span>
+<span id="cb2-57"><a href="#cb2-57"></a>    </span>
+<span id="cb2-58"><a href="#cb2-58"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-59"><a href="#cb2-59"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>$ ./ej2_goto.cpp Tiempo de ejecución: 1831 ms Valor encontrado: 431</p>
+</div>
+</div>
+<p>En la segunda versión, utilizando <code>BREAK</code>, se implementa de manera similar a la anterior, pero en lugar de utilizar <code>goto</code> para salir de los bucles anidados, se emplean sentencias <code>break</code> para salir de cada bucle cuando se encuentra el elemento común. Se utiliza una variable booleana <code>FOUND</code> para indicar cuándo se ha encontrado el elemento y así evitar seguir iterando innecesariamente.</p>
+<p>Ambos casos son de orden <code>O(n^4)</code> en el peor caso, ya que en el peor escenario se deben comparar todos los elementos de los cuatro vectores entre sí. Difieren principalmente en la legibilidad y las buenas prácticas, siendo generalemente la versión con <code>break</code> más recomendada por evitar el uso de <code>goto</code>, que puede hacer el código más difícil de seguir y mantener.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> readfile<span class="op">(</span>string filename<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values<span class="op">;</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>    ifstream file<span class="op">(</span>filename<span class="op">);</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>    <span class="cf">while</span> <span class="op">(</span>file <span class="op">&gt;&gt;</span> number<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>        values<span class="op">.</span>push_back<span class="op">(</span>number<span class="op">);</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>    <span class="op">}</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a></span>
+<span id="cb3-18"><a href="#cb3-18"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="op">}</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a></span>
+<span id="cb3-21"><a href="#cb3-21"></a></span>
+<span id="cb3-22"><a href="#cb3-22"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values1 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f1.txt"</span><span class="op">);</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values2 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f2.txt"</span><span class="op">);</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a></span>
+<span id="cb3-28"><a href="#cb3-28"></a>    <span class="dt">bool</span> found <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb3-29"><a href="#cb3-29"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a></span>
+<span id="cb3-31"><a href="#cb3-31"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a></span>
+<span id="cb3-33"><a href="#cb3-33"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> v1 <span class="op">:</span> values1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v2 <span class="op">:</span> values2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-35"><a href="#cb3-35"></a>            <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v3 <span class="op">:</span> values3<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-36"><a href="#cb3-36"></a>                <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v4 <span class="op">:</span> values4<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-37"><a href="#cb3-37"></a>                    <span class="cf">if</span> <span class="op">(</span>v1<span class="op">==</span>v2 <span class="op">&amp;&amp;</span> v2<span class="op">==</span>v3 <span class="op">&amp;&amp;</span> v3<span class="op">==</span>v4<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-38"><a href="#cb3-38"></a>                        encontrado <span class="op">=</span> v4<span class="op">;</span></span>
+<span id="cb3-39"><a href="#cb3-39"></a>                        found <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb3-40"><a href="#cb3-40"></a>                        <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb3-41"><a href="#cb3-41"></a>                    <span class="op">}</span></span>
+<span id="cb3-42"><a href="#cb3-42"></a>                <span class="op">}</span></span>
+<span id="cb3-43"><a href="#cb3-43"></a>                <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb3-44"><a href="#cb3-44"></a>            <span class="op">}</span></span>
+<span id="cb3-45"><a href="#cb3-45"></a>            <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb3-46"><a href="#cb3-46"></a>        <span class="op">}</span></span>
+<span id="cb3-47"><a href="#cb3-47"></a>        <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb3-48"><a href="#cb3-48"></a>    <span class="op">}</span></span>
+<span id="cb3-49"><a href="#cb3-49"></a></span>
+<span id="cb3-50"><a href="#cb3-50"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb3-51"><a href="#cb3-51"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
+<span id="cb3-52"><a href="#cb3-52"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb3-53"><a href="#cb3-53"></a></span>
+<span id="cb3-54"><a href="#cb3-54"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-55"><a href="#cb3-55"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb3-56"><a href="#cb3-56"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb3-57"><a href="#cb3-57"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb3-58"><a href="#cb3-58"></a>    <span class="op">}</span></span>
+<span id="cb3-59"><a href="#cb3-59"></a>    </span>
+<span id="cb3-60"><a href="#cb3-60"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-61"><a href="#cb3-61"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>$ ./ej2_break.cpp Tiempo de ejecución: 1837 ms Valor encontrado: 431</p>
+</div>
+</div>
+<p>Finalmente, la versión optimizada consta de ordenar previamente los cuatro vectores y luego utilizar un enfoque de búsqueda similar al de la intersección de múltiples conjuntos ordenados. Se emplean cuatro índices para recorrer los vectores simultáneamente, avanzando el índice del vector que tenga el valor más pequeño en cada iteración. Este método tiene una complejidad de <code>O(n log n)</code> debido a la necesidad de ordenar los vectores, y luego <code>O(n)</code> para encontrar el elemento común, lo que es significativamente más eficiente que las versiones anteriores.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> readfile<span class="op">(</span>string filename<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>    ifstream file<span class="op">(</span>filename<span class="op">);</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>    <span class="cf">while</span> <span class="op">(</span>file <span class="op">&gt;&gt;</span> number<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>        values<span class="op">.</span>push_back<span class="op">(</span>number<span class="op">);</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a>    <span class="op">}</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a></span>
+<span id="cb4-19"><a href="#cb4-19"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="op">}</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a></span>
+<span id="cb4-22"><a href="#cb4-22"></a></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values1 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f1.txt"</span><span class="op">);</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values2 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f2.txt"</span><span class="op">);</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a></span>
+<span id="cb4-29"><a href="#cb4-29"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a></span>
+<span id="cb4-31"><a href="#cb4-31"></a>    sort<span class="op">(</span>values1<span class="op">.</span>begin<span class="op">(),</span> values1<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a>    sort<span class="op">(</span>values2<span class="op">.</span>begin<span class="op">(),</span> values2<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a>    sort<span class="op">(</span>values3<span class="op">.</span>begin<span class="op">(),</span> values3<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a>    sort<span class="op">(</span>values4<span class="op">.</span>begin<span class="op">(),</span> values4<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a></span>
+<span id="cb4-36"><a href="#cb4-36"></a>    <span class="dt">int</span> k1 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k2 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k3 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k4 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a></span>
+<span id="cb4-39"><a href="#cb4-39"></a></span>
+<span id="cb4-40"><a href="#cb4-40"></a>    <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values2<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a>         values2<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values3<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a>          values3<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values4<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">{</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a>        encontrado <span class="op">=</span> values1<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb4-44"><a href="#cb4-44"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb4-45"><a href="#cb4-45"></a>        <span class="cf">while</span> <span class="op">(</span>k1<span class="op">&lt;</span>values1<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span> </span>
+<span id="cb4-46"><a href="#cb4-46"></a>                k2<span class="op">&lt;</span>values2<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a>                 k3<span class="op">&lt;</span>values3<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb4-48"><a href="#cb4-48"></a>                  k4<span class="op">&lt;</span>values4<span class="op">.</span>size<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb4-49"><a href="#cb4-49"></a>            <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span>k1<span class="op">]==</span>values2<span class="op">[</span>k2<span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb4-50"><a href="#cb4-50"></a>                 values2<span class="op">[</span>k2<span class="op">]==</span>values3<span class="op">[</span>k3<span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb4-51"><a href="#cb4-51"></a>                  values3<span class="op">[</span>k3<span class="op">]==</span>values4<span class="op">[</span>k4<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb4-52"><a href="#cb4-52"></a>                encontrado <span class="op">=</span> values1<span class="op">[</span>k1<span class="op">];</span></span>
+<span id="cb4-53"><a href="#cb4-53"></a>                <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb4-54"><a href="#cb4-54"></a>            <span class="op">}</span></span>
+<span id="cb4-55"><a href="#cb4-55"></a></span>
+<span id="cb4-56"><a href="#cb4-56"></a>            <span class="dt">int</span> min_value <span class="op">=</span> min<span class="op">({</span>values1<span class="op">[</span>k1<span class="op">],</span> </span>
+<span id="cb4-57"><a href="#cb4-57"></a>                                 values2<span class="op">[</span>k2<span class="op">],</span></span>
+<span id="cb4-58"><a href="#cb4-58"></a>                                 values3<span class="op">[</span>k3<span class="op">],</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a>                                 values4<span class="op">[</span>k4<span class="op">]});</span></span>
+<span id="cb4-60"><a href="#cb4-60"></a></span>
+<span id="cb4-61"><a href="#cb4-61"></a>            <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span>k1<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k1<span class="op">++;</span></span>
+<span id="cb4-62"><a href="#cb4-62"></a>            <span class="cf">if</span> <span class="op">(</span>values2<span class="op">[</span>k2<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k2<span class="op">++;</span></span>
+<span id="cb4-63"><a href="#cb4-63"></a>            <span class="cf">if</span> <span class="op">(</span>values3<span class="op">[</span>k3<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k3<span class="op">++;</span></span>
+<span id="cb4-64"><a href="#cb4-64"></a>            <span class="cf">if</span> <span class="op">(</span>values4<span class="op">[</span>k4<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k4<span class="op">++;</span></span>
+<span id="cb4-65"><a href="#cb4-65"></a>        <span class="op">}</span></span>
+<span id="cb4-66"><a href="#cb4-66"></a>    <span class="op">}</span></span>
+<span id="cb4-67"><a href="#cb4-67"></a></span>
+<span id="cb4-68"><a href="#cb4-68"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb4-69"><a href="#cb4-69"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
+<span id="cb4-70"><a href="#cb4-70"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb4-71"><a href="#cb4-71"></a></span>
+<span id="cb4-72"><a href="#cb4-72"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-73"><a href="#cb4-73"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb4-74"><a href="#cb4-74"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb4-75"><a href="#cb4-75"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb4-76"><a href="#cb4-76"></a>    <span class="op">}</span></span>
+<span id="cb4-77"><a href="#cb4-77"></a>    </span>
+<span id="cb4-78"><a href="#cb4-78"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-79"><a href="#cb4-79"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>$ ./ej2_opt.cpp Tiempo de ejecución: 0 ms Valor encontrado: 431</p>
+</div>
+</div>
+</section>
+<section id="ejercicio-3-problema-de-la-mochila" class="level2">
+<h2 class="anchored" data-anchor-id="ejercicio-3-problema-de-la-mochila">Ejercicio 3: Problema de la mochila</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Consigna">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Consigna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Implementar una versión análoga al <em>problema de la mochila</em> donde en este caso se poseen <span class="math inline">\(N\)</span> tareas las cuales requieren una cierta cantidad de tiempo de procesamiento <span class="math inline">\(t_k\)</span>. A su vez, se poseen <span class="math inline">\(n\)</span> núcleos de computadora donde se pueden distribuir y ejecutar las tareas. El objetivo es encontrar la distribución de tareas que minimice el tiempo total de ejecución.</p>
+</div>
+</div>
+<p>La implementación propuesta consiste en comenzar ordenando de mayor a menor todos los items iniciales en función de <code>val</code>. De esta forma, no será necesario ir eliminando elementos del vector, sino solo recorrerlo de incio a fin.</p>
+<p>Para esto, se implementó una función específica <code>sort_knaps</code> que ordena el vector de items utilizando la función <code>sort</code> de la biblioteca <code>&lt;algorithm&gt;</code>, con un comparador personalizado que ordena los items en función de su valor (<code>val</code>) de mayor a menor.</p>
+<p>Luego, por cada elemento de este vector ordenado, se busca el <code>knaps</code> con menor <code>total</code> y se le asigna el item, actualizando su <code>total</code> con el valor del item. De esta forma, se logra una distribución de tareas que minimiza el tiempo total de ejecución, ya que se asignan primero las tareas más costosas a los núcleos menos cargados.</p>
+<p>Finalmente, se muestra por pantalla la distribución de tareas en cada <code>knaps</code> junto con el tiempo total de ejecución para cada uno, lo que permite evaluar la eficiencia de la solución propuesta.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="kw">struct</span> <span class="dt">item_t</span> <span class="op">{</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>  <span class="dt">int</span> id<span class="op">,</span>val<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="op">};</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="kw">struct</span> <span class="dt">knaps_t</span> <span class="op">{</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>  vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;</span> items<span class="op">;</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>  <span class="dt">int</span> total<span class="op">;</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="op">};</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a></span>
+<span id="cb5-19"><a href="#cb5-19"></a><span class="dt">void</span> sort_knaps<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;&amp;</span> items<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a>  sort<span class="op">(</span>items<span class="op">.</span>begin<span class="op">(),</span> items<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="at">const</span> <span class="dt">item_t</span><span class="op">&amp;</span> a<span class="op">,</span> <span class="at">const</span> <span class="dt">item_t</span><span class="op">&amp;</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>    <span class="cf">return</span> a<span class="op">.</span>val <span class="op">&gt;</span> b<span class="op">.</span>val<span class="op">;</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>  <span class="op">});</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a><span class="op">}</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a></span>
+<span id="cb5-25"><a href="#cb5-25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>  <span class="dt">int</span> N<span class="op">=</span><span class="dv">30</span><span class="op">,</span>nprocs<span class="op">=</span><span class="dv">5</span><span class="op">,</span>max<span class="op">=</span><span class="dv">10</span><span class="op">;</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>  vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;</span> items<span class="op">;</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a>  printf<span class="op">(</span><span class="st">"items: "</span><span class="op">);</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a></span>
+<span id="cb5-30"><a href="#cb5-30"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>N<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-31"><a href="#cb5-31"></a>    <span class="dt">int</span> val <span class="op">=</span> <span class="op">(</span>rand<span class="op">()%</span>max<span class="op">+</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb5-32"><a href="#cb5-32"></a>    <span class="dt">item_t</span> item<span class="op">={</span>k<span class="op">,</span>val<span class="op">};</span></span>
+<span id="cb5-33"><a href="#cb5-33"></a>    items<span class="op">.</span>push_back<span class="op">(</span>item<span class="op">);</span></span>
+<span id="cb5-34"><a href="#cb5-34"></a>    printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>k<span class="op">,</span>val<span class="op">);</span></span>
+<span id="cb5-35"><a href="#cb5-35"></a>  <span class="op">}</span></span>
+<span id="cb5-36"><a href="#cb5-36"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb5-37"><a href="#cb5-37"></a></span>
+<span id="cb5-38"><a href="#cb5-38"></a>  vector<span class="op">&lt;</span><span class="dt">knaps_t</span><span class="op">&gt;</span> knapsv<span class="op">(</span>nprocs<span class="op">);</span></span>
+<span id="cb5-39"><a href="#cb5-39"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb5-40"><a href="#cb5-40"></a>    knapsv<span class="op">[</span>k<span class="op">].</span>total <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-41"><a href="#cb5-41"></a></span>
+<span id="cb5-42"><a href="#cb5-42"></a>  <span class="co">//IMPLEMENTACIÓN:</span></span>
+<span id="cb5-43"><a href="#cb5-43"></a>  sort_knaps<span class="op">(</span>items<span class="op">);</span></span>
+<span id="cb5-44"><a href="#cb5-44"></a></span>
+<span id="cb5-45"><a href="#cb5-45"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">items ordenados: "</span><span class="op">);</span></span>
+<span id="cb5-46"><a href="#cb5-46"></a>  <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> item<span class="op">:</span> items<span class="op">)</span></span>
+<span id="cb5-47"><a href="#cb5-47"></a>    printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>item<span class="op">.</span>id<span class="op">,</span>item<span class="op">.</span>val<span class="op">);</span></span>
+<span id="cb5-48"><a href="#cb5-48"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb5-49"><a href="#cb5-49"></a></span>
+<span id="cb5-50"><a href="#cb5-50"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-51"><a href="#cb5-51"></a>    <span class="dt">int</span> min_knaps <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-52"><a href="#cb5-52"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-53"><a href="#cb5-53"></a>      <span class="cf">if</span> <span class="op">(</span>knapsv<span class="op">[</span>k<span class="op">].</span>total <span class="op">&lt;</span> knapsv<span class="op">[</span>min_knaps<span class="op">].</span>total<span class="op">)</span></span>
+<span id="cb5-54"><a href="#cb5-54"></a>        min_knaps <span class="op">=</span> k<span class="op">;</span></span>
+<span id="cb5-55"><a href="#cb5-55"></a>    <span class="op">}</span></span>
+<span id="cb5-56"><a href="#cb5-56"></a>    knapsv<span class="op">[</span>min_knaps<span class="op">].</span>items<span class="op">.</span>push_back<span class="op">(</span>items<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb5-57"><a href="#cb5-57"></a>    knapsv<span class="op">[</span>min_knaps<span class="op">].</span>total <span class="op">+=</span> items<span class="op">[</span>i<span class="op">].</span>val<span class="op">;</span></span>
+<span id="cb5-58"><a href="#cb5-58"></a>  <span class="op">}</span></span>
+<span id="cb5-59"><a href="#cb5-59"></a></span>
+<span id="cb5-60"><a href="#cb5-60"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb5-61"><a href="#cb5-61"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb5-62"><a href="#cb5-62"></a>    printf<span class="op">(</span><span class="st">"knaps </span><span class="sc">%d</span><span class="st">: total=</span><span class="sc">%d</span><span class="st"> items: "</span><span class="op">,</span>k<span class="op">,</span>knapsv<span class="op">[</span>k<span class="op">].</span>total<span class="op">);</span></span>
+<span id="cb5-63"><a href="#cb5-63"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> item<span class="op">:</span> knapsv<span class="op">[</span>k<span class="op">].</span>items<span class="op">)</span></span>
+<span id="cb5-64"><a href="#cb5-64"></a>      printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>item<span class="op">.</span>id<span class="op">,</span>item<span class="op">.</span>val<span class="op">);</span></span>
+<span id="cb5-65"><a href="#cb5-65"></a>    printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb5-66"><a href="#cb5-66"></a>  <span class="op">}</span></span>
+<span id="cb5-67"><a href="#cb5-67"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>$ ./ej3.cpp</p>
+<p>items: (0,4) (1,7) (2,8) (3,6) (4,4) (5,6) (6,7) (7,3) (8,10) (9,2)<br>
+(10,3) (11,8) (12,1) (13,10) (14,4) (15,7) (16,1) (17,7) (18,3)<br>
+(19,7) (20,2) (21,9) (22,8) (23,10) (24,3) (25,1) (26,3) (27,4)<br>
+(28,8) (29,6)</p>
+<p>items ordenados: (23,10) (8,10) (13,10) (21,9) (28,8) (2,8) (22,8)<br>
+(11,8) (1,7) (19,7) (17,7) (15,7) (6,7) (5,6) (29,6) (3,6) (4,4)<br>
+(14,4) (27,4) (0,4) (7,3) (18,3) (24,3) (26,3) (10,3) (9,2) (20,2)<br>
+(16,1) (12,1) (25,1)</p>
+<p>knaps 0: total=33 items: (23,10) (11,8) (29,6) (14,4) (18,3) (20,2)<br>
+knaps 1: total=33 items: (8,10) (1,7) (15,7) (27,4) (24,3) (16,1) (25,1)<br>
+knaps 2: total=32 items: (13,10) (19,7) (6,7) (0,4) (26,3) (12,1)<br>
+knaps 3: total=32 items: (21,9) (22,8) (5,6) (3,6) (10,3)<br>
+knaps 4: total=32 items: (28,8) (2,8) (17,7) (4,4) (7,3) (9,2)</p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
