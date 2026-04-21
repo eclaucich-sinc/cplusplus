@@ -522,7 +522,9 @@ Llamada número 14<br>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>$ ./ej2_goto.cpp Tiempo de ejecución: 1831 ms Valor encontrado: 431</p>
+<p>$ ./ej2_goto.cpp<br>
+Tiempo de ejecución: 1831 ms<br>
+Valor encontrado: 431</p>
 </div>
 </div>
 <p>En la segunda versión, utilizando <code>BREAK</code>, se implementa de manera similar a la anterior, pero en lugar de utilizar <code>goto</code> para salir de los bucles anidados, se emplean sentencias <code>break</code> para salir de cada bucle cuando se encuentra el elemento común. Se utiliza una variable booleana <code>FOUND</code> para indicar cuándo se ha encontrado el elemento y así evitar seguir iterando innecesariamente.</p>
@@ -598,7 +600,9 @@ Llamada número 14<br>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>$ ./ej2_break.cpp Tiempo de ejecución: 1837 ms Valor encontrado: 431</p>
+<p>$ ./ej2_break.cpp<br>
+Tiempo de ejecución: 1837 ms<br>
+Valor encontrado: 431</p>
 </div>
 </div>
 <p>Finalmente, la versión optimizada consta de ordenar previamente los cuatro vectores y luego utilizar un enfoque de búsqueda similar al de la intersección de múltiples conjuntos ordenados. Se emplean cuatro índices para recorrer los vectores simultáneamente, avanzando el índice del vector que tenga el valor más pequeño en cada iteración. Este método tiene una complejidad de <code>O(n log n)</code> debido a la necesidad de ordenar los vectores, y luego <code>O(n)</code> para encontrar el elemento común, lo que es significativamente más eficiente que las versiones anteriores.</p>
@@ -691,7 +695,9 @@ Llamada número 14<br>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>$ ./ej2_opt.cpp Tiempo de ejecución: 0 ms Valor encontrado: 431</p>
+<p>$ ./ej2_opt.cpp<br>
+Tiempo de ejecución: 0 ms<br>
+Valor encontrado: 431</p>
 </div>
 </div>
 </section>
@@ -886,7 +892,7 @@ knaps 4: total=32 items: (28,8) (2,8) (17,7) (4,4) (7,3) (9,2)</p>
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/eclaucich-sinc\.github\.io\/cplusplus\/");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
