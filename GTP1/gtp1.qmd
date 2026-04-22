@@ -234,6 +234,41 @@ Llamada número 14
 :::
 
 
+Otra forma para demostrar el correcto funcionamiento del código, es utilizar un valor mayor que $1$, el problema es que al hacer $x^p$ con $x>1$ y $p$ grande, el resultado puede ser tan grande que execeda la capacidad de representación de los números en C++. Para evitar esto, se puede utilizar un valor cercano a $1$, como por ejemplo $1,0001$, y sabiendo que $(1+1/p)^p \to e$ cuando $p \to \infty$. De esta forma, al hacer $1,0001^{10000}$, se espera obtener un resultado cercano a $e \approx 2.71828$, lo que permite verificar que la función `intpow` está calculando correctamente la potencia de un número.
+
+
+```cpp
+int main() {
+	double base = 1.0001;
+	
+    int exponente = 10000;
+	cout << "Calculando " << base << "^" << exponente << ":" << endl;
+	cout << "Resultado: " << intpow(base, exponente, true) << "\n\n";
+	
+	return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+Calculando 1.0001^10000:  
+Resultado: Llamada número 1  
+Llamada número 2  
+Llamada número 3  
+Llamada número 4  
+Llamada número 5  
+Llamada número 6  
+Llamada número 7  
+Llamada número 8  
+Llamada número 9  
+Llamada número 10  
+Llamada número 11  
+Llamada número 12  
+Llamada número 13  
+Llamada número 14  
+2.71815
+:::
+
+
 
 ## Ejercicio 2: Similitud
 
