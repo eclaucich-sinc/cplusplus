@@ -30,20 +30,9 @@ double intpow(double x, int p, bool vrbs=false) {
 }
 
 int main() {
-	int base = 1;
+	double base = 1.0001;
 	
-    NCALLS = 0;
-    int exponente = 100;
-	cout << "Calculando " << base << "^" << exponente << ":" << endl;
-	cout << "Resultado: " << intpow(base, exponente, true) << "\n\n";
-
-    NCALLS = 0;
-    exponente = 1000;
-	cout << "Calculando " << base << "^" << exponente << ":" << endl;
-	cout << "Resultado: " << intpow(base, exponente, true) << "\n\n";
-
-    NCALLS = 0;
-    exponente = 10000;
+    int exponente = 10000;
 	cout << "Calculando " << base << "^" << exponente << ":" << endl;
 	cout << "Resultado: " << intpow(base, exponente, true) << "\n\n";
 	

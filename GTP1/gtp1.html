@@ -463,6 +463,44 @@ Llamada número 14<br>
 1</p>
 </div>
 </div>
+<p>Otra forma para demostrar el correcto funcionamiento del código, es utilizar un valor mayor que <span class="math inline">\(1\)</span>, el problema es que al hacer <span class="math inline">\(x^p\)</span> con <span class="math inline">\(x&gt;1\)</span> y <span class="math inline">\(p\)</span> grande, el resultado puede ser tan grande que execeda la capacidad de representación de los números en C++. Para evitar esto, se puede utilizar un valor cercano a <span class="math inline">\(1\)</span>, como por ejemplo <span class="math inline">\(1,0001\)</span>, y sabiendo que <span class="math inline">\((1+1/p)^p \to e\)</span> cuando <span class="math inline">\(p \to \infty\)</span>. De esta forma, al hacer <span class="math inline">\(1,0001^{10000}\)</span>, se espera obtener un resultado cercano a <span class="math inline">\(e \approx 2.71828\)</span>, lo que permite verificar que la función <code>intpow</code> está calculando correctamente la potencia de un número.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    <span class="dt">double</span> base <span class="op">=</span> <span class="fl">1.0001</span><span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    </span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="dt">int</span> exponente <span class="op">=</span> <span class="dv">10000</span><span class="op">;</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Calculando "</span> <span class="op">&lt;&lt;</span> base <span class="op">&lt;&lt;</span> <span class="st">"^"</span> <span class="op">&lt;&lt;</span> exponente <span class="op">&lt;&lt;</span> <span class="st">":"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Resultado: "</span> <span class="op">&lt;&lt;</span> intpow<span class="op">(</span>base<span class="op">,</span> exponente<span class="op">,</span> <span class="kw">true</span><span class="op">)</span> <span class="op">&lt;&lt;</span> <span class="st">"</span><span class="sc">\n\n</span><span class="st">"</span><span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    </span>
+<span id="cb2-8"><a href="#cb2-8"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Calculando 1.0001^10000:<br>
+Resultado: Llamada número 1<br>
+Llamada número 2<br>
+Llamada número 3<br>
+Llamada número 4<br>
+Llamada número 5<br>
+Llamada número 6<br>
+Llamada número 7<br>
+Llamada número 8<br>
+Llamada número 9<br>
+Llamada número 10<br>
+Llamada número 11<br>
+Llamada número 12<br>
+Llamada número 13<br>
+Llamada número 14<br>
+2.71815</p>
+</div>
+</div>
 </section>
 <section id="ejercicio-2-similitud" class="level2">
 <h2 class="anchored" data-anchor-id="ejercicio-2-similitud">Ejercicio 2: Similitud</h2>
@@ -495,82 +533,6 @@ Llamada número 14<br>
 <p>Para poder comparar el tiempo de ejecución de cada versión, se utiliza la biblioteca <code>&lt;chrono&gt;</code> para medir el tiempo transcurrido desde el inicio hasta el final de la búsqueda del elemento común. Esto permite evaluar la eficiencia de cada implementación y observar las diferencias en el rendimiento entre ellas.</p>
 </div>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> readfile<span class="op">(</span>string filename<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-10"><a href="#cb2-10"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values<span class="op">;</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>    ifstream file<span class="op">(</span>filename<span class="op">);</span></span>
-<span id="cb2-12"><a href="#cb2-12"></a></span>
-<span id="cb2-13"><a href="#cb2-13"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>    <span class="cf">while</span> <span class="op">(</span>file <span class="op">&gt;&gt;</span> number<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a>        values<span class="op">.</span>push_back<span class="op">(</span>number<span class="op">);</span></span>
-<span id="cb2-16"><a href="#cb2-16"></a>    <span class="op">}</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a></span>
-<span id="cb2-18"><a href="#cb2-18"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="op">}</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a></span>
-<span id="cb2-21"><a href="#cb2-21"></a></span>
-<span id="cb2-22"><a href="#cb2-22"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values1 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f1.txt"</span><span class="op">);</span></span>
-<span id="cb2-24"><a href="#cb2-24"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values2 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f2.txt"</span><span class="op">);</span></span>
-<span id="cb2-25"><a href="#cb2-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
-<span id="cb2-26"><a href="#cb2-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a></span>
-<span id="cb2-28"><a href="#cb2-28"></a>    <span class="dt">bool</span> FOUND<span class="op">;</span></span>
-<span id="cb2-29"><a href="#cb2-29"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb2-30"><a href="#cb2-30"></a></span>
-<span id="cb2-31"><a href="#cb2-31"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
-<span id="cb2-32"><a href="#cb2-32"></a></span>
-<span id="cb2-33"><a href="#cb2-33"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> v1 <span class="op">:</span> values1<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-34"><a href="#cb2-34"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v2 <span class="op">:</span> values2<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-35"><a href="#cb2-35"></a>            <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v3 <span class="op">:</span> values3<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-36"><a href="#cb2-36"></a>                <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v4 <span class="op">:</span> values4<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-37"><a href="#cb2-37"></a>                    <span class="cf">if</span> <span class="op">(</span>v1<span class="op">==</span>v2 <span class="op">&amp;&amp;</span> v2<span class="op">==</span>v3 <span class="op">&amp;&amp;</span> v3<span class="op">==</span>v4<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-38"><a href="#cb2-38"></a>                        encontrado <span class="op">=</span> v4<span class="op">;</span></span>
-<span id="cb2-39"><a href="#cb2-39"></a>                        <span class="cf">goto</span> FOUND<span class="op">;</span></span>
-<span id="cb2-40"><a href="#cb2-40"></a>                    <span class="op">}</span></span>
-<span id="cb2-41"><a href="#cb2-41"></a>                <span class="op">}</span></span>
-<span id="cb2-42"><a href="#cb2-42"></a>            <span class="op">}</span></span>
-<span id="cb2-43"><a href="#cb2-43"></a>        <span class="op">}</span></span>
-<span id="cb2-44"><a href="#cb2-44"></a>    <span class="op">}</span></span>
-<span id="cb2-45"><a href="#cb2-45"></a></span>
-<span id="cb2-46"><a href="#cb2-46"></a>    </span>
-<span id="cb2-47"><a href="#cb2-47"></a>    FOUND<span class="op">:</span></span>
-<span id="cb2-48"><a href="#cb2-48"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
-<span id="cb2-49"><a href="#cb2-49"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
-<span id="cb2-50"><a href="#cb2-50"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb2-51"><a href="#cb2-51"></a></span>
-<span id="cb2-52"><a href="#cb2-52"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb2-53"><a href="#cb2-53"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb2-54"><a href="#cb2-54"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb2-55"><a href="#cb2-55"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb2-56"><a href="#cb2-56"></a>    <span class="op">}</span></span>
-<span id="cb2-57"><a href="#cb2-57"></a>    </span>
-<span id="cb2-58"><a href="#cb2-58"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb2-59"><a href="#cb2-59"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon no-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>bash
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>$ ./ej2_goto.cpp<br>
-Tiempo de ejecución: 1831 ms<br>
-Valor encontrado: 431</p>
-</div>
-</div>
-<p>En la segunda versión, utilizando <code>BREAK</code>, se implementa de manera similar a la anterior, pero en lugar de utilizar <code>goto</code> para salir de los bucles anidados, se emplean sentencias <code>break</code> para salir de cada bucle cuando se encuentra el elemento común. Se utiliza una variable booleana <code>FOUND</code> para indicar cuándo se ha encontrado el elemento y así evitar seguir iterando innecesariamente.</p>
-<p>Ambos casos son de orden <code>O(n^4)</code> en el peor caso, ya que en el peor escenario se deben comparar todos los elementos de los cuatro vectores entre sí. Difieren principalmente en la legibilidad y las buenas prácticas, siendo generalemente la versión con <code>break</code> más recomendada por evitar el uso de <code>goto</code>, que puede hacer el código más difícil de seguir y mantener.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
 <span id="cb3-3"><a href="#cb3-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
@@ -598,7 +560,7 @@ Valor encontrado: 431</p>
 <span id="cb3-25"><a href="#cb3-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
 <span id="cb3-26"><a href="#cb3-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
 <span id="cb3-27"><a href="#cb3-27"></a></span>
-<span id="cb3-28"><a href="#cb3-28"></a>    <span class="dt">bool</span> found <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a>    <span class="dt">bool</span> FOUND<span class="op">;</span></span>
 <span id="cb3-29"><a href="#cb3-29"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
 <span id="cb3-30"><a href="#cb3-30"></a></span>
 <span id="cb3-31"><a href="#cb3-31"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
@@ -609,29 +571,105 @@ Valor encontrado: 431</p>
 <span id="cb3-36"><a href="#cb3-36"></a>                <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v4 <span class="op">:</span> values4<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb3-37"><a href="#cb3-37"></a>                    <span class="cf">if</span> <span class="op">(</span>v1<span class="op">==</span>v2 <span class="op">&amp;&amp;</span> v2<span class="op">==</span>v3 <span class="op">&amp;&amp;</span> v3<span class="op">==</span>v4<span class="op">)</span> <span class="op">{</span></span>
 <span id="cb3-38"><a href="#cb3-38"></a>                        encontrado <span class="op">=</span> v4<span class="op">;</span></span>
-<span id="cb3-39"><a href="#cb3-39"></a>                        found <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
-<span id="cb3-40"><a href="#cb3-40"></a>                        <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb3-41"><a href="#cb3-41"></a>                    <span class="op">}</span></span>
-<span id="cb3-42"><a href="#cb3-42"></a>                <span class="op">}</span></span>
-<span id="cb3-43"><a href="#cb3-43"></a>                <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb3-44"><a href="#cb3-44"></a>            <span class="op">}</span></span>
-<span id="cb3-45"><a href="#cb3-45"></a>            <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb3-46"><a href="#cb3-46"></a>        <span class="op">}</span></span>
-<span id="cb3-47"><a href="#cb3-47"></a>        <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb3-48"><a href="#cb3-48"></a>    <span class="op">}</span></span>
-<span id="cb3-49"><a href="#cb3-49"></a></span>
-<span id="cb3-50"><a href="#cb3-50"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
-<span id="cb3-51"><a href="#cb3-51"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
-<span id="cb3-52"><a href="#cb3-52"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb3-53"><a href="#cb3-53"></a></span>
-<span id="cb3-54"><a href="#cb3-54"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb3-55"><a href="#cb3-55"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb3-56"><a href="#cb3-56"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb3-57"><a href="#cb3-57"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb3-58"><a href="#cb3-58"></a>    <span class="op">}</span></span>
-<span id="cb3-59"><a href="#cb3-59"></a>    </span>
-<span id="cb3-60"><a href="#cb3-60"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb3-61"><a href="#cb3-61"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-39"><a href="#cb3-39"></a>                        <span class="cf">goto</span> FOUND<span class="op">;</span></span>
+<span id="cb3-40"><a href="#cb3-40"></a>                    <span class="op">}</span></span>
+<span id="cb3-41"><a href="#cb3-41"></a>                <span class="op">}</span></span>
+<span id="cb3-42"><a href="#cb3-42"></a>            <span class="op">}</span></span>
+<span id="cb3-43"><a href="#cb3-43"></a>        <span class="op">}</span></span>
+<span id="cb3-44"><a href="#cb3-44"></a>    <span class="op">}</span></span>
+<span id="cb3-45"><a href="#cb3-45"></a></span>
+<span id="cb3-46"><a href="#cb3-46"></a>    </span>
+<span id="cb3-47"><a href="#cb3-47"></a>    FOUND<span class="op">:</span></span>
+<span id="cb3-48"><a href="#cb3-48"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb3-49"><a href="#cb3-49"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
+<span id="cb3-50"><a href="#cb3-50"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb3-51"><a href="#cb3-51"></a></span>
+<span id="cb3-52"><a href="#cb3-52"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-53"><a href="#cb3-53"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb3-54"><a href="#cb3-54"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb3-55"><a href="#cb3-55"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb3-56"><a href="#cb3-56"></a>    <span class="op">}</span></span>
+<span id="cb3-57"><a href="#cb3-57"></a>    </span>
+<span id="cb3-58"><a href="#cb3-58"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb3-59"><a href="#cb3-59"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>$ ./ej2_goto.cpp<br>
+Tiempo de ejecución: 1831 ms<br>
+Valor encontrado: 431</p>
+</div>
+</div>
+<p>En la segunda versión, utilizando <code>BREAK</code>, se implementa de manera similar a la anterior, pero en lugar de utilizar <code>goto</code> para salir de los bucles anidados, se emplean sentencias <code>break</code> para salir de cada bucle cuando se encuentra el elemento común. Se utiliza una variable booleana <code>FOUND</code> para indicar cuándo se ha encontrado el elemento y así evitar seguir iterando innecesariamente.</p>
+<p>Ambos casos son de orden <code>O(n^4)</code> en el peor caso, ya que en el peor escenario se deben comparar todos los elementos de los cuatro vectores entre sí. Difieren principalmente en la legibilidad y las buenas prácticas, siendo generalemente la versión con <code>break</code> más recomendada por evitar el uso de <code>goto</code>, que puede hacer el código más difícil de seguir y mantener.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a></span>
+<span id="cb4-9"><a href="#cb4-9"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> readfile<span class="op">(</span>string filename<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values<span class="op">;</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>    ifstream file<span class="op">(</span>filename<span class="op">);</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a></span>
+<span id="cb4-13"><a href="#cb4-13"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a>    <span class="cf">while</span> <span class="op">(</span>file <span class="op">&gt;&gt;</span> number<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a>        values<span class="op">.</span>push_back<span class="op">(</span>number<span class="op">);</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>    <span class="op">}</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a></span>
+<span id="cb4-18"><a href="#cb4-18"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="op">}</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a></span>
+<span id="cb4-21"><a href="#cb4-21"></a></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values1 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f1.txt"</span><span class="op">);</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values2 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f2.txt"</span><span class="op">);</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a>    <span class="dt">bool</span> found <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a></span>
+<span id="cb4-31"><a href="#cb4-31"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a></span>
+<span id="cb4-33"><a href="#cb4-33"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> v1 <span class="op">:</span> values1<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a>        <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v2 <span class="op">:</span> values2<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a>            <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v3 <span class="op">:</span> values3<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a>                <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> v4 <span class="op">:</span> values4<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a>                    <span class="cf">if</span> <span class="op">(</span>v1<span class="op">==</span>v2 <span class="op">&amp;&amp;</span> v2<span class="op">==</span>v3 <span class="op">&amp;&amp;</span> v3<span class="op">==</span>v4<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a>                        encontrado <span class="op">=</span> v4<span class="op">;</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a>                        found <span class="op">=</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>                        <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a>                    <span class="op">}</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a>                <span class="op">}</span></span>
+<span id="cb4-43"><a href="#cb4-43"></a>                <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb4-44"><a href="#cb4-44"></a>            <span class="op">}</span></span>
+<span id="cb4-45"><a href="#cb4-45"></a>            <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb4-46"><a href="#cb4-46"></a>        <span class="op">}</span></span>
+<span id="cb4-47"><a href="#cb4-47"></a>        <span class="cf">if</span> <span class="op">(</span>found<span class="op">)</span> <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb4-48"><a href="#cb4-48"></a>    <span class="op">}</span></span>
+<span id="cb4-49"><a href="#cb4-49"></a></span>
+<span id="cb4-50"><a href="#cb4-50"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb4-51"><a href="#cb4-51"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
+<span id="cb4-52"><a href="#cb4-52"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb4-53"><a href="#cb4-53"></a></span>
+<span id="cb4-54"><a href="#cb4-54"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-55"><a href="#cb4-55"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb4-56"><a href="#cb4-56"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb4-57"><a href="#cb4-57"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb4-58"><a href="#cb4-58"></a>    <span class="op">}</span></span>
+<span id="cb4-59"><a href="#cb4-59"></a>    </span>
+<span id="cb4-60"><a href="#cb4-60"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-61"><a href="#cb4-61"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -648,85 +686,85 @@ Valor encontrado: 431</p>
 </div>
 </div>
 <p>Finalmente, la versión optimizada consta de ordenar previamente los cuatro vectores y luego utilizar un enfoque de búsqueda similar al de la intersección de múltiples conjuntos ordenados. Se emplean cuatro índices para recorrer los vectores simultáneamente, avanzando el índice del vector que tenga el valor más pequeño en cada iteración. Este método tiene una complejidad de <code>O(n log n)</code> debido a la necesidad de ordenar los vectores, y luego <code>O(n)</code> para encontrar el elemento común, lo que es significativamente más eficiente que las versiones anteriores.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
-<span id="cb4-6"><a href="#cb4-6"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a></span>
-<span id="cb4-10"><a href="#cb4-10"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> readfile<span class="op">(</span>string filename<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values<span class="op">;</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>    ifstream file<span class="op">(</span>filename<span class="op">);</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a></span>
-<span id="cb4-14"><a href="#cb4-14"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a>    <span class="cf">while</span> <span class="op">(</span>file <span class="op">&gt;&gt;</span> number<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a>        values<span class="op">.</span>push_back<span class="op">(</span>number<span class="op">);</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a>    <span class="op">}</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a></span>
-<span id="cb4-19"><a href="#cb4-19"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="op">}</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a></span>
-<span id="cb4-22"><a href="#cb4-22"></a></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values1 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f1.txt"</span><span class="op">);</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values2 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f2.txt"</span><span class="op">);</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
-<span id="cb4-27"><a href="#cb4-27"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a></span>
-<span id="cb4-29"><a href="#cb4-29"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
-<span id="cb4-30"><a href="#cb4-30"></a></span>
-<span id="cb4-31"><a href="#cb4-31"></a>    sort<span class="op">(</span>values1<span class="op">.</span>begin<span class="op">(),</span> values1<span class="op">.</span>end<span class="op">());</span></span>
-<span id="cb4-32"><a href="#cb4-32"></a>    sort<span class="op">(</span>values2<span class="op">.</span>begin<span class="op">(),</span> values2<span class="op">.</span>end<span class="op">());</span></span>
-<span id="cb4-33"><a href="#cb4-33"></a>    sort<span class="op">(</span>values3<span class="op">.</span>begin<span class="op">(),</span> values3<span class="op">.</span>end<span class="op">());</span></span>
-<span id="cb4-34"><a href="#cb4-34"></a>    sort<span class="op">(</span>values4<span class="op">.</span>begin<span class="op">(),</span> values4<span class="op">.</span>end<span class="op">());</span></span>
-<span id="cb4-35"><a href="#cb4-35"></a></span>
-<span id="cb4-36"><a href="#cb4-36"></a>    <span class="dt">int</span> k1 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k2 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k3 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k4 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb4-37"><a href="#cb4-37"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
-<span id="cb4-38"><a href="#cb4-38"></a></span>
-<span id="cb4-39"><a href="#cb4-39"></a></span>
-<span id="cb4-40"><a href="#cb4-40"></a>    <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values2<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb4-41"><a href="#cb4-41"></a>         values2<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values3<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb4-42"><a href="#cb4-42"></a>          values3<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values4<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">{</span></span>
-<span id="cb4-43"><a href="#cb4-43"></a>        encontrado <span class="op">=</span> values1<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
-<span id="cb4-44"><a href="#cb4-44"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb4-45"><a href="#cb4-45"></a>        <span class="cf">while</span> <span class="op">(</span>k1<span class="op">&lt;</span>values1<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span> </span>
-<span id="cb4-46"><a href="#cb4-46"></a>                k2<span class="op">&lt;</span>values2<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb4-47"><a href="#cb4-47"></a>                 k3<span class="op">&lt;</span>values3<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb4-48"><a href="#cb4-48"></a>                  k4<span class="op">&lt;</span>values4<span class="op">.</span>size<span class="op">())</span> <span class="op">{</span></span>
-<span id="cb4-49"><a href="#cb4-49"></a>            <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span>k1<span class="op">]==</span>values2<span class="op">[</span>k2<span class="op">]</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb4-50"><a href="#cb4-50"></a>                 values2<span class="op">[</span>k2<span class="op">]==</span>values3<span class="op">[</span>k3<span class="op">]</span> <span class="op">&amp;&amp;</span></span>
-<span id="cb4-51"><a href="#cb4-51"></a>                  values3<span class="op">[</span>k3<span class="op">]==</span>values4<span class="op">[</span>k4<span class="op">])</span> <span class="op">{</span></span>
-<span id="cb4-52"><a href="#cb4-52"></a>                encontrado <span class="op">=</span> values1<span class="op">[</span>k1<span class="op">];</span></span>
-<span id="cb4-53"><a href="#cb4-53"></a>                <span class="cf">break</span><span class="op">;</span></span>
-<span id="cb4-54"><a href="#cb4-54"></a>            <span class="op">}</span></span>
-<span id="cb4-55"><a href="#cb4-55"></a></span>
-<span id="cb4-56"><a href="#cb4-56"></a>            <span class="dt">int</span> min_value <span class="op">=</span> min<span class="op">({</span>values1<span class="op">[</span>k1<span class="op">],</span> </span>
-<span id="cb4-57"><a href="#cb4-57"></a>                                 values2<span class="op">[</span>k2<span class="op">],</span></span>
-<span id="cb4-58"><a href="#cb4-58"></a>                                 values3<span class="op">[</span>k3<span class="op">],</span></span>
-<span id="cb4-59"><a href="#cb4-59"></a>                                 values4<span class="op">[</span>k4<span class="op">]});</span></span>
-<span id="cb4-60"><a href="#cb4-60"></a></span>
-<span id="cb4-61"><a href="#cb4-61"></a>            <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span>k1<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k1<span class="op">++;</span></span>
-<span id="cb4-62"><a href="#cb4-62"></a>            <span class="cf">if</span> <span class="op">(</span>values2<span class="op">[</span>k2<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k2<span class="op">++;</span></span>
-<span id="cb4-63"><a href="#cb4-63"></a>            <span class="cf">if</span> <span class="op">(</span>values3<span class="op">[</span>k3<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k3<span class="op">++;</span></span>
-<span id="cb4-64"><a href="#cb4-64"></a>            <span class="cf">if</span> <span class="op">(</span>values4<span class="op">[</span>k4<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k4<span class="op">++;</span></span>
-<span id="cb4-65"><a href="#cb4-65"></a>        <span class="op">}</span></span>
-<span id="cb4-66"><a href="#cb4-66"></a>    <span class="op">}</span></span>
-<span id="cb4-67"><a href="#cb4-67"></a></span>
-<span id="cb4-68"><a href="#cb4-68"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
-<span id="cb4-69"><a href="#cb4-69"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
-<span id="cb4-70"><a href="#cb4-70"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb4-71"><a href="#cb4-71"></a></span>
-<span id="cb4-72"><a href="#cb4-72"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
-<span id="cb4-73"><a href="#cb4-73"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb4-74"><a href="#cb4-74"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
-<span id="cb4-75"><a href="#cb4-75"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb4-76"><a href="#cb4-76"></a>    <span class="op">}</span></span>
-<span id="cb4-77"><a href="#cb4-77"></a>    </span>
-<span id="cb4-78"><a href="#cb4-78"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb4-79"><a href="#cb4-79"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="pp">#include </span><span class="im">&lt;chrono&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> readfile<span class="op">(</span>string filename<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values<span class="op">;</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>    ifstream file<span class="op">(</span>filename<span class="op">);</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a></span>
+<span id="cb5-14"><a href="#cb5-14"></a>    <span class="dt">int</span> number<span class="op">;</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="cf">while</span> <span class="op">(</span>file <span class="op">&gt;&gt;</span> number<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>        values<span class="op">.</span>push_back<span class="op">(</span>number<span class="op">);</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a>    <span class="op">}</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a></span>
+<span id="cb5-19"><a href="#cb5-19"></a>    <span class="cf">return</span> values<span class="op">;</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="op">}</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a></span>
+<span id="cb5-22"><a href="#cb5-22"></a></span>
+<span id="cb5-23"><a href="#cb5-23"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values1 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f1.txt"</span><span class="op">);</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values2 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f2.txt"</span><span class="op">);</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values3 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f3.txt"</span><span class="op">);</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> values4 <span class="op">=</span> readfile<span class="op">(</span><span class="st">"f4.txt"</span><span class="op">);</span></span>
+<span id="cb5-28"><a href="#cb5-28"></a></span>
+<span id="cb5-29"><a href="#cb5-29"></a>    <span class="kw">auto</span> start <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb5-30"><a href="#cb5-30"></a></span>
+<span id="cb5-31"><a href="#cb5-31"></a>    sort<span class="op">(</span>values1<span class="op">.</span>begin<span class="op">(),</span> values1<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb5-32"><a href="#cb5-32"></a>    sort<span class="op">(</span>values2<span class="op">.</span>begin<span class="op">(),</span> values2<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb5-33"><a href="#cb5-33"></a>    sort<span class="op">(</span>values3<span class="op">.</span>begin<span class="op">(),</span> values3<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb5-34"><a href="#cb5-34"></a>    sort<span class="op">(</span>values4<span class="op">.</span>begin<span class="op">(),</span> values4<span class="op">.</span>end<span class="op">());</span></span>
+<span id="cb5-35"><a href="#cb5-35"></a></span>
+<span id="cb5-36"><a href="#cb5-36"></a>    <span class="dt">int</span> k1 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k2 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k3 <span class="op">=</span> <span class="dv">0</span><span class="op">,</span> k4 <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-37"><a href="#cb5-37"></a>    <span class="dt">int</span> encontrado <span class="op">=</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-38"><a href="#cb5-38"></a></span>
+<span id="cb5-39"><a href="#cb5-39"></a></span>
+<span id="cb5-40"><a href="#cb5-40"></a>    <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values2<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb5-41"><a href="#cb5-41"></a>         values2<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values3<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb5-42"><a href="#cb5-42"></a>          values3<span class="op">[</span><span class="dv">0</span><span class="op">]==</span>values4<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">{</span></span>
+<span id="cb5-43"><a href="#cb5-43"></a>        encontrado <span class="op">=</span> values1<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb5-44"><a href="#cb5-44"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-45"><a href="#cb5-45"></a>        <span class="cf">while</span> <span class="op">(</span>k1<span class="op">&lt;</span>values1<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span> </span>
+<span id="cb5-46"><a href="#cb5-46"></a>                k2<span class="op">&lt;</span>values2<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb5-47"><a href="#cb5-47"></a>                 k3<span class="op">&lt;</span>values3<span class="op">.</span>size<span class="op">()</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb5-48"><a href="#cb5-48"></a>                  k4<span class="op">&lt;</span>values4<span class="op">.</span>size<span class="op">())</span> <span class="op">{</span></span>
+<span id="cb5-49"><a href="#cb5-49"></a>            <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span>k1<span class="op">]==</span>values2<span class="op">[</span>k2<span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb5-50"><a href="#cb5-50"></a>                 values2<span class="op">[</span>k2<span class="op">]==</span>values3<span class="op">[</span>k3<span class="op">]</span> <span class="op">&amp;&amp;</span></span>
+<span id="cb5-51"><a href="#cb5-51"></a>                  values3<span class="op">[</span>k3<span class="op">]==</span>values4<span class="op">[</span>k4<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb5-52"><a href="#cb5-52"></a>                encontrado <span class="op">=</span> values1<span class="op">[</span>k1<span class="op">];</span></span>
+<span id="cb5-53"><a href="#cb5-53"></a>                <span class="cf">break</span><span class="op">;</span></span>
+<span id="cb5-54"><a href="#cb5-54"></a>            <span class="op">}</span></span>
+<span id="cb5-55"><a href="#cb5-55"></a></span>
+<span id="cb5-56"><a href="#cb5-56"></a>            <span class="dt">int</span> min_value <span class="op">=</span> min<span class="op">({</span>values1<span class="op">[</span>k1<span class="op">],</span> </span>
+<span id="cb5-57"><a href="#cb5-57"></a>                                 values2<span class="op">[</span>k2<span class="op">],</span></span>
+<span id="cb5-58"><a href="#cb5-58"></a>                                 values3<span class="op">[</span>k3<span class="op">],</span></span>
+<span id="cb5-59"><a href="#cb5-59"></a>                                 values4<span class="op">[</span>k4<span class="op">]});</span></span>
+<span id="cb5-60"><a href="#cb5-60"></a></span>
+<span id="cb5-61"><a href="#cb5-61"></a>            <span class="cf">if</span> <span class="op">(</span>values1<span class="op">[</span>k1<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k1<span class="op">++;</span></span>
+<span id="cb5-62"><a href="#cb5-62"></a>            <span class="cf">if</span> <span class="op">(</span>values2<span class="op">[</span>k2<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k2<span class="op">++;</span></span>
+<span id="cb5-63"><a href="#cb5-63"></a>            <span class="cf">if</span> <span class="op">(</span>values3<span class="op">[</span>k3<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k3<span class="op">++;</span></span>
+<span id="cb5-64"><a href="#cb5-64"></a>            <span class="cf">if</span> <span class="op">(</span>values4<span class="op">[</span>k4<span class="op">]</span> <span class="op">==</span> min_value<span class="op">)</span> k4<span class="op">++;</span></span>
+<span id="cb5-65"><a href="#cb5-65"></a>        <span class="op">}</span></span>
+<span id="cb5-66"><a href="#cb5-66"></a>    <span class="op">}</span></span>
+<span id="cb5-67"><a href="#cb5-67"></a></span>
+<span id="cb5-68"><a href="#cb5-68"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
+<span id="cb5-69"><a href="#cb5-69"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
+<span id="cb5-70"><a href="#cb5-70"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución: "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb5-71"><a href="#cb5-71"></a></span>
+<span id="cb5-72"><a href="#cb5-72"></a>    <span class="cf">if</span> <span class="op">(</span>encontrado <span class="op">!=</span> <span class="op">-</span><span class="dv">1</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-73"><a href="#cb5-73"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor encontrado: "</span> <span class="op">&lt;&lt;</span> encontrado <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb5-74"><a href="#cb5-74"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-75"><a href="#cb5-75"></a>        cout <span class="op">&lt;&lt;</span> <span class="st">"Valor no encontrado"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb5-76"><a href="#cb5-76"></a>    <span class="op">}</span></span>
+<span id="cb5-77"><a href="#cb5-77"></a>    </span>
+<span id="cb5-78"><a href="#cb5-78"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-79"><a href="#cb5-79"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -762,73 +800,73 @@ Valor encontrado: 431</p>
 <p>Para esto, se implementó una función específica <code>sort_knaps</code> que ordena el vector de items utilizando la función <code>sort</code> de la biblioteca <code>&lt;algorithm&gt;</code>, con un comparador personalizado que ordena los items en función de su valor (<code>val</code>) de mayor a menor.</p>
 <p>Luego, por cada elemento de este vector ordenado, se busca el <code>knaps</code> con menor <code>total</code> y se le asigna el item, actualizando su <code>total</code> con el valor del item. De esta forma, se logra una distribución de tareas que minimiza el tiempo total de ejecución, ya que se asignan primero las tareas más costosas a los núcleos menos cargados.</p>
 <p>Finalmente, se muestra por pantalla la distribución de tareas en cada <code>knaps</code> junto con el tiempo total de ejecución para cada uno, lo que permite evaluar la eficiencia de la solución propuesta.</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6"></a></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
-<span id="cb5-8"><a href="#cb5-8"></a></span>
-<span id="cb5-9"><a href="#cb5-9"></a></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="kw">struct</span> <span class="dt">item_t</span> <span class="op">{</span></span>
-<span id="cb5-11"><a href="#cb5-11"></a>  <span class="dt">int</span> id<span class="op">,</span>val<span class="op">;</span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="op">};</span></span>
-<span id="cb5-13"><a href="#cb5-13"></a></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="kw">struct</span> <span class="dt">knaps_t</span> <span class="op">{</span></span>
-<span id="cb5-15"><a href="#cb5-15"></a>  vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;</span> items<span class="op">;</span></span>
-<span id="cb5-16"><a href="#cb5-16"></a>  <span class="dt">int</span> total<span class="op">;</span></span>
-<span id="cb5-17"><a href="#cb5-17"></a><span class="op">};</span></span>
-<span id="cb5-18"><a href="#cb5-18"></a></span>
-<span id="cb5-19"><a href="#cb5-19"></a><span class="dt">void</span> sort_knaps<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;&amp;</span> items<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-20"><a href="#cb5-20"></a>  sort<span class="op">(</span>items<span class="op">.</span>begin<span class="op">(),</span> items<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="at">const</span> <span class="dt">item_t</span><span class="op">&amp;</span> a<span class="op">,</span> <span class="at">const</span> <span class="dt">item_t</span><span class="op">&amp;</span> b<span class="op">)</span> <span class="op">{</span></span>
-<span id="cb5-21"><a href="#cb5-21"></a>    <span class="cf">return</span> a<span class="op">.</span>val <span class="op">&gt;</span> b<span class="op">.</span>val<span class="op">;</span></span>
-<span id="cb5-22"><a href="#cb5-22"></a>  <span class="op">});</span></span>
-<span id="cb5-23"><a href="#cb5-23"></a><span class="op">}</span></span>
-<span id="cb5-24"><a href="#cb5-24"></a></span>
-<span id="cb5-25"><a href="#cb5-25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb5-26"><a href="#cb5-26"></a>  <span class="dt">int</span> N<span class="op">=</span><span class="dv">30</span><span class="op">,</span>nprocs<span class="op">=</span><span class="dv">5</span><span class="op">,</span>max<span class="op">=</span><span class="dv">10</span><span class="op">;</span></span>
-<span id="cb5-27"><a href="#cb5-27"></a>  vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;</span> items<span class="op">;</span></span>
-<span id="cb5-28"><a href="#cb5-28"></a>  printf<span class="op">(</span><span class="st">"items: "</span><span class="op">);</span></span>
-<span id="cb5-29"><a href="#cb5-29"></a></span>
-<span id="cb5-30"><a href="#cb5-30"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>N<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb5-31"><a href="#cb5-31"></a>    <span class="dt">int</span> val <span class="op">=</span> <span class="op">(</span>rand<span class="op">()%</span>max<span class="op">+</span><span class="dv">1</span><span class="op">);</span></span>
-<span id="cb5-32"><a href="#cb5-32"></a>    <span class="dt">item_t</span> item<span class="op">={</span>k<span class="op">,</span>val<span class="op">};</span></span>
-<span id="cb5-33"><a href="#cb5-33"></a>    items<span class="op">.</span>push_back<span class="op">(</span>item<span class="op">);</span></span>
-<span id="cb5-34"><a href="#cb5-34"></a>    printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>k<span class="op">,</span>val<span class="op">);</span></span>
-<span id="cb5-35"><a href="#cb5-35"></a>  <span class="op">}</span></span>
-<span id="cb5-36"><a href="#cb5-36"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb5-37"><a href="#cb5-37"></a></span>
-<span id="cb5-38"><a href="#cb5-38"></a>  vector<span class="op">&lt;</span><span class="dt">knaps_t</span><span class="op">&gt;</span> knapsv<span class="op">(</span>nprocs<span class="op">);</span></span>
-<span id="cb5-39"><a href="#cb5-39"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span></span>
-<span id="cb5-40"><a href="#cb5-40"></a>    knapsv<span class="op">[</span>k<span class="op">].</span>total <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-41"><a href="#cb5-41"></a></span>
-<span id="cb5-42"><a href="#cb5-42"></a>  <span class="co">//IMPLEMENTACIÓN:</span></span>
-<span id="cb5-43"><a href="#cb5-43"></a>  sort_knaps<span class="op">(</span>items<span class="op">);</span></span>
-<span id="cb5-44"><a href="#cb5-44"></a></span>
-<span id="cb5-45"><a href="#cb5-45"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">items ordenados: "</span><span class="op">);</span></span>
-<span id="cb5-46"><a href="#cb5-46"></a>  <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> item<span class="op">:</span> items<span class="op">)</span></span>
-<span id="cb5-47"><a href="#cb5-47"></a>    printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>item<span class="op">.</span>id<span class="op">,</span>item<span class="op">.</span>val<span class="op">);</span></span>
-<span id="cb5-48"><a href="#cb5-48"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb5-49"><a href="#cb5-49"></a></span>
-<span id="cb5-50"><a href="#cb5-50"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb5-51"><a href="#cb5-51"></a>    <span class="dt">int</span> min_knaps <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb5-52"><a href="#cb5-52"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb5-53"><a href="#cb5-53"></a>      <span class="cf">if</span> <span class="op">(</span>knapsv<span class="op">[</span>k<span class="op">].</span>total <span class="op">&lt;</span> knapsv<span class="op">[</span>min_knaps<span class="op">].</span>total<span class="op">)</span></span>
-<span id="cb5-54"><a href="#cb5-54"></a>        min_knaps <span class="op">=</span> k<span class="op">;</span></span>
-<span id="cb5-55"><a href="#cb5-55"></a>    <span class="op">}</span></span>
-<span id="cb5-56"><a href="#cb5-56"></a>    knapsv<span class="op">[</span>min_knaps<span class="op">].</span>items<span class="op">.</span>push_back<span class="op">(</span>items<span class="op">[</span>i<span class="op">]);</span></span>
-<span id="cb5-57"><a href="#cb5-57"></a>    knapsv<span class="op">[</span>min_knaps<span class="op">].</span>total <span class="op">+=</span> items<span class="op">[</span>i<span class="op">].</span>val<span class="op">;</span></span>
-<span id="cb5-58"><a href="#cb5-58"></a>  <span class="op">}</span></span>
-<span id="cb5-59"><a href="#cb5-59"></a></span>
-<span id="cb5-60"><a href="#cb5-60"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb5-61"><a href="#cb5-61"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb5-62"><a href="#cb5-62"></a>    printf<span class="op">(</span><span class="st">"knaps </span><span class="sc">%d</span><span class="st">: total=</span><span class="sc">%d</span><span class="st"> items: "</span><span class="op">,</span>k<span class="op">,</span>knapsv<span class="op">[</span>k<span class="op">].</span>total<span class="op">);</span></span>
-<span id="cb5-63"><a href="#cb5-63"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> item<span class="op">:</span> knapsv<span class="op">[</span>k<span class="op">].</span>items<span class="op">)</span></span>
-<span id="cb5-64"><a href="#cb5-64"></a>      printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>item<span class="op">.</span>id<span class="op">,</span>item<span class="op">.</span>val<span class="op">);</span></span>
-<span id="cb5-65"><a href="#cb5-65"></a>    printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
-<span id="cb5-66"><a href="#cb5-66"></a>  <span class="op">}</span></span>
-<span id="cb5-67"><a href="#cb5-67"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="pp">#include </span><span class="im">&lt;fstream&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="pp">#include </span><span class="im">&lt;string&gt;</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="pp">#include </span><span class="im">&lt;vector&gt;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="pp">#include </span><span class="im">&lt;iostream&gt;</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="pp">#include </span><span class="im">&lt;algorithm&gt;</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="kw">using</span> <span class="kw">namespace</span> std<span class="op">;</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a></span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="kw">struct</span> <span class="dt">item_t</span> <span class="op">{</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>  <span class="dt">int</span> id<span class="op">,</span>val<span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="op">};</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="kw">struct</span> <span class="dt">knaps_t</span> <span class="op">{</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>  vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;</span> items<span class="op">;</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a>  <span class="dt">int</span> total<span class="op">;</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="op">};</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="dt">void</span> sort_knaps<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;&amp;</span> items<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>  sort<span class="op">(</span>items<span class="op">.</span>begin<span class="op">(),</span> items<span class="op">.</span>end<span class="op">(),</span> <span class="op">[](</span><span class="at">const</span> <span class="dt">item_t</span><span class="op">&amp;</span> a<span class="op">,</span> <span class="at">const</span> <span class="dt">item_t</span><span class="op">&amp;</span> b<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a>    <span class="cf">return</span> a<span class="op">.</span>val <span class="op">&gt;</span> b<span class="op">.</span>val<span class="op">;</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>  <span class="op">});</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a><span class="op">}</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a></span>
+<span id="cb6-25"><a href="#cb6-25"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-26"><a href="#cb6-26"></a>  <span class="dt">int</span> N<span class="op">=</span><span class="dv">30</span><span class="op">,</span>nprocs<span class="op">=</span><span class="dv">5</span><span class="op">,</span>max<span class="op">=</span><span class="dv">10</span><span class="op">;</span></span>
+<span id="cb6-27"><a href="#cb6-27"></a>  vector<span class="op">&lt;</span><span class="dt">item_t</span><span class="op">&gt;</span> items<span class="op">;</span></span>
+<span id="cb6-28"><a href="#cb6-28"></a>  printf<span class="op">(</span><span class="st">"items: "</span><span class="op">);</span></span>
+<span id="cb6-29"><a href="#cb6-29"></a></span>
+<span id="cb6-30"><a href="#cb6-30"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>N<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-31"><a href="#cb6-31"></a>    <span class="dt">int</span> val <span class="op">=</span> <span class="op">(</span>rand<span class="op">()%</span>max<span class="op">+</span><span class="dv">1</span><span class="op">);</span></span>
+<span id="cb6-32"><a href="#cb6-32"></a>    <span class="dt">item_t</span> item<span class="op">={</span>k<span class="op">,</span>val<span class="op">};</span></span>
+<span id="cb6-33"><a href="#cb6-33"></a>    items<span class="op">.</span>push_back<span class="op">(</span>item<span class="op">);</span></span>
+<span id="cb6-34"><a href="#cb6-34"></a>    printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>k<span class="op">,</span>val<span class="op">);</span></span>
+<span id="cb6-35"><a href="#cb6-35"></a>  <span class="op">}</span></span>
+<span id="cb6-36"><a href="#cb6-36"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb6-37"><a href="#cb6-37"></a></span>
+<span id="cb6-38"><a href="#cb6-38"></a>  vector<span class="op">&lt;</span><span class="dt">knaps_t</span><span class="op">&gt;</span> knapsv<span class="op">(</span>nprocs<span class="op">);</span></span>
+<span id="cb6-39"><a href="#cb6-39"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span></span>
+<span id="cb6-40"><a href="#cb6-40"></a>    knapsv<span class="op">[</span>k<span class="op">].</span>total <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-41"><a href="#cb6-41"></a></span>
+<span id="cb6-42"><a href="#cb6-42"></a>  <span class="co">//IMPLEMENTACIÓN:</span></span>
+<span id="cb6-43"><a href="#cb6-43"></a>  sort_knaps<span class="op">(</span>items<span class="op">);</span></span>
+<span id="cb6-44"><a href="#cb6-44"></a></span>
+<span id="cb6-45"><a href="#cb6-45"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">items ordenados: "</span><span class="op">);</span></span>
+<span id="cb6-46"><a href="#cb6-46"></a>  <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> item<span class="op">:</span> items<span class="op">)</span></span>
+<span id="cb6-47"><a href="#cb6-47"></a>    printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>item<span class="op">.</span>id<span class="op">,</span>item<span class="op">.</span>val<span class="op">);</span></span>
+<span id="cb6-48"><a href="#cb6-48"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb6-49"><a href="#cb6-49"></a></span>
+<span id="cb6-50"><a href="#cb6-50"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i<span class="op">=</span><span class="dv">0</span><span class="op">;</span> i<span class="op">&lt;</span>N<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-51"><a href="#cb6-51"></a>    <span class="dt">int</span> min_knaps <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb6-52"><a href="#cb6-52"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">1</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-53"><a href="#cb6-53"></a>      <span class="cf">if</span> <span class="op">(</span>knapsv<span class="op">[</span>k<span class="op">].</span>total <span class="op">&lt;</span> knapsv<span class="op">[</span>min_knaps<span class="op">].</span>total<span class="op">)</span></span>
+<span id="cb6-54"><a href="#cb6-54"></a>        min_knaps <span class="op">=</span> k<span class="op">;</span></span>
+<span id="cb6-55"><a href="#cb6-55"></a>    <span class="op">}</span></span>
+<span id="cb6-56"><a href="#cb6-56"></a>    knapsv<span class="op">[</span>min_knaps<span class="op">].</span>items<span class="op">.</span>push_back<span class="op">(</span>items<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb6-57"><a href="#cb6-57"></a>    knapsv<span class="op">[</span>min_knaps<span class="op">].</span>total <span class="op">+=</span> items<span class="op">[</span>i<span class="op">].</span>val<span class="op">;</span></span>
+<span id="cb6-58"><a href="#cb6-58"></a>  <span class="op">}</span></span>
+<span id="cb6-59"><a href="#cb6-59"></a></span>
+<span id="cb6-60"><a href="#cb6-60"></a>  printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb6-61"><a href="#cb6-61"></a>  <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> k<span class="op">=</span><span class="dv">0</span><span class="op">;</span> k<span class="op">&lt;</span>nprocs<span class="op">;</span> k<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb6-62"><a href="#cb6-62"></a>    printf<span class="op">(</span><span class="st">"knaps </span><span class="sc">%d</span><span class="st">: total=</span><span class="sc">%d</span><span class="st"> items: "</span><span class="op">,</span>k<span class="op">,</span>knapsv<span class="op">[</span>k<span class="op">].</span>total<span class="op">);</span></span>
+<span id="cb6-63"><a href="#cb6-63"></a>    <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span> item<span class="op">:</span> knapsv<span class="op">[</span>k<span class="op">].</span>items<span class="op">)</span></span>
+<span id="cb6-64"><a href="#cb6-64"></a>      printf<span class="op">(</span><span class="st">"(</span><span class="sc">%d</span><span class="st">,</span><span class="sc">%d</span><span class="st">) "</span><span class="op">,</span>item<span class="op">.</span>id<span class="op">,</span>item<span class="op">.</span>val<span class="op">);</span></span>
+<span id="cb6-65"><a href="#cb6-65"></a>    printf<span class="op">(</span><span class="st">"</span><span class="sc">\n</span><span class="st">"</span><span class="op">);</span></span>
+<span id="cb6-66"><a href="#cb6-66"></a>  <span class="op">}</span></span>
+<span id="cb6-67"><a href="#cb6-67"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
