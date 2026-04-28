@@ -14,6 +14,9 @@ website:
       - section: "GTP 1"
         contents:
           - GTP1/gtp1.qmd
+      - section: "GTP 2"
+        contents:
+          - GTP2/gtp2.qmd
 format:
   html:
     theme: cosmo

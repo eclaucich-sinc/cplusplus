@@ -1,0 +1,400 @@
+---
+title: "GTP2: Programación en C++ para Ciencia e Ingeniería"
+page-layout: full
+format:
+  #pdf:
+  html: 
+    theme: litera	
+    toc: true
+    toc-location: left    # Ubica el índice en la barra lateral
+    toc-title: "Ejercicios" # Título de la barra lateral
+    toc-depth: 2          # Solo incluye los títulos ## en el índice
+    smooth-scroll: true   # Desplazamiento suave al hacer clic en el índice
+    code-line-numbers: true # Agrega números de línea a los bloques de código
+resources:
+    - ej_vector.cpp
+    - ej_stack.cpp
+---
+
+<style>
+p {
+    text-align: justify;
+}
+
+/* Estilo para el borde y el fondo general del callout */
+div.callout.consola-terminal {
+    background-color: #1e1e1e !important; /* Gris muy oscuro, estilo VS Code */
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra del título */
+div.callout.consola-terminal .callout-header {
+    background-color: #2d2d2d !important;
+    color: #cccccc !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Estilo para el texto de la salida (cuerpo) */
+div.callout.consola-terminal .callout-body-container {
+    color: #10B981 !important; /* Verde brillante estilo Matrix/Consola clásica */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+/* Contenedor título + botón de descarga */
+.exercise-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
+.exercise-download-btn {
+	font-size: 0.85rem;
+	text-decoration: none;
+	border: 1px solid #0d6efd;
+	color: #0d6efd;
+	border-radius: 6px;
+	padding: 0.2rem 0.55rem;
+	line-height: 1.2;
+	transition: all 0.15s ease;
+}
+
+.exercise-download-btn:hover {
+	background-color: #0d6efd;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+@media (max-width: 640px) {
+	.exercise-download-btn {
+		font-size: 0.8rem;
+	}
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	const downloadMap = {
+		"Implementación con vector": [{ file: "ej_vector.cpp", label: "Descargar ej_vector.cpp" }],
+        "Implementación con stack": [{ file: "ej_stack.cpp", label: "Descargar ej_stack.cpp" }],
+	};
+
+	const headings = document.querySelectorAll("main h2");
+
+	headings.forEach((h2) => {
+		const title = h2.textContent.trim();
+		const files = downloadMap[title];
+		if (!files) return;
+
+		const row = document.createElement("span");
+		row.className = "exercise-title-row";
+
+		const titleSpan = document.createElement("span");
+		titleSpan.textContent = title;
+		row.appendChild(titleSpan);
+
+		files.forEach((item) => {
+			const link = document.createElement("a");
+			link.href = item.file;
+			link.download = item.file;
+			link.className = "exercise-download-btn";
+			link.textContent = item.label;
+			row.appendChild(link);
+		});
+
+		h2.textContent = "";
+		h2.appendChild(row);
+	});
+});
+</script>
+
+
+# Estanislao Claucich
+
+A continuación se presentan las soluciones a los ejercicios propuestos en el GTP2.
+
+
+::: {.callout-note title="Consigna"}
+Escribir un generador de IDs `struct idgen_t` que nos permita:
+- Obtener IDs únicos a medida que se necesitan.
+- Liberarlos a medida que no se utilizan más.
+- Obtener la cantidad total de IDs activos y la lista de ellos.
+
+Se deben implementar dos versiones de este generador: una utilizando `std::vector` y otra utilizando `std::stack`. Se pueden usar otras estructuras auxiliares si se considera necesario.
+:::
+
+
+## Implementación con vector
+
+En este enfoque, utilizamos un `std::vector<bool> busy` para llevar un registro de qué IDs están activos y cuáles están libres. Se establece una variable estática `IDMAX` que define el número máximo de IDs que se pueden generar. De esta forma, esto será una clara limitación de esta implementación, ya que de antemano estamos fijando un límite máximo de IDs. Lo cual puede ser un problema si no sabemos de antemano cuántos IDs vamos a necesitar (ya sea que usemos muchos menos o que necesitemos más).
+
+`busy[id]` nos indicará si el ID `id` está activo (true) o libre (false). Para obtener un nuevo ID, simplemente buscamos el primer índice en `busy` que sea `false`, lo marcamos como `true` y lo devolvemos. Para liberar un ID, simplemente marcamos su índice en `busy` como `false`. Para obtener la cantidad total de IDs activos, contamos cuántos elementos en `busy` son `true`. Para obtener la lista de IDs activos, recorremos `busy` y recopilamos los índices que son `true`.
+
+Otro de los problemas de esta implementación es que la operación `get` es $O(N)$ en el peor caso, ya que podríamos tener que recorrer todo el vector para encontrar un ID libre. Esto puede ser ineficiente si el número de IDs es grande y muchos están activos. Lo mismo sucede con el método `size`, porque al devolver la cantidad de IDs donde `busy[id]` es `true`, también es necesario recorrer todo el vector para contar cuántos IDs están activos, lo cual también es $O(N)$.
+
+:::{.callout-note title="Comentarios"}
+Para simplificar la explicación de las implementaciones se incluyen comentarios en el código fuente donde se considera necesario.
+:::
+
+
+```cpp
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+const int IDMAX = 100;
+
+struct idgen_t {
+  vector<bool> busy;
+
+  // Inicializa el generador
+  void init() {
+    // Siempre nos ajustamos a un tamaño fijo
+    busy.resize(IDMAX);
+    // Establecemos todos como libres al comienzo
+    for (int i = 0; i < IDMAX; i++) {
+      busy[i] = false;
+    }
+  }
+
+  // Devuelve un nuevo ID
+  int get() {
+    //Recorremos el vector hasta encontrar el primero libre
+    for (int id = 0; id < IDMAX; id++) {
+      // Si encontramos un ID libre
+      if (!busy[id]) {
+        // Lo marcamos como ocupado y lo devolvemos
+        busy[id] = true;
+        return id;
+      }
+    }
+    return -1;
+  }
+
+  // Libera un ID activo
+  void release(int id) {
+    // Verificamos que el ID sea válido antes de liberarlo
+    if (0 <= id && id < IDMAX) {
+      busy[id] = false;
+    }
+  }
+
+  // Retorna la cantidad total de IDs activos
+  int size() {
+    // Simplemente contamos cuántos IDs están marcados como ocupados
+    int count = 0;
+    for (bool occupied : busy) {
+      if (occupied) {
+        count++;
+      }
+    }
+    return count;
+  }
+
+  // Devuelve la lista de IDs activos actualmente
+  vector<int> active() {
+    // Guardamos todos los IDs que están marcados como ocupados en un vector y lo devolvemos
+    vector<int> actives;
+    for (int id = 0; id < IDMAX; id++) {
+      if (busy[id]) {
+        actives.push_back(id);
+      }
+    }
+    return actives;
+  }
+
+  // Libera todos los IDs activos
+  void clear() {
+    for (int id = 0; id < IDMAX; id++) {
+      busy[id] = false;
+    }
+  }
+};
+
+
+void dump(idgen_t &idgen) {
+  vector<int> actives = idgen.active();
+  cout << "IDs activos: ";
+  for (int id : actives) {
+    cout << id << " ";
+  }
+  cout << endl;
+}
+
+
+int main() {
+  idgen_t idgen;
+  idgen.init();
+
+  int N = 50;
+
+  cout << "Generando " << N << " IDs..." << endl;
+  for (int i = 0; i < N; i++) {
+    cout << idgen.get() << " ";
+  }
+  cout << endl;
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
+
+
+  cout << "\nLiberando ID pares: " << endl;
+  for (int i = 0; i < N; i += 2) {
+    idgen.release(i);
+  }
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
+
+
+  cout << "\nGenerando nuevos IDs..." << endl;
+  for (int i = 0; i < N / 2; i++) {
+    cout << idgen.get() << " ";
+  }
+  cout << endl;
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
+
+  return 0;
+}
+```
+
+
+## Implementación con stack
+En este caso utilizamos un `std::stack<int> free` para almacenar los IDs que han sido liberados y están disponibles para ser reutilizados. Además, mantenemos una variable `last` que indica el siguiente ID a asignar si no hay IDs libres en la pila. Para obtener un nuevo ID, primero verificamos si hay IDs libres en la pila `free`. Si los hay, simplemente tomamos el ID de la cima de la pila y lo devolvemos. Si no hay IDs libres, asignamos el ID indicado por `last`, incrementamos `last` y devolvemos el ID asignado. Para liberar un ID, simplemente lo agregamos a la pila `free`. Para obtener la cantidad total de IDs activos, calculamos la diferencia entre `last` y el tamaño de la pila `free`, ya que `last` representa el total de IDs asignados y el tamaño de `free` representa los IDs que han sido liberados. La operación `get` en esta implementación es $O(1)$, ya que simplemente obtenemos el último ID libre de la pila o bien, usamos el valor de `last`. La operación de last también es $O(1)$, ya que solo implica una resta.
+
+
+```cpp
+#include <iostream>
+#include <vector>
+#include <stack>
+
+using namespace std;
+
+struct idgen_t {
+  int last;
+  stack<int> free;
+
+  // Inicializa el generador
+  void init() {
+    // Último ínice libre (al comienzo es 0)
+    last = 0;
+    // Eliminamos todos los elementos de la pila de IDs libres
+    while (!free.empty()) {
+      free.pop();
+    }
+  }
+
+  // Devuelve un nuevo ID
+  int get() {
+    // Si hay IDs libres en la pila
+    if (!free.empty()) {
+      int id = free.top();
+      free.pop();
+      return id;
+    }
+    // Si no hay libres, creamos uno nuevo
+    int id = last;
+    last++;
+    return id;
+  }
+
+  // Libera un ID activo
+  void release(int id) {
+    free.push(id);
+  }
+
+  // Retorna la cantidad total de IDs activos
+  int size() {
+    return last - (int)free.size();
+  }
+
+  // Devuelve la lista de IDs activos actualmente
+  vector<int> active() {
+    vector<int> actives;
+    stack<int> temp = free;
+    vector<int> freed;
+    while (!temp.empty()) {
+      freed.push_back(temp.top());
+      temp.pop();
+    }
+    
+    for (int id = 0; id < last; id++) {
+      bool is_free = false;
+      for (int f : freed) {
+        if (f == id) {
+          is_free = true;
+          break;
+        }
+      }
+      if (!is_free) {
+        actives.push_back(id);
+      }
+    }
+    return actives;
+  }
+
+  // Libera todos los IDs activos
+  void clear() {
+    last = 0;
+    while (!free.empty()) {
+      free.pop();
+    }
+  }
+};
+
+void dump(idgen_t &idgen) {
+  vector<int> actives = idgen.active();
+  cout << "IDs activos: ";
+  for (int id : actives) {
+    cout << id << " ";
+  }
+  cout << endl;
+}
+
+
+int main() {
+  idgen_t idgen;
+  idgen.init();
+
+  int N = 50;
+
+  cout << "Generando " << N << " IDs..." << endl;
+  for (int i = 0; i < N; i++) {
+    cout << idgen.get() << " ";
+  }
+  cout << endl;
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
+
+
+  cout << "\nLiberando ID pares: " << endl;
+  for (int i = 0; i < N; i += 2) {
+    idgen.release(i);
+  }
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
+
+
+  cout << "\nGenerando nuevos IDs..." << endl;
+  for (int i = 0; i < N / 2; i++) {
+    cout << idgen.get() << " ";
+  }
+  cout << endl;
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
+
+  return 0;
+}
+```
+
+
+## Análisis de complejidad
+
+Para verificar la diferencia en tiempos de ejecución y complejidad, se evaluó el tiempo de ejecución de cada implementación para generar, liberar y luego regenerar todos los IDs, con una cantidad `N` creciente. De esta forma podemos ver cómo la implementación con `vector` se vuelve cada vez más lenta a medida que `N` crece. En cambio, la implementación con `stack` mantiene un tiempo de ejecución prácticamente constante, incluso para valores grandes de `N`.
+
+Se evaluó lo mencionado anteriormente con los valores de `N` dados por `vector<int> Ns = {10, 100, 1000, 10000, 50000, 100000}`, y para tener sustancia estadśitica, se repitió cada prueba 5 veces y se tomó el promedio. En la siguiente figura se muestra la variación de tiempo de ejecución para cada implementación a medida que `N` crece, la curva representa el tiempo medio a lo largo de las 5 corridas y la sombra muestra la desviación estándar:
+
+![Comparación de tiempos de ejecución](./ej_vector_vs_stack.png)
