@@ -449,23 +449,24 @@ document.addEventListener("DOMContentLoaded", function() {
 <span id="cb1-54"><a href="#cb1-54"></a></span>
 <span id="cb1-55"><a href="#cb1-55"></a>  <span class="co">// Devuelve la lista de IDs activos actualmente</span></span>
 <span id="cb1-56"><a href="#cb1-56"></a>  vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> active<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb1-57"><a href="#cb1-57"></a>    <span class="co">// Guardamos todos los IDs que están marcados como ocupados en un vector y lo devolvemos</span></span>
-<span id="cb1-58"><a href="#cb1-58"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> actives<span class="op">;</span></span>
-<span id="cb1-59"><a href="#cb1-59"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> id <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> id <span class="op">&lt;</span> IDMAX<span class="op">;</span> id<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb1-60"><a href="#cb1-60"></a>      <span class="cf">if</span> <span class="op">(</span>busy<span class="op">[</span>id<span class="op">])</span> <span class="op">{</span></span>
-<span id="cb1-61"><a href="#cb1-61"></a>        actives<span class="op">.</span>push_back<span class="op">(</span>id<span class="op">);</span></span>
-<span id="cb1-62"><a href="#cb1-62"></a>      <span class="op">}</span></span>
-<span id="cb1-63"><a href="#cb1-63"></a>    <span class="op">}</span></span>
-<span id="cb1-64"><a href="#cb1-64"></a>    <span class="cf">return</span> actives<span class="op">;</span></span>
-<span id="cb1-65"><a href="#cb1-65"></a>  <span class="op">}</span></span>
-<span id="cb1-66"><a href="#cb1-66"></a></span>
-<span id="cb1-67"><a href="#cb1-67"></a>  <span class="co">// Libera todos los IDs activos</span></span>
-<span id="cb1-68"><a href="#cb1-68"></a>  <span class="dt">void</span> clear<span class="op">()</span> <span class="op">{</span></span>
-<span id="cb1-69"><a href="#cb1-69"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> id <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> id <span class="op">&lt;</span> IDMAX<span class="op">;</span> id<span class="op">++)</span> <span class="op">{</span></span>
-<span id="cb1-70"><a href="#cb1-70"></a>      busy<span class="op">[</span>id<span class="op">]</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
-<span id="cb1-71"><a href="#cb1-71"></a>    <span class="op">}</span></span>
-<span id="cb1-72"><a href="#cb1-72"></a>  <span class="op">}</span></span>
-<span id="cb1-73"><a href="#cb1-73"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-57"><a href="#cb1-57"></a>    <span class="co">// Guardamos todos los IDs que están marcados </span></span>
+<span id="cb1-58"><a href="#cb1-58"></a>    <span class="co">// como ocupados en un vector y lo devolvemos</span></span>
+<span id="cb1-59"><a href="#cb1-59"></a>    vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> actives<span class="op">;</span></span>
+<span id="cb1-60"><a href="#cb1-60"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> id <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> id <span class="op">&lt;</span> IDMAX<span class="op">;</span> id<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-61"><a href="#cb1-61"></a>      <span class="cf">if</span> <span class="op">(</span>busy<span class="op">[</span>id<span class="op">])</span> <span class="op">{</span></span>
+<span id="cb1-62"><a href="#cb1-62"></a>        actives<span class="op">.</span>push_back<span class="op">(</span>id<span class="op">);</span></span>
+<span id="cb1-63"><a href="#cb1-63"></a>      <span class="op">}</span></span>
+<span id="cb1-64"><a href="#cb1-64"></a>    <span class="op">}</span></span>
+<span id="cb1-65"><a href="#cb1-65"></a>    <span class="cf">return</span> actives<span class="op">;</span></span>
+<span id="cb1-66"><a href="#cb1-66"></a>  <span class="op">}</span></span>
+<span id="cb1-67"><a href="#cb1-67"></a></span>
+<span id="cb1-68"><a href="#cb1-68"></a>  <span class="co">// Libera todos los IDs activos</span></span>
+<span id="cb1-69"><a href="#cb1-69"></a>  <span class="dt">void</span> clear<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb1-70"><a href="#cb1-70"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> id <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> id <span class="op">&lt;</span> IDMAX<span class="op">;</span> id<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb1-71"><a href="#cb1-71"></a>      busy<span class="op">[</span>id<span class="op">]</span> <span class="op">=</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb1-72"><a href="#cb1-72"></a>    <span class="op">}</span></span>
+<span id="cb1-73"><a href="#cb1-73"></a>  <span class="op">}</span></span>
+<span id="cb1-74"><a href="#cb1-74"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A continuación se muestra un ejemplo con un <code>main</code> que genera 20 IDs, luego libera los IDs pares y finalmente genera 10 nuevos IDs. Se muestra la cantidad de IDs activos y la lista de IDs activos después de cada operación.</p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">void</span> main<span class="op">()</span> <span class="op">{</span></span>
 <span id="cb2-2"><a href="#cb2-2"></a>  <span class="dt">idgen_t</span> idgen<span class="op">;</span></span>
@@ -655,11 +656,12 @@ IDs activos: 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19</p>
 <span id="cb4-21"><a href="#cb4-21"></a>  </span>
 <span id="cb4-22"><a href="#cb4-22"></a>    <span class="kw">auto</span> end <span class="op">=</span> chrono<span class="op">::</span>high_resolution_clock<span class="op">::</span>now<span class="op">();</span></span>
 <span id="cb4-23"><a href="#cb4-23"></a>    <span class="kw">auto</span> duration <span class="op">=</span> chrono<span class="op">::</span>duration_cast<span class="op">&lt;</span>chrono<span class="op">::</span>milliseconds<span class="op">&gt;(</span>end <span class="op">-</span> start<span class="op">);</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución para "</span> <span class="op">&lt;&lt;</span> N <span class="op">&lt;&lt;</span> <span class="st">": "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a>  <span class="op">}</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a></span>
-<span id="cb4-27"><a href="#cb4-27"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-24"><a href="#cb4-24"></a>    cout <span class="op">&lt;&lt;</span> <span class="st">"Tiempo de ejecución para "</span> <span class="op">&lt;&lt;</span> N <span class="op">&lt;&lt;</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>     <span class="st">": "</span> <span class="op">&lt;&lt;</span> duration<span class="op">.</span>count<span class="op">()</span> <span class="op">&lt;&lt;</span> <span class="st">" ms"</span> <span class="op">&lt;&lt;</span> endl<span class="op">;</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a>  <span class="op">}</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a></span>
+<span id="cb4-28"><a href="#cb4-28"></a>  <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>En la siguiente figura se muestra la comparación de tiempos de ejecución entre ambas implementaciones en función de <code>N</code>. Claramente se observa que la implementación con <code>vector</code> tiene un tiempo de ejecución que crece significativamente a medida que <code>N</code> aumenta, mientras que la implementación con <code>stack</code> mantiene un tiempo de ejecución prácticamente constante, lo cual es consistente con el análisis de complejidad realizado anteriormente. Ajustando un polinomio a los tiempos de ejecución del <code>vector</code>, se obtiene una pendiente prácticamente igual a 2, indicando un orden lineal en función de <span class="math inline">\(N^2\)</span>.</p>
 <div class="callout callout-style-default callout-tip callout-titled" title="Aclaración">
 <div class="callout-header d-flex align-content-center">
