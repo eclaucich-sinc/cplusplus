@@ -199,7 +199,8 @@ struct idgen_t {
 
   // Devuelve la lista de IDs activos actualmente
   vector<int> active() {
-    // Guardamos todos los IDs que están marcados como ocupados en un vector y lo devolvemos
+    // Guardamos todos los IDs que están marcados 
+    // como ocupados en un vector y lo devolvemos
     vector<int> actives;
     for (int id = 0; id < IDMAX; id++) {
       if (busy[id]) {
@@ -404,7 +405,8 @@ int main() {
   
     auto end = chrono::high_resolution_clock::now();
     auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Tiempo de ejecución para " << N << ": " << duration.count() << " ms" << endl;
+    cout << "Tiempo de ejecución para " << N <<
+     ": " << duration.count() << " ms" << endl;
   }
 
   return 0;
