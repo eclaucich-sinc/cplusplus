@@ -88,30 +88,57 @@ void dump(idgen_t &idgen) {
 
 
 int main() {
+  // idgen_t idgen;
+  
+  // vector<int> Ns = {10, 100, 1000, 10000, 50000, 100000};
+  
+  // for (int N : Ns) {
+  //   idgen.init();
+  //   auto start = chrono::high_resolution_clock::now();
+
+  //   for (int i = 0; i < N; i++) {
+  //     idgen.get();
+  //   }
+
+  //   for (int i = 0; i < N; i++) {
+  //     idgen.release(i);
+  //   }
+
+  //   for (int i = 0; i < N; i++) {
+  //     idgen.get();
+  //   }
+  
+  //   auto end = chrono::high_resolution_clock::now();
+  //   auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
+  //   cout << "Tiempo de ejecución para " << N << ": " << duration.count() << " ms" << endl;
+  // }
+
+  // return 0;
   idgen_t idgen;
-  
-  vector<int> Ns = {10, 100, 1000, 10000, 50000, 100000};
-  
-  for (int N : Ns) {
-    idgen.init();
-    auto start = chrono::high_resolution_clock::now();
+  idgen.init();
 
-    for (int i = 0; i < N; i++) {
-      idgen.get();
-    }
+  int N = 20;
 
-    for (int i = 0; i < N; i++) {
-      idgen.release(i);
-    }
-
-    for (int i = 0; i < N; i++) {
-      idgen.get();
-    }
-  
-    auto end = chrono::high_resolution_clock::now();
-    auto duration = chrono::duration_cast<chrono::milliseconds>(end - start);
-    cout << "Tiempo de ejecución para " << N << ": " << duration.count() << " ms" << endl;
+  cout << "Generando " << N << " IDs..." << endl;
+  for (int i = 0; i < N; i++) {
+    cout << idgen.get() << " ";
   }
+  cout << endl;
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
+  
+  cout << "Liberando IDs pares..." << endl;
+  for (int i = 0; i < N; i += 2) {
+    idgen.release(i);
+  }
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
 
-  return 0;
+  cout << "Generando 10 IDs más..." << endl;
+  for (int i = 0; i < 10; i++) {
+    cout << idgen.get() << " ";
+  }
+  cout << endl;
+  cout << "size " << idgen.size() << endl;
+  dump(idgen);
 }
