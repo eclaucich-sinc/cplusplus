@@ -4,7 +4,7 @@
 
 using namespace std;
 
-const int IDMAX = 500;
+int IDMAX = 10;
 
 struct idgen_t {
   vector<bool> busy;
@@ -90,6 +90,7 @@ int main() {
   vector<int> Ns = {10, 100, 1000, 10000, 50000, 100000};
   
   for (int N : Ns) {
+    IDMAX = N;
     idgen.init();
     auto start = chrono::high_resolution_clock::now();
 
@@ -99,10 +100,6 @@ int main() {
 
     for (int i = 0; i < N; i++) {
       idgen.release(i);
-    }
-
-    for (int i = 0; i < N; i++) {
-      idgen.get();
     }
   
     auto end = chrono::high_resolution_clock::now();
