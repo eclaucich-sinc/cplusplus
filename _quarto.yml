@@ -17,6 +17,9 @@ website:
       - section: "GTP 2"
         contents:
           - GTP2/gtp2.qmd
+      - section: "GTP 3"
+        contents:
+          - GTP3/gtp3.qmd
 format:
   html:
     theme: cosmo
