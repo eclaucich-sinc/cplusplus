@@ -20,6 +20,9 @@ website:
       - section: "GTP 3"
         contents:
           - GTP3/gtp3.qmd
+      - section: "GTP 4"
+        contents:
+          - GTP4/gpt4.qmd
 format:
   html:
     theme: cosmo
