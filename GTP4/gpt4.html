@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.27">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>GTP4: Programación en C++ para Ciencia e Ingeniería – GTPS</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ed96de9b727972fe78a7b5d16c58bf87.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-43aec3b92b08ed3f3cc1271c45447476.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../GTP4/gpt4.html">GTP 4</a></li><li class="breadcrumb-item"><a href="../GTP4/gpt4.html">GTP4: Programación en C++ para Ciencia e Ingeniería</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">GTPS</a> 
+    </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GTPS de C++ para Ciencia e Ingeniería</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">GTP 0</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../GTP0/gtp0.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GTP0: Programación en C++ para Ciencia e Ingeniería</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">GTP 1</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../GTP1/gtp1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GTP1: Programación en C++ para Ciencia e Ingeniería</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">GTP 2</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../GTP2/gtp2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GTP2: Programación en C++ para Ciencia e Ingeniería</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">GTP 3</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../GTP3/gtp3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">GTP3: Programación en C++ para Ciencia e Ingeniería</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">GTP 4</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../GTP4/gpt4.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">GTP4: Programación en C++ para Ciencia e Ingeniería</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Ejercicios</h2>
+   
+  <ul class="collapse">
+  <li><a href="#estanislao-claucich" id="toc-estanislao-claucich" class="nav-link active" data-scroll-target="#estanislao-claucich">Estanislao Claucich</a>
+  <ul class="collapse">
+  <li><a href="#ejercicio-1-formas-geométricas" id="toc-ejercicio-1-formas-geométricas" class="nav-link" data-scroll-target="#ejercicio-1-formas-geométricas">Ejercicio 1: Formas geométricas</a></li>
+  <li><a href="#ejercicio-2-vectores-generales" id="toc-ejercicio-2-vectores-generales" class="nav-link" data-scroll-target="#ejercicio-2-vectores-generales">Ejercicio 2: Vectores generales</a></li>
+  <li><a href="#ejercicio-3-tic-tac-toe-general" id="toc-ejercicio-3-tic-tac-toe-general" class="nav-link" data-scroll-target="#ejercicio-3-tic-tac-toe-general">Ejercicio 3: tic-tac-toe general</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content column-page-right" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../GTP4/gpt4.html">GTP 4</a></li><li class="breadcrumb-item"><a href="../GTP4/gpt4.html">GTP4: Programación en C++ para Ciencia e Ingeniería</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">GTP4: Programación en C++ para Ciencia e Ingeniería</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-right">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<style>
+p {
+    text-align: justify;
+}
+
+/* Estilo para el borde y el fondo general del callout */
+div.callout.consola-terminal {
+    background-color: #1e1e1e !important; /* Gris muy oscuro, estilo VS Code */
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra del título */
+div.callout.consola-terminal .callout-header {
+    background-color: #2d2d2d !important;
+    color: #cccccc !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Estilo para el texto de la salida (cuerpo) */
+div.callout.consola-terminal .callout-body-container {
+    color: #10B981 !important; /* Verde brillante estilo Matrix/Consola clásica */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+/* Contenedor título + botón de descarga */
+.exercise-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.exercise-download-btn {
+    font-size: 0.85rem;
+    text-decoration: none;
+    border: 1px solid #0d6efd;
+    color: #0d6efd;
+    border-radius: 6px;
+    padding: 0.2rem 0.55rem;
+    line-height: 1.2;
+    transition: all 0.15s ease;
+}
+
+.exercise-download-btn:hover {
+    background-color: #0d6efd;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+@media (max-width: 640px) {
+    .exercise-download-btn {
+        font-size: 0.8rem;
+    }
+}
+</style>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const downloadMap = {
+        "Ejercicio 1: Formas geométricas": [{ file: "ej1.cpp", label: "Descargar ej1.cpp" }],
+        "Ejercicio 2: Vectores generales": [{ file: "ej2.cpp", label: "Descargar ej2.cpp" }],
+        "Ejercicio 3: tic-tac-toe general": [{ file: "ej3.cpp", label: "Descargar ej3.cpp" }]
+    };
+
+    const headings = document.querySelectorAll("main h2");
+
+    headings.forEach((h2) => {
+        const title = h2.textContent.trim();
+        const files = downloadMap[title];
+        if (!files) return;
+
+        const row = document.createElement("span");
+        row.className = "exercise-title-row";
+
+        const titleSpan = document.createElement("span");
+        titleSpan.textContent = title;
+        row.appendChild(titleSpan);
+
+        files.forEach((item) => {
+            const link = document.createElement("a");
+            link.href = item.file;
+            link.download = item.file;
+            link.className = "exercise-download-btn";
+            link.textContent = item.label;
+            row.appendChild(link);
+        });
+
+        h2.textContent = "";
+        h2.appendChild(row);
+    });
+});
+</script>
+<section id="estanislao-claucich" class="level1">
+<h1>Estanislao Claucich</h1>
+<p>A continuación se presentan las soluciones a los ejercicios propuestos en el GTP4.</p>
+<section id="ejercicio-1-formas-geométricas" class="level2">
+<h2 class="anchored" data-anchor-id="ejercicio-1-formas-geométricas">Ejercicio 1: Formas geométricas</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Consigna">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Consigna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Implementar la clase <code>geoshape_t</code> que represente formas geométricas en 2D. La clase debe incluir métodos para calcular el área, el centro de gravedad y la inercia polar de la forma. Se deben implementar al menos las siguientes formas: círculo, cuadrado, elipse y pentágono regular. A su vez, implementar funciones para calcular la intersección, unión y diferencia entre dos de estas figuras.</p>
+</div>
+</div>
+<section id="la-clase-abstracta-geoshape_t" class="level3">
+<h3 class="anchored" data-anchor-id="la-clase-abstracta-geoshape_t">La clase abstracta <code>geoshape_t</code></h3>
+<p>El núcleo de la resolución de este ejercicio se basa en explotar el concepto de <strong>polimorfismo</strong>. Se definió una clase puramente virtual <code>geoshape_t</code> que expone una interfaz común para todas las figuras geométricas 2D:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">class</span> <span class="dt">geoshape_t</span> <span class="op">{</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a>        <span class="co">// Bounding box</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a>        <span class="kw">virtual</span> <span class="dt">void</span> bbox<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>bb<span class="op">)=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>        <span class="co">// Is x inside shape?</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>        <span class="kw">virtual</span> <span class="dt">bool</span> inside<span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>x<span class="op">)=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Cualquier figura gráfica deberá implementar estos dos métodos: <code>bbox</code> (que retorna los límites del eje cartesiano rectangular que encierran a la figura) e <code>inside</code> (que determina si un punto <code>(x, y)</code> pertenece o no al interior de la misma).</p>
+</section>
+<section id="integración-numérica-para-el-cálculo-de-propiedades" class="level3">
+<h3 class="anchored" data-anchor-id="integración-numérica-para-el-cálculo-de-propiedades">Integración numérica para el cálculo de propiedades</h3>
+<p>La principal ventaja del polimorfismo es que nos permite escribir funciones de cálculo genéricas que reciben una referencia a <code>geoshape_t</code> sin importar qué figura concreta se esté evaluando. Generando una grilla 2D (con un total configurable de particiones, <span class="math inline">\(N=500\)</span>) en el dominio delimitado por el <code>bbox</code>, es posible aproximar cálculos complejos como el área, el centro de gravedad y la inercia polar contando y acumulando únicamente aquellos puntos de la grilla donde el método <code>g.inside(pt)</code> arroje <code>true</code>.</p>
+<p>Como ejemplo, el cálculo del área se implementa iterando sobre esta grilla y acumulando los diferenciales <span class="math inline">\(dx \cdot dy\)</span>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1"></a><span class="dt">double</span> area<span class="op">(</span><span class="dt">geoshape_t</span> <span class="op">&amp;</span>g<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> bb<span class="op">;</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>    g<span class="op">.</span>bbox<span class="op">(</span>bb<span class="op">);</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>    </span>
+<span id="cb2-5"><a href="#cb2-5"></a>    <span class="dt">int</span> N <span class="op">=</span> <span class="dv">500</span><span class="op">;</span> <span class="co">// Resolución de nuestra grilla de integración</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>    <span class="dt">double</span> dx <span class="op">=</span> <span class="op">(</span>bb<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">-</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="dt">double</span> dy <span class="op">=</span> <span class="op">(</span>bb<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">-</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">])</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    </span>
+<span id="cb2-9"><a href="#cb2-9"></a>    <span class="dt">double</span> a <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> pt<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>        pt<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span>i <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>            pt<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span>j <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dy<span class="op">;</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>            <span class="cf">if</span> <span class="op">(</span>g<span class="op">.</span>inside<span class="op">(</span>pt<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a>                a <span class="op">+=</span> dx <span class="op">*</span> dy<span class="op">;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>            <span class="op">}</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>        <span class="op">}</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>    <span class="op">}</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>    <span class="cf">return</span> a<span class="op">;</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>De manera análoga, para el centroide (<code>grav_center</code>) y la inercia polar (<code>inertia</code>) sólo cambian los factores a multiplicar por cada paso incremental del área evaluada:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1"></a>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> grav_center<span class="op">(</span><span class="dt">geoshape_t</span> <span class="op">&amp;</span>g<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> bb<span class="op">;</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>    g<span class="op">.</span>bbox<span class="op">(</span>bb<span class="op">);</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>    </span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="dt">int</span> N <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="dt">double</span> dx <span class="op">=</span> <span class="op">(</span>bb<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">-</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>    <span class="dt">double</span> dy <span class="op">=</span> <span class="op">(</span>bb<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">-</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">])</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>    </span>
+<span id="cb3-9"><a href="#cb3-9"></a>    <span class="dt">double</span> a <span class="op">=</span> <span class="fl">0.0</span><span class="op">,</span> cx <span class="op">=</span> <span class="fl">0.0</span><span class="op">,</span> cy <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> pt<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>        pt<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span>i <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">;</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>            pt<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span>j <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dy<span class="op">;</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>            <span class="cf">if</span> <span class="op">(</span>g<span class="op">.</span>inside<span class="op">(</span>pt<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>                <span class="dt">double</span> dA <span class="op">=</span> dx <span class="op">*</span> dy<span class="op">;</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>                a <span class="op">+=</span> dA<span class="op">;</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>                cx <span class="op">+=</span> pt<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">*</span> dA<span class="op">;</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>                cy <span class="op">+=</span> pt<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">*</span> dA<span class="op">;</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>            <span class="op">}</span></span>
+<span id="cb3-21"><a href="#cb3-21"></a>        <span class="op">}</span></span>
+<span id="cb3-22"><a href="#cb3-22"></a>    <span class="op">}</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>    <span class="cf">return</span> <span class="op">{</span>cx <span class="op">/</span> a<span class="op">,</span> cy <span class="op">/</span> a<span class="op">};</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a><span class="op">}</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a></span>
+<span id="cb3-26"><a href="#cb3-26"></a><span class="dt">double</span> inertia<span class="op">(</span><span class="dt">geoshape_t</span> <span class="op">&amp;</span>g<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> cg <span class="op">=</span> grav_center<span class="op">(</span>g<span class="op">);</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> bb<span class="op">;</span></span>
+<span id="cb3-29"><a href="#cb3-29"></a>    g<span class="op">.</span>bbox<span class="op">(</span>bb<span class="op">);</span></span>
+<span id="cb3-30"><a href="#cb3-30"></a>    </span>
+<span id="cb3-31"><a href="#cb3-31"></a>    <span class="dt">int</span> N <span class="op">=</span> <span class="dv">500</span><span class="op">;</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a>    <span class="dt">double</span> dx <span class="op">=</span> <span class="op">(</span>bb<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">-</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb3-33"><a href="#cb3-33"></a>    <span class="dt">double</span> dy <span class="op">=</span> <span class="op">(</span>bb<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">-</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">])</span> <span class="op">/</span> N<span class="op">;</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a>    </span>
+<span id="cb3-35"><a href="#cb3-35"></a>    <span class="dt">double</span> I <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb3-36"><a href="#cb3-36"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> pt<span class="op">(</span><span class="dv">2</span><span class="op">);</span></span>
+<span id="cb3-37"><a href="#cb3-37"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> N<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-38"><a href="#cb3-38"></a>        pt<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span>i <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dx<span class="op">;</span></span>
+<span id="cb3-39"><a href="#cb3-39"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> j <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> j <span class="op">&lt;</span> N<span class="op">;</span> <span class="op">++</span>j<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb3-40"><a href="#cb3-40"></a>            pt<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> <span class="op">(</span>j <span class="op">+</span> <span class="fl">0.5</span><span class="op">)</span> <span class="op">*</span> dy<span class="op">;</span></span>
+<span id="cb3-41"><a href="#cb3-41"></a>            <span class="cf">if</span> <span class="op">(</span>g<span class="op">.</span>inside<span class="op">(</span>pt<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb3-42"><a href="#cb3-42"></a>                <span class="dt">double</span> r2 <span class="op">=</span> pow<span class="op">(</span>pt<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> cg<span class="op">[</span><span class="dv">0</span><span class="op">],</span> <span class="dv">2</span><span class="op">)</span> <span class="op">+</span> pow<span class="op">(</span>pt<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> cg<span class="op">[</span><span class="dv">1</span><span class="op">],</span> <span class="dv">2</span><span class="op">);</span></span>
+<span id="cb3-43"><a href="#cb3-43"></a>                I <span class="op">+=</span> r2 <span class="op">*</span> <span class="op">(</span>dx <span class="op">*</span> dy<span class="op">);</span></span>
+<span id="cb3-44"><a href="#cb3-44"></a>            <span class="op">}</span></span>
+<span id="cb3-45"><a href="#cb3-45"></a>        <span class="op">}</span></span>
+<span id="cb3-46"><a href="#cb3-46"></a>    <span class="op">}</span></span>
+<span id="cb3-47"><a href="#cb3-47"></a>    <span class="cf">return</span> I<span class="op">;</span></span>
+<span id="cb3-48"><a href="#cb3-48"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="las-figuras-base" class="level3">
+<h3 class="anchored" data-anchor-id="las-figuras-base">Las figuras base</h3>
+<p>Con la arquitectura del polimorfismo lista, modelar las figuras se reduce a una tarea muy simple. Figuras primarias como <code>square_t</code>, <code>circle_t</code> y <code>ellipse_t</code> heredan de <code>geoshape_t</code> e implementan su propia lógica matemática rápida.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">class</span> <span class="dt">circle_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">geoshape_t</span> <span class="op">{</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>    <span class="dt">double</span> cx<span class="op">,</span> cy<span class="op">,</span> radius<span class="op">;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="dt">circle_t</span><span class="op">(</span><span class="dt">double</span> cx<span class="op">,</span> <span class="dt">double</span> cy<span class="op">,</span> <span class="dt">double</span> r<span class="op">)</span> <span class="op">:</span> cx<span class="op">(</span>cx<span class="op">),</span> cy<span class="op">(</span>cy<span class="op">),</span> radius<span class="op">(</span>r<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>    </span>
+<span id="cb4-6"><a href="#cb4-6"></a>    <span class="dt">void</span> bbox<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>bb<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>        bb <span class="op">=</span> <span class="op">{</span>cx <span class="op">-</span> radius<span class="op">,</span> cy <span class="op">-</span> radius<span class="op">,</span> cx <span class="op">+</span> radius<span class="op">,</span> cy <span class="op">+</span> radius<span class="op">};</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>    <span class="op">}</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>    </span>
+<span id="cb4-10"><a href="#cb4-10"></a>    <span class="dt">bool</span> inside<span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>        <span class="cf">return</span> pow<span class="op">(</span>x<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> cx<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">+</span> pow<span class="op">(</span>x<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> cy<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&lt;=</span> radius <span class="op">*</span> radius<span class="op">;</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>    <span class="op">}</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="op">};</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="kw">class</span> <span class="dt">circle_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">geoshape_t</span> <span class="op">{</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>    <span class="dt">double</span> cx<span class="op">,</span> cy<span class="op">,</span> radius<span class="op">;</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a>    <span class="dt">circle_t</span><span class="op">(</span><span class="dt">double</span> cx<span class="op">,</span> <span class="dt">double</span> cy<span class="op">,</span> <span class="dt">double</span> r<span class="op">)</span> <span class="op">:</span> cx<span class="op">(</span>cx<span class="op">),</span> cy<span class="op">(</span>cy<span class="op">),</span> radius<span class="op">(</span>r<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a>    </span>
+<span id="cb4-20"><a href="#cb4-20"></a>    <span class="dt">void</span> bbox<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>bb<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>        bb <span class="op">=</span> <span class="op">{</span>cx <span class="op">-</span> radius<span class="op">,</span> cy <span class="op">-</span> radius<span class="op">,</span> cx <span class="op">+</span> radius<span class="op">,</span> cy <span class="op">+</span> radius<span class="op">};</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>    <span class="op">}</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>    </span>
+<span id="cb4-24"><a href="#cb4-24"></a>    <span class="dt">bool</span> inside<span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a>        <span class="cf">return</span> pow<span class="op">(</span>x<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> cx<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">+</span> pow<span class="op">(</span>x<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> cy<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&lt;=</span> radius <span class="op">*</span> radius<span class="op">;</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a>    <span class="op">}</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="op">};</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="kw">class</span> <span class="dt">ellipse_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">geoshape_t</span> <span class="op">{</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a>    <span class="dt">double</span> cx<span class="op">,</span> cy<span class="op">,</span> rx<span class="op">,</span> ry<span class="op">;</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a>    <span class="dt">ellipse_t</span><span class="op">(</span><span class="dt">double</span> cx<span class="op">,</span> <span class="dt">double</span> cy<span class="op">,</span> <span class="dt">double</span> rx<span class="op">,</span> <span class="dt">double</span> ry<span class="op">)</span> </span>
+<span id="cb4-33"><a href="#cb4-33"></a>        <span class="op">:</span> cx<span class="op">(</span>cx<span class="op">),</span> cy<span class="op">(</span>cy<span class="op">),</span> rx<span class="op">(</span>rx<span class="op">),</span> ry<span class="op">(</span>ry<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a>        </span>
+<span id="cb4-35"><a href="#cb4-35"></a>    <span class="dt">void</span> bbox<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>bb<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a>        bb <span class="op">=</span> <span class="op">{</span>cx <span class="op">-</span> rx<span class="op">,</span> cy <span class="op">-</span> ry<span class="op">,</span> cx <span class="op">+</span> rx<span class="op">,</span> cy <span class="op">+</span> ry<span class="op">};</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a>    <span class="op">}</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a>    </span>
+<span id="cb4-39"><a href="#cb4-39"></a>    <span class="dt">bool</span> inside<span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a>        <span class="cf">return</span> pow<span class="op">((</span>x<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> cx<span class="op">)</span> <span class="op">/</span> rx<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">+</span> pow<span class="op">((</span>x<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> cy<span class="op">)</span> <span class="op">/</span> ry<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">&lt;=</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a>    <span class="op">}</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>En el caso particular de polígonos convexos (<code>convex_polygon_t</code>), la lógica de <code>inside()</code> requiere utilizar el <strong>producto cruz 2D</strong> entre el punto analizado y las sucesivas aristas dirigidas del polígono, para validar geométricamente que este punto recaiga todo el tiempo sobre el mismo semiplano proyectado:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">class</span> <span class="dt">convex_polygon_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">geoshape_t</span> <span class="op">{</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>    vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> pts<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="dt">convex_polygon_t</span><span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>xj<span class="op">)</span> <span class="op">:</span> pts<span class="op">(</span>xj<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    </span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="dt">void</span> bbox<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>bb<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>        <span class="cf">if</span> <span class="op">(</span>pts<span class="op">.</span>empty<span class="op">())</span> <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>        bb <span class="op">=</span> <span class="op">{</span>pts<span class="op">[</span><span class="dv">0</span><span class="op">],</span> pts<span class="op">[</span><span class="dv">1</span><span class="op">],</span> pts<span class="op">[</span><span class="dv">0</span><span class="op">],</span> pts<span class="op">[</span><span class="dv">1</span><span class="op">]};</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> i <span class="op">&lt;</span> pts<span class="op">.</span>size<span class="op">();</span> i <span class="op">+=</span> <span class="dv">2</span><span class="op">)</span> <span class="op">{</span> <span class="co">// Iterar sobre los puntos x, y</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>            <span class="cf">if</span> <span class="op">(</span>pts<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">])</span> bb<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">=</span> pts<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>            <span class="cf">if</span> <span class="op">(</span>pts<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> bb<span class="op">[</span><span class="dv">2</span><span class="op">])</span> bb<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">=</span> pts<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>            <span class="cf">if</span> <span class="op">(</span>pts<span class="op">[</span>i<span class="op">+</span><span class="dv">1</span><span class="op">]</span> <span class="op">&lt;</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">])</span> bb<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">=</span> pts<span class="op">[</span>i<span class="op">+</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>            <span class="cf">if</span> <span class="op">(</span>pts<span class="op">[</span>i<span class="op">+</span><span class="dv">1</span><span class="op">]</span> <span class="op">&gt;</span> bb<span class="op">[</span><span class="dv">3</span><span class="op">])</span> bb<span class="op">[</span><span class="dv">3</span><span class="op">]</span> <span class="op">=</span> pts<span class="op">[</span>i<span class="op">+</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>        <span class="op">}</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="op">}</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>    </span>
+<span id="cb5-17"><a href="#cb5-17"></a>    <span class="dt">bool</span> inside<span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>        <span class="cf">if</span> <span class="op">(</span>pts<span class="op">.</span>size<span class="op">()</span> <span class="op">&lt;</span> <span class="dv">6</span><span class="op">)</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span> <span class="co">// Todo polígono debe tener al menos 3 vértices</span></span>
+<span id="cb5-19"><a href="#cb5-19"></a>        <span class="dt">int</span> sign <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a>        <span class="dt">size_t</span> n <span class="op">=</span> pts<span class="op">.</span>size<span class="op">()</span> <span class="op">/</span> <span class="dv">2</span><span class="op">;</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>        <span class="co">// Producto cruz</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>        <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> n<span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a>            <span class="dt">double</span> x1 <span class="op">=</span> pts<span class="op">[</span><span class="dv">2</span><span class="op">*</span>i<span class="op">];</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a>            <span class="dt">double</span> y1 <span class="op">=</span> pts<span class="op">[</span><span class="dv">2</span><span class="op">*</span>i <span class="op">+</span> <span class="dv">1</span><span class="op">];</span></span>
+<span id="cb5-25"><a href="#cb5-25"></a>            <span class="dt">double</span> x2 <span class="op">=</span> pts<span class="op">[(</span><span class="dv">2</span><span class="op">*</span>i <span class="op">+</span> <span class="dv">2</span><span class="op">)</span> <span class="op">%</span> <span class="op">(</span><span class="dv">2</span><span class="op">*</span>n<span class="op">)];</span></span>
+<span id="cb5-26"><a href="#cb5-26"></a>            <span class="dt">double</span> y2 <span class="op">=</span> pts<span class="op">[(</span><span class="dv">2</span><span class="op">*</span>i <span class="op">+</span> <span class="dv">3</span><span class="op">)</span> <span class="op">%</span> <span class="op">(</span><span class="dv">2</span><span class="op">*</span>n<span class="op">)];</span></span>
+<span id="cb5-27"><a href="#cb5-27"></a>            </span>
+<span id="cb5-28"><a href="#cb5-28"></a>            <span class="dt">double</span> dx <span class="op">=</span> x2 <span class="op">-</span> x1<span class="op">;</span></span>
+<span id="cb5-29"><a href="#cb5-29"></a>            <span class="dt">double</span> dy <span class="op">=</span> y2 <span class="op">-</span> y1<span class="op">;</span></span>
+<span id="cb5-30"><a href="#cb5-30"></a>            <span class="dt">double</span> cross <span class="op">=</span> dx <span class="op">*</span> <span class="op">(</span>x<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">-</span> y1<span class="op">)</span> <span class="op">-</span> dy <span class="op">*</span> <span class="op">(</span>x<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">-</span> x1<span class="op">);</span></span>
+<span id="cb5-31"><a href="#cb5-31"></a>            </span>
+<span id="cb5-32"><a href="#cb5-32"></a>            <span class="cf">if</span> <span class="op">(</span>cross <span class="op">!=</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-33"><a href="#cb5-33"></a>                <span class="dt">int</span> param_sign <span class="op">=</span> <span class="op">(</span>cross <span class="op">&gt;</span> <span class="dv">0</span><span class="op">)</span> <span class="op">?</span> <span class="dv">1</span> <span class="op">:</span> <span class="op">-</span><span class="dv">1</span><span class="op">;</span></span>
+<span id="cb5-34"><a href="#cb5-34"></a>                <span class="cf">if</span> <span class="op">(</span>sign <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> sign <span class="op">=</span> param_sign<span class="op">;</span></span>
+<span id="cb5-35"><a href="#cb5-35"></a>                <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>sign <span class="op">!=</span> param_sign<span class="op">)</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb5-36"><a href="#cb5-36"></a>            <span class="op">}</span></span>
+<span id="cb5-37"><a href="#cb5-37"></a>        <span class="op">}</span></span>
+<span id="cb5-38"><a href="#cb5-38"></a>        <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb5-39"><a href="#cb5-39"></a>    <span class="op">}</span></span>
+<span id="cb5-40"><a href="#cb5-40"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="operaciones-booleanas-entre-figuras" class="level3">
+<h3 class="anchored" data-anchor-id="operaciones-booleanas-entre-figuras">Operaciones booleanas entre figuras</h3>
+<p>Este diseño orientado a objetos posibilita armar operaciones Booleanas que compongan geometrías a partir de otras, combinándolas para calcular la solución gráfica con un bajo costo arquitectural. Para ello creamos rutinas Booleanas <code>intersection_t</code>, <code>union_t</code> y <code>difference_t</code>.</p>
+<p>Dichas clases almacenan en su interior una variable <code>vector&lt;geoshape_t*&gt; shapes;</code> y consiguen un comportamiento acoplado condicionando la regla del <code>inside()</code>. Analicemos el caso de la Intersección: para considerarse partícipe del sistema central, el punto evaluado debe recaer dentro del interior de la totalidad de las piezas referidas.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">class</span> <span class="dt">intersection_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">geoshape_t</span> <span class="op">{</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">public</span><span class="op">:</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a>    vector<span class="op">&lt;</span><span class="dt">geoshape_t</span><span class="op">*&gt;</span> shapes<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="dt">void</span> bbox<span class="op">(</span>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>bb<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a>        <span class="co">/* Se obtiene solapando y achicando recursivamente las cajas de las figuras... */</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="op">}</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="dt">bool</span> inside<span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> <span class="op">&amp;</span>x<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>        <span class="cf">if</span> <span class="op">(</span>shapes<span class="op">.</span>empty<span class="op">())</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>        <span class="cf">for</span> <span class="op">(</span><span class="kw">auto</span><span class="op">*</span> shape <span class="op">:</span> shapes<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>            <span class="co">// El punto debe existir en TODAS las sub-figuras</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>            <span class="cf">if</span> <span class="op">(!</span>shape<span class="op">-&gt;</span>inside<span class="op">(</span>x<span class="op">))</span> <span class="cf">return</span> <span class="kw">false</span><span class="op">;</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>        <span class="op">}</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>        <span class="cf">return</span> <span class="kw">true</span><span class="op">;</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a>    <span class="op">}</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Para comprobar la correcta implementación, se instanciaron 4 figuras diferentes sencillas donde sabemos previamente el resultado exacto de las distintas operaciones:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1"></a><span class="co">// 1. Verificar Cuadrado (Lado L=2, centrado en el origen)</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="dt">square_t</span> sq<span class="op">(-</span><span class="fl">1.0</span><span class="op">,</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="dt">double</span> sq_area_exact <span class="op">=</span> <span class="fl">2.0</span> <span class="op">*</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="dt">double</span> sq_inertia_exact <span class="op">=</span> <span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> pow<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12.0</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> pow<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span> <span class="op">/</span> <span class="fl">12.0</span><span class="op">);</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">// 2. Verificar Círculo (Radio R=2, centrado en el origen)</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="dt">circle_t</span> circ<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="dt">double</span> pi <span class="op">=</span> acos<span class="op">(-</span><span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="dt">double</span> circ_area_exact <span class="op">=</span> pi <span class="op">*</span> pow<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="dv">2</span><span class="op">);</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="dt">double</span> circ_inertia_exact <span class="op">=</span> pi <span class="op">*</span> pow<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="dv">4</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">// 3. Verificar Elipse (rx=2, ry=1, centrada en el origen)</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="dt">ellipse_t</span> el<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="dt">double</span> el_area_exact <span class="op">=</span> pi <span class="op">*</span> <span class="fl">2.0</span> <span class="op">*</span> <span class="fl">1.0</span><span class="op">;</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co">// Inercia de la elipse = I_x + I_y = (pi * rx * ry^3 / 4) + (pi * ry * rx^3 / 4)</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="dt">double</span> el_inertia_exact <span class="op">=</span> <span class="op">(</span>pi <span class="op">*</span> <span class="fl">2.0</span> <span class="op">*</span> pow<span class="op">(</span><span class="fl">1.0</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span> <span class="op">/</span> <span class="fl">4.0</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span>pi <span class="op">*</span> <span class="fl">1.0</span> <span class="op">*</span> pow<span class="op">(</span><span class="fl">2.0</span><span class="op">,</span> <span class="dv">3</span><span class="op">)</span> <span class="op">/</span> <span class="fl">4.0</span><span class="op">);</span></span>
+<span id="cb7-17"><a href="#cb7-17"></a></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="co">// 4. Pentágono regular (R=2, centrado en el origen)</span></span>
+<span id="cb7-19"><a href="#cb7-19"></a>vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> pent_pts<span class="op">;</span></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="dt">double</span> R <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> <span class="dv">5</span><span class="op">;</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span> <span class="co">// 5 vértices espaciados 72 grados</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a>    pent_pts<span class="op">.</span>push_back<span class="op">(</span>R <span class="op">*</span> cos<span class="op">(</span>i <span class="op">*</span> <span class="fl">2.0</span> <span class="op">*</span> pi <span class="op">/</span> <span class="fl">5.0</span><span class="op">));</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>    pent_pts<span class="op">.</span>push_back<span class="op">(</span>R <span class="op">*</span> sin<span class="op">(</span>i <span class="op">*</span> <span class="fl">2.0</span> <span class="op">*</span> pi <span class="op">/</span> <span class="fl">5.0</span><span class="op">));</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="op">}</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="dt">convex_polygon_t</span> pent<span class="op">(</span>pent_pts<span class="op">);</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a></span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="co">// Fórmulas exactas para un polígono regular de N lados circunscrito en un círculo de radio R</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a><span class="dt">double</span> pent_area_exact <span class="op">=</span> <span class="op">(</span><span class="fl">5.0</span> <span class="op">/</span> <span class="fl">2.0</span><span class="op">)</span> <span class="op">*</span> pow<span class="op">(</span>R<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">*</span> sin<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> pi <span class="op">/</span> <span class="fl">5.0</span><span class="op">);</span></span>
+<span id="cb7-29"><a href="#cb7-29"></a><span class="dt">double</span> pent_inertia_exact <span class="op">=</span> pent_area_exact <span class="op">*</span> pow<span class="op">(</span>R<span class="op">,</span> <span class="dv">2</span><span class="op">)</span> <span class="op">/</span> <span class="fl">6.0</span> <span class="op">*</span> <span class="op">(</span><span class="fl">2.0</span> <span class="op">+</span> cos<span class="op">(</span><span class="fl">2.0</span> <span class="op">*</span> pi <span class="op">/</span> <span class="fl">5.0</span><span class="op">));</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>— Cuadrado (L=2) —<br>
+Area (Num / Exacta): 4.0000 / 4.0000<br>
+Centro de Gravedad: (0.0000, 0.0000) / Exacto: (0.0000, 0.0000)<br>
+Inercia (Num / Exacta): 2.6667 / 2.6667</p>
+<p>— Circulo (R=2) —<br>
+Area (Num / Exacta): 12.5663 / 12.5664<br>
+Centro de Gravedad: (0.0000, 0.0000) / Exacto: (0.0000, 0.0000)<br>
+Inercia (Num / Exacta): 25.1325 / 25.1327</p>
+<p>— Interseccion (Circulo inscrito en Cuadrado) —<br>
+Area (Num / Exacta): 3.1416 / 3.1416 (Area del Circulo)</p>
+<p>— Union (Circulo inscrito en Cuadrado) —<br>
+Area (Num / Exacta): 16.0000 / 16.0000 (Area del Cuadrado)</p>
+<p>— Pentagono Regular (R=2) —<br>
+Area (Num / Exacta): 9.5106 / 9.5106<br>
+Centro de Gravedad: (0.0000, 0.0000) / Exacto: (0.0000, 0.0000)<br>
+Inercia (Num / Exacta): 20.8986 / 20.8986</p>
+</div>
+</div>
+<p>Se comprueban las operaciones booleanas con un caso simple y controlado. Un círculo de radio 1 inscripto en un cuadrado de lado 4, donde el área de la intersección debe ser igual al área del círculo y el área de la unión debe ser igual al área del cuadrado:</p>
+<p><img src="operaciones_booleanas.png" class="img-fluid"></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">// Cuadrado de 4x4 centrado en el origen</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="dt">square_t</span> bsq<span class="op">(-</span><span class="fl">2.0</span><span class="op">,</span> <span class="op">-</span><span class="fl">2.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">,</span> <span class="fl">2.0</span><span class="op">);</span> </span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">// Círculo de R=1 centrado en el origen</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="dt">circle_t</span> bcirc<span class="op">(</span><span class="fl">0.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">1.0</span><span class="op">);</span>      </span>
+<span id="cb8-5"><a href="#cb8-5"></a></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="dt">intersection_t</span> inter<span class="op">;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>inter<span class="op">.</span>shapes<span class="op">.</span>push_back<span class="op">(&amp;</span>bsq<span class="op">);</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>inter<span class="op">.</span>shapes<span class="op">.</span>push_back<span class="op">(&amp;</span>bcirc<span class="op">);</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="dt">union_t</span> uni<span class="op">;</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>uni<span class="op">.</span>shapes<span class="op">.</span>push_back<span class="op">(&amp;</span>bsq<span class="op">);</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>uni<span class="op">.</span>shapes<span class="op">.</span>push_back<span class="op">(&amp;</span>bcirc<span class="op">);</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="dt">difference_t</span> diff<span class="op">;</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a>diff<span class="op">.</span>shapes<span class="op">.</span>push_back<span class="op">(&amp;</span>bsq<span class="op">);</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>diff<span class="op">.</span>shapes<span class="op">.</span>push_back<span class="op">(&amp;</span>bcirc<span class="op">);</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>— Interseccion (Circulo inscrito en Cuadrado) —<br>
+Area (Num / Exacta): 3.1418 / 3.1416 (Area del Circulo)</p>
+<p>— Union (Circulo inscrito en Cuadrado) —<br>
+Area (Num / Exacta): 16.0000 / 16.0000 (Area del Cuadrado)</p>
+<p>— Diferencia (Cuadrado menos Circulo) —<br>
+Area (Num / Exacta): 12.8589 / 12.8584</p>
+</div>
+</div>
+</section>
+</section>
+<section id="ejercicio-2-vectores-generales" class="level2">
+<h2 class="anchored" data-anchor-id="ejercicio-2-vectores-generales">Ejercicio 2: Vectores generales</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Consigna">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Consigna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Escribir una clase polimórfica para representar vectores. Se deben implementar los vectores <code>fullvec_t</code> (almacena todos los elementos), <code>stride_t</code> (almacena un valor inicial, un paso y la cantidad de elementos) y <code>sparse_t</code> (almacena la cantidad total de elementos, un vector con los índices de los elementos no nulos y otro vector con los valores correspondientes). Implementar funciones para calcular el número de elementos no nulos, la suma, el máximo y el mínimo de los elementos del vector. Además, implementar una función <code>reduce</code> que reciba un vector y una operación asociativa (suma, máximo o mínimo) y devuelva el resultado de aplicar esa operación a todos los elementos del vector.</p>
+</div>
+</div>
+<section id="la-clase-abstracta-vector_t" class="level3">
+<h3 class="anchored" data-anchor-id="la-clase-abstracta-vector_t">La clase abstracta <code>vector_t</code></h3>
+<p>De manera análoga al ejercicio anterior, definimos una interfaz base abstracta <code>vector_t</code>. Su objetivo es ocultar cómo se guardan realmente los elementos en memoria, forzando a que todo tipo de vector responda únicamente a dos consultas básicas: <code>size()</code> (obtener la longitud del vector) y el sobrecargado <code>operator[]</code> (obtener el valor alojado en la posición <code>i</code>).</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">class</span> <span class="dt">vector_t</span> <span class="op">{</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>        <span class="kw">virtual</span> <span class="dt">int</span> size<span class="op">()</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a>        <span class="kw">virtual</span> <span class="dt">double</span> <span class="kw">operator</span><span class="op">[</span> <span class="op">](</span><span class="dt">int</span> i<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Con esta interfaz, se implementaron rutinas genéricas (<code>non_null</code>, <code>sum</code>, <code>max</code>, <code>min</code>) que operan ciegamente sobre referencias <code>vector_t &amp;v</code>. Iterando hasta su respectivo <code>.size()</code>, y utilizando su sobrecarga dinámica de indexado <code>v[i]</code>. De esta forma, podemos calcular estas propiedades sin importar cuál es la naturaleza de almacenamiento del vector en particular:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb10-1"><a href="#cb10-1"></a><span class="dt">int</span> non_null<span class="op">(</span><span class="dt">vector_t</span> <span class="op">&amp;</span>v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="dt">int</span> count <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>        <span class="cf">if</span> <span class="op">(</span>v<span class="op">[</span>i<span class="op">]</span> <span class="op">!=</span> <span class="fl">0.0</span><span class="op">)</span> count<span class="op">++;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>    <span class="op">}</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="cf">return</span> count<span class="op">;</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="op">}</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="dt">double</span> sum<span class="op">(</span><span class="dt">vector_t</span> <span class="op">&amp;</span>v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="dt">double</span> total <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>        total <span class="op">+=</span> v<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>    <span class="op">}</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a>    <span class="cf">return</span> total<span class="op">;</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="op">}</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="dt">double</span> max<span class="op">(</span><span class="dt">vector_t</span> <span class="op">&amp;</span>v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a>    <span class="cf">if</span> <span class="op">(</span>v<span class="op">.</span>size<span class="op">()</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> numeric_limits<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>lowest<span class="op">();</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a>    <span class="dt">double</span> current_max <span class="op">=</span> v<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb10-20"><a href="#cb10-20"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-21"><a href="#cb10-21"></a>        <span class="cf">if</span> <span class="op">(</span>v<span class="op">[</span>i<span class="op">]</span> <span class="op">&gt;</span> current_max<span class="op">)</span> current_max <span class="op">=</span> v<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb10-22"><a href="#cb10-22"></a>    <span class="op">}</span></span>
+<span id="cb10-23"><a href="#cb10-23"></a>    <span class="cf">return</span> current_max<span class="op">;</span></span>
+<span id="cb10-24"><a href="#cb10-24"></a><span class="op">}</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a></span>
+<span id="cb10-26"><a href="#cb10-26"></a><span class="dt">double</span> min<span class="op">(</span><span class="dt">vector_t</span> <span class="op">&amp;</span>v<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a>    <span class="cf">if</span> <span class="op">(</span>v<span class="op">.</span>size<span class="op">()</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> numeric_limits<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>max<span class="op">();</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a>    <span class="dt">double</span> current_min <span class="op">=</span> v<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb10-29"><a href="#cb10-29"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb10-30"><a href="#cb10-30"></a>        <span class="cf">if</span> <span class="op">(</span>v<span class="op">[</span>i<span class="op">]</span> <span class="op">&lt;</span> current_min<span class="op">)</span> current_min <span class="op">=</span> v<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb10-31"><a href="#cb10-31"></a>    <span class="op">}</span></span>
+<span id="cb10-32"><a href="#cb10-32"></a>    <span class="cf">return</span> current_min<span class="op">;</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="diferentes-vectores" class="level3">
+<h3 class="anchored" data-anchor-id="diferentes-vectores">Diferentes vectores</h3>
+<p>Se definieron tres tipos de vectores:</p>
+<ol type="1">
+<li><strong><code>fullvec_t</code></strong>: Un vector denso clásico:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">class</span> <span class="dt">fullvec_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">vector_t</span> <span class="op">{</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="kw">private</span><span class="op">:</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>        vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> w<span class="op">;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>        <span class="dt">fullvec_t</span><span class="op">(</span><span class="dt">int</span> sz<span class="op">)</span> <span class="op">:</span> w<span class="op">(</span>sz<span class="op">,</span> <span class="fl">0.0</span><span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>        <span class="dt">fullvec_t</span><span class="op">(</span><span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&amp;</span> vec<span class="op">)</span> <span class="op">:</span> w<span class="op">(</span>vec<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a></span>
+<span id="cb11-8"><a href="#cb11-8"></a>        <span class="dt">int</span> size<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>            <span class="cf">return</span> w<span class="op">.</span>size<span class="op">();</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a>        <span class="op">}</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a></span>
+<span id="cb11-12"><a href="#cb11-12"></a>        <span class="dt">double</span> <span class="kw">operator</span><span class="op">[](</span><span class="dt">int</span> i<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a>            <span class="cf">return</span> w<span class="op">[</span>i<span class="op">];</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a>        <span class="op">}</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="2" type="1">
+<li><strong><code>stride_t</code></strong>: No guarda valores individualizados sino su definición matemática secuencial pura (<code>start</code>, <code>inc</code>, <code>size</code>). Resulta sumamente eficiente en memoria, permitiendo emular millones de puntos usando sólo tres variables escalares con una resolución al vuelo:</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">class</span> <span class="dt">stride_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">vector_t</span> <span class="op">{</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="kw">private</span><span class="op">:</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>        <span class="dt">double</span> start<span class="op">;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>        <span class="dt">double</span> inc<span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>        <span class="dt">int</span> sz<span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>        <span class="dt">stride_t</span><span class="op">(</span><span class="dt">double</span> start<span class="op">,</span> <span class="dt">double</span> inc<span class="op">,</span> <span class="dt">int</span> sz<span class="op">)</span> <span class="op">:</span> start<span class="op">(</span>start<span class="op">),</span> inc<span class="op">(</span>inc<span class="op">),</span> sz<span class="op">(</span>sz<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a></span>
+<span id="cb12-9"><a href="#cb12-9"></a>        <span class="dt">int</span> size<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a>            <span class="cf">return</span> sz<span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a>        <span class="op">}</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a></span>
+<span id="cb12-13"><a href="#cb12-13"></a>        <span class="dt">double</span> <span class="kw">operator</span><span class="op">[](</span><span class="dt">int</span> i<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a>            <span class="cf">return</span> start <span class="op">+</span> i <span class="op">*</span> inc<span class="op">;</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a>        <span class="op">}</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<ol start="3" type="1">
+<li><strong><code>sparse_t</code></strong>: Vector ralo. Está diseñado para conjuntos masivos compuestos mayoritariamente por ceros absolutos, para ahorrar RAM. En lugar de un arreglo denso masivo, conserva dos arreglos limitados a la par: los índices afectados (<code>indx</code>) y sus respectivos valores numéricos (<code>vals</code>). Al pedir una posición no listada, asume implícitamente <code>0.0</code>.</li>
+</ol>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">class</span> <span class="dt">sparse_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">vector_t</span> <span class="op">{</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>    <span class="kw">private</span><span class="op">:</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>        <span class="dt">int</span> sz<span class="op">;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>        vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> indx<span class="op">;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>        vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;</span> vals<span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>        <span class="dt">sparse_t</span><span class="op">(</span><span class="dt">int</span> sz<span class="op">,</span> <span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;&amp;</span> indx<span class="op">,</span> <span class="at">const</span> vector<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;&amp;</span> vals<span class="op">)</span> </span>
+<span id="cb13-8"><a href="#cb13-8"></a>            <span class="op">:</span> sz<span class="op">(</span>sz<span class="op">),</span> indx<span class="op">(</span>indx<span class="op">),</span> vals<span class="op">(</span>vals<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a></span>
+<span id="cb13-10"><a href="#cb13-10"></a>        <span class="dt">int</span> size<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>            <span class="cf">return</span> sz<span class="op">;</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>        <span class="op">}</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a></span>
+<span id="cb13-14"><a href="#cb13-14"></a>        <span class="dt">double</span> <span class="kw">operator</span><span class="op">[](</span><span class="dt">int</span> i<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span></span>
+<span id="cb13-15"><a href="#cb13-15"></a>            <span class="co">// Buscamos si el índice existe en los valores definidos</span></span>
+<span id="cb13-16"><a href="#cb13-16"></a>            <span class="cf">for</span> <span class="op">(</span><span class="dt">size_t</span> k <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> k <span class="op">&lt;</span> indx<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>k<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a>                <span class="cf">if</span> <span class="op">(</span>indx<span class="op">[</span>k<span class="op">]</span> <span class="op">==</span> i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb13-18"><a href="#cb13-18"></a>                    <span class="cf">return</span> vals<span class="op">[</span>k<span class="op">];</span></span>
+<span id="cb13-19"><a href="#cb13-19"></a>                <span class="op">}</span></span>
+<span id="cb13-20"><a href="#cb13-20"></a>            <span class="op">}</span></span>
+<span id="cb13-21"><a href="#cb13-21"></a>            <span class="co">// Si es un índice no registrado, implícitamente vale nulo (0.0)</span></span>
+<span id="cb13-22"><a href="#cb13-22"></a>            <span class="cf">return</span> <span class="fl">0.0</span><span class="op">;</span></span>
+<span id="cb13-23"><a href="#cb13-23"></a>        <span class="op">}</span></span>
+<span id="cb13-24"><a href="#cb13-24"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Vemos una simple prueba de la funcionalidad implementada:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb14-1"><a href="#cb14-1"></a><span class="dt">fullvec_t</span> fv<span class="op">({</span><span class="fl">1.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="op">-</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">4.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">});</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="co">// 0, 0.5, 1.0, 1.5, 2.0</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a><span class="dt">stride_t</span> sv<span class="op">(</span><span class="dv">0</span><span class="op">,</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dv">5</span><span class="op">);</span> </span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co">// Vector de 100 ptos, solo 3 elementos no nulos</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="dt">sparse_t</span> spv<span class="op">(</span><span class="dv">100</span><span class="op">,</span> <span class="op">{</span><span class="dv">5</span><span class="op">,</span> <span class="dv">50</span><span class="op">,</span> <span class="dv">99</span><span class="op">},</span> <span class="op">{-</span><span class="fl">3.0</span><span class="op">,</span> <span class="fl">0.0</span><span class="op">,</span> <span class="fl">8.0</span><span class="op">});</span> </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>— Full Vector —<br>
+Non nulls: 3 | Sum: 2 | Max: 4 | Min: -3</p>
+<p>— Stride Vector —<br>
+Non nulls: 4 | Sum: 5 | Max: 2 | Min: 0</p>
+<p>— Sparse Vector —<br>
+Non nulls: 2 | Sum: 5 | Max: 8 | Min: -3</p>
+</div>
+</div>
+</section>
+<section id="reducción-funcional-y-clases-asociativas" class="level3">
+<h3 class="anchored" data-anchor-id="reducción-funcional-y-clases-asociativas">Reducción funcional y clases asociativas</h3>
+<p>Para generalizar al máximo operaciones repetitivas (como la suma o la búsqueda del valor máximo en una sola función universal <code>reduce</code>), se empleó la inyección de dependencias mediante la clase abstracta <code>assoc_t</code>. Esta clase porta un elemento neutro <code>null()</code> y una función binaria asociativa <code>g(x, y)</code>.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">class</span> <span class="dt">assoc_t</span> <span class="op">{</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>        <span class="kw">virtual</span> <span class="dt">double</span> g<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span><span class="dt">double</span> y<span class="op">)=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>        <span class="kw">virtual</span> <span class="dt">double</span> null<span class="op">()=</span><span class="dv">0</span><span class="op">;</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="op">};</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="kw">class</span> <span class="dt">sum_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">assoc_t</span> <span class="op">{</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>        <span class="dt">double</span> g<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span><span class="dt">double</span> y<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> x<span class="op">+</span>y<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>        <span class="dt">double</span> null<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span> <span class="op">}</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="op">};</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="kw">class</span> <span class="dt">max_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">assoc_t</span> <span class="op">{</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb15-15"><a href="#cb15-15"></a>        <span class="dt">double</span> g<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span><span class="dt">double</span> y<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> <span class="op">(</span>x <span class="op">&gt;</span> y<span class="op">)</span> <span class="op">?</span> x <span class="op">:</span> y<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb15-16"><a href="#cb15-16"></a>        <span class="dt">double</span> null<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> numeric_limits<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>lowest<span class="op">();</span> <span class="op">}</span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="op">};</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a></span>
+<span id="cb15-19"><a href="#cb15-19"></a><span class="kw">class</span> <span class="dt">min_t</span> <span class="op">:</span> <span class="kw">public</span> <span class="dt">assoc_t</span> <span class="op">{</span></span>
+<span id="cb15-20"><a href="#cb15-20"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb15-21"><a href="#cb15-21"></a>        <span class="dt">double</span> g<span class="op">(</span><span class="dt">double</span> x<span class="op">,</span><span class="dt">double</span> y<span class="op">)</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> <span class="op">(</span>x <span class="op">&lt;</span> y<span class="op">)</span> <span class="op">?</span> x <span class="op">:</span> y<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb15-22"><a href="#cb15-22"></a>        <span class="dt">double</span> null<span class="op">()</span> <span class="kw">override</span> <span class="op">{</span> <span class="cf">return</span> numeric_limits<span class="op">&lt;</span><span class="dt">double</span><span class="op">&gt;::</span>max<span class="op">();</span> <span class="op">}</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="op">};</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a></span>
+<span id="cb15-25"><a href="#cb15-25"></a><span class="dt">double</span> reduce<span class="op">(</span><span class="dt">vector_t</span> <span class="op">&amp;</span>v<span class="op">,</span> <span class="dt">assoc_t</span> <span class="op">&amp;</span>op<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-26"><a href="#cb15-26"></a>    <span class="cf">if</span> <span class="op">(</span>v<span class="op">.</span>size<span class="op">()</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="cf">return</span> op<span class="op">.</span>null<span class="op">();</span></span>
+<span id="cb15-27"><a href="#cb15-27"></a>    </span>
+<span id="cb15-28"><a href="#cb15-28"></a>    <span class="dt">double</span> result <span class="op">=</span> op<span class="op">.</span>null<span class="op">();</span></span>
+<span id="cb15-29"><a href="#cb15-29"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;</span> v<span class="op">.</span>size<span class="op">();</span> <span class="op">++</span>i<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb15-30"><a href="#cb15-30"></a>        result <span class="op">=</span> op<span class="op">.</span>g<span class="op">(</span>result<span class="op">,</span> v<span class="op">[</span>i<span class="op">]);</span></span>
+<span id="cb15-31"><a href="#cb15-31"></a>    <span class="op">}</span></span>
+<span id="cb15-32"><a href="#cb15-32"></a>    <span class="cf">return</span> result<span class="op">;</span></span>
+<span id="cb15-33"><a href="#cb15-33"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Pudiendo crear derivados simples como un <code>sum_t</code> que sume o un <code>max_t</code>, logramos que al instanciar herramientas abstractas sobre esta rutina genérica, se computen los mismos resultados analíticos deseados que antes pero sin necesidad de mantener múltiples ciclos iteradores idénticos recorriendo nuestra memoria.</p>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>— Prueba Reduce (Sparse Vector) —<br>
+Reduce Sum: 5.0000<br>
+Reduce Max: 8.0000<br>
+Reduce Min: -3.0000</p>
+</div>
+</div>
+</section>
+</section>
+<section id="ejercicio-3-tic-tac-toe-general" class="level2">
+<h2 class="anchored" data-anchor-id="ejercicio-3-tic-tac-toe-general">Ejercicio 3: tic-tac-toe general</h2>
+<div class="callout callout-style-default callout-note callout-titled" title="Consigna">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Consigna
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A partir del GTP anterior de tic-tac-toe, generalizar los jugadores a partir de una clase <code>player_t</code> que permita simplificar la implementación de la interacción entre jugadores diferentes.<br>
+Implementar un sistema de competencia, comenzando desde octavos de final, donde se enfrentarán jugadores aleatorios entre sí, realizando <span class="math inline">\(N\)</span> partidas entre sí y obteniendo un ganador. Además, sortear las ventajas invirtiendo los turnos iniciales y administrar la memoria borrando a los perdedores en el proceso.</p>
+</div>
+</div>
+<section id="la-clase-abstracta-player_t" class="level3">
+<h3 class="anchored" data-anchor-id="la-clase-abstracta-player_t">La clase abstracta <code>player_t</code></h3>
+<p>Para generalizar el comportamiento de los diferentes agentes virtuales que juegan al tic-tac-toe, se diseñó una clase abstracta pura <code>player_t</code> de la cual deban heredar forzosamente todas las estrategias implementadas en módulos anteriores.</p>
+<p>Esta interfaz los obliga a tener una variable con un nombre universal y la definición de su lógica de turno subyacente matemáticamente a través del método <code>move</code>. Asimismo, declara un destructor <code>virtual</code> para habilitar el manejo de la jerarquía polimórfica sin generar fugas de memoria remanentes al tratar de emplear <code>delete</code> usando su tipo padre (<code>player_t</code>):</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb16-1"><a href="#cb16-1"></a><span class="kw">class</span> <span class="dt">player_t</span> <span class="op">{</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>    <span class="kw">protected</span><span class="op">:</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>        string name<span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>    <span class="kw">public</span><span class="op">:</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>        <span class="dt">player_t</span><span class="op">(</span>string id <span class="op">=</span> <span class="st">""</span><span class="op">)</span> <span class="op">:</span> name<span class="op">(</span>id<span class="op">)</span> <span class="op">{}</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>        <span class="kw">virtual</span> <span class="dt">int</span> move<span class="op">(</span><span class="dt">board_t</span> <span class="op">&amp;</span>b<span class="op">,</span> <span class="dt">int</span> me<span class="op">)</span> <span class="op">=</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>        <span class="kw">virtual</span> string label<span class="op">()</span> <span class="op">{</span> <span class="cf">return</span> name<span class="op">;</span> <span class="op">}</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="op">};</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Con esto, las heurísticas previas (<code>dumb_t</code>, <code>random_t</code>, <code>agressive_t</code>, <code>minimax_t</code> y <code>rule_based_t</code>) asumen prefijos de registro para ser fácilmente identificables (e.g.&nbsp;<code>minimax_14</code>) y extienden de ella.</p>
+</section>
+<section id="playoffs" class="level3">
+<h3 class="anchored" data-anchor-id="playoffs">Playoffs</h3>
+<p>El modelo orientado a objetos (donde tácticas concretas devienen abstractamente un simple <code>player_t*</code>) consigue que a la función principal encargada de las mecánicas no le importe a quiénes maneja:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb17-1"><a href="#cb17-1"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> match<span class="op">(</span><span class="dt">player_t</span> <span class="op">&amp;</span>playX<span class="op">,</span> <span class="dt">player_t</span> <span class="op">&amp;</span>playO<span class="op">,</span> <span class="dt">int</span> n_matches<span class="op">=</span><span class="dv">1</span><span class="op">,</span> <span class="dt">bool</span> verbose<span class="op">=</span><span class="kw">true</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Seguidamente, se formuló un sistema principal de <code>playoffs</code> donde competirán diferentes tipos de jugadores entre sí y se obtendrá un campeón. Como el juego tiene una pequeña ventaja por quien comienza, se juegan <span class="math inline">\(N\)</span> partidas con cada jugador iniciando primero, para luego sumar los resultados y determinar un ganador estadístico:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb18-1"><a href="#cb18-1"></a><span class="co">// Partidas donde p1 juega primero y donde p2 juega primero</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> res1 <span class="op">=</span> match<span class="op">(*</span>p1<span class="op">,</span> <span class="op">*</span>p2<span class="op">,</span> matches_per_round<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>vector<span class="op">&lt;</span><span class="dt">int</span><span class="op">&gt;</span> res2 <span class="op">=</span> match<span class="op">(*</span>p2<span class="op">,</span> <span class="op">*</span>p1<span class="op">,</span> matches_per_round<span class="op">,</span> <span class="kw">false</span><span class="op">);</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co">// Sumatoria total de triunfos</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="dt">int</span> p1_wins <span class="op">=</span> res1<span class="op">[</span><span class="dv">0</span><span class="op">]</span> <span class="op">+</span> res2<span class="op">[</span><span class="dv">1</span><span class="op">];</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="dt">int</span> p2_wins <span class="op">=</span> res1<span class="op">[</span><span class="dv">1</span><span class="op">]</span> <span class="op">+</span> res2<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="dt">int</span> ties <span class="op">=</span> res1<span class="op">[</span><span class="dv">2</span><span class="op">]</span> <span class="op">+</span> res2<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>En caso de que persista un total nivelado tras todas las rondas, el ganador se rifará aleatoriamente (<code>rand() % 2 == 0</code>). Además, tras decidir quién avanza a la siguiente ronda, el puntero heap del contrincante perdedor se purga dinámicamente llamando a su destructor (vía <code>delete p1/p2</code>) para no colapsar la RAM de cara a fases posteriores.</p>
+</section>
+<section id="simulación-de-torneo-aleatorio" class="level3">
+<h3 class="anchored" data-anchor-id="simulación-de-torneo-aleatorio">Simulación de Torneo Aleatorio</h3>
+<p>En el <code>main</code>, se instancian <code>16</code> punteros conformando los octavos de final. Cada uno de estos agentes está designado ciegamente entre los 5 algoritmos disponibles. Puesto que los mejores agentes se abren paso inevitablemente por el filtro estadístico, es natural ver chocar a los <code>minimax</code> cerca de la cima para un desempate numérico total entre 20 simulaciones simultáneas probados como Cruz y luego otras 20 como Círculo:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource cpp number-lines code-with-copy"><code class="sourceCode cpp"><span id="cb19-1"><a href="#cb19-1"></a><span class="dt">int</span> main<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>    srand<span class="op">(</span>time<span class="op">(</span>NULL<span class="op">));</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>    vector<span class="op">&lt;</span><span class="dt">player_t</span><span class="op">*&gt;</span> tournament<span class="op">;</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>    </span>
+<span id="cb19-5"><a href="#cb19-5"></a>    <span class="co">// Octavos de final: 16 jugadores aleatorios</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>    <span class="cf">for</span><span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> i <span class="op">&lt;=</span> <span class="dv">16</span><span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>        <span class="dt">int</span> r <span class="op">=</span> rand<span class="op">()</span> <span class="op">%</span> <span class="dv">5</span><span class="op">;</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a>        string id <span class="op">=</span> to_string<span class="op">(</span>i<span class="op">);</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a>        <span class="cf">if</span> <span class="op">(</span>r <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> tournament<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> <span class="dt">dumb_t</span><span class="op">(</span>id<span class="op">));</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a>        <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>r <span class="op">==</span> <span class="dv">1</span><span class="op">)</span> tournament<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> <span class="dt">random_t</span><span class="op">(</span>id<span class="op">));</span></span>
+<span id="cb19-11"><a href="#cb19-11"></a>        <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>r <span class="op">==</span> <span class="dv">2</span><span class="op">)</span> tournament<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> <span class="dt">agressive_t</span><span class="op">(</span>id<span class="op">));</span></span>
+<span id="cb19-12"><a href="#cb19-12"></a>        <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>r <span class="op">==</span> <span class="dv">3</span><span class="op">)</span> tournament<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> <span class="dt">minimax_t</span><span class="op">(</span>id<span class="op">));</span></span>
+<span id="cb19-13"><a href="#cb19-13"></a>        <span class="cf">else</span> tournament<span class="op">.</span>push_back<span class="op">(</span><span class="kw">new</span> <span class="dt">rule_based_t</span><span class="op">(</span>id<span class="op">));</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a>    <span class="op">}</span></span>
+<span id="cb19-15"><a href="#cb19-15"></a>    </span>
+<span id="cb19-16"><a href="#cb19-16"></a>    <span class="dt">player_t</span><span class="op">*</span> champion <span class="op">=</span> playoffs<span class="op">(</span>tournament<span class="op">,</span> <span class="dv">10</span><span class="op">);</span></span>
+<span id="cb19-17"><a href="#cb19-17"></a>    </span>
+<span id="cb19-18"><a href="#cb19-18"></a>    <span class="kw">delete</span> champion<span class="op">;</span></span>
+<span id="cb19-19"><a href="#cb19-19"></a>    <span class="cf">return</span> <span class="dv">0</span><span class="op">;</span></span>
+<span id="cb19-20"><a href="#cb19-20"></a><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>=== Ronda 1 (16 jugadores) ===<br>
+minimax_1 vs random_2 -&gt; Gana minimax_1 (20-0 y 0 empates)<br>
+agressive_3 vs dumb_4 -&gt; Gana agressive_3 (20-0 y 0 empates)<br>
+rule_based_5 vs random_6 -&gt; Gana rule_based_5 (18-1 y 1 empates)<br>
+minimax_7 vs minimax_8 -&gt; Empate (0-0), desempatando al azar -&gt; minimax_8<br>
+dumb_9 vs agressive_10 -&gt; Gana agressive_10 (19-0 y 1 empates)<br>
+random_11 vs minimax_12 -&gt; Gana minimax_12 (19-0 y 1 empates)<br>
+rule_based_13 vs rule_based_14 -&gt; Empate (0-0), desempatando al azar -&gt; rule_based_13<br>
+dumb_15 vs random_16 -&gt; Gana random_16 (16-1 y 3 empates)</p>
+<p>=== Ronda 2 (8 jugadores) ===<br>
+minimax_1 vs agressive_3 -&gt; Gana minimax_1 (20-0 y 0 empates)<br>
+rule_based_5 vs minimax_8 -&gt; Gana minimax_8 (14-0 y 6 empates)<br>
+agressive_10 vs minimax_12 -&gt; Gana minimax_12 (20-0 y 0 empates)<br>
+rule_based_13 vs random_16 -&gt; Gana rule_based_13 (17-1 y 2 empates)</p>
+<p>=== Ronda 3 (4 jugadores) ===<br>
+minimax_1 vs minimax_8 -&gt; Empate (0-0), desempatando al azar -&gt; minimax_8<br>
+minimax_12 vs rule_based_13 -&gt; Gana minimax_12 (12-0 y 8 empates)</p>
+<p>=== Ronda 4 (2 jugadores) ===<br>
+minimax_8 vs minimax_12 -&gt; Empate (0-0), desempatando al azar -&gt; minimax_12</p>
+<p>¡El ganador de los playoffs es minimax_12!</p>
+</div>
+</div>
+<p>Siempre termina pasando que a la final llegan dos jugadores <code>minimax</code>. Y como vimos en el práctico anterior, cuando se enfrentan dos <code>minimax</code> con la misma profundidad de búsqueda, el resultado es un empate técnico (ver figura, punto minimax). Por lo tanto, el campeón se define por sorteo puro entre ambos finalistas.</p>
+<p><img src="./minimax_vs_all.png" class="img-fluid"></p>
+<p>Para hacerlo más interesante, simulamos un torneo donde no pueda haber jugadores <code>minimax</code>:</p>
+<div class="consola-terminal callout callout-style-default callout-note no-icon callout-titled" title="bash">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>bash
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>=== Ronda 1 (16 jugadores) ===<br>
+random_1 vs random_2 -&gt; Gana random_1 (11-6 y 3 empates)<br>
+random_3 vs dumb_4 -&gt; Gana dumb_4 (11-9 y 0 empates)<br>
+dumb_5 vs agressive_6 -&gt; Gana agressive_6 (19-0 y 1 empates)<br>
+dumb_7 vs dumb_8 -&gt; Empate (10-10), desempatando al azar -&gt; dumb_8<br>
+agressive_9 vs dumb_10 -&gt; Gana agressive_9 (17-0 y 3 empates)<br>
+agressive_11 vs random_12 -&gt; Gana agressive_11 (17-0 y 3 empates)<br>
+dumb_13 vs random_14 -&gt; Gana dumb_13 (11-8 y 1 empates)<br>
+random_15 vs random_16 -&gt; Gana random_16 (11-9 y 0 empates)</p>
+<p>=== Ronda 2 (8 jugadores) ===<br>
+random_1 vs dumb_4 -&gt; Gana dumb_4 (12-7 y 1 empates)<br>
+agressive_6 vs dumb_8 -&gt; Gana agressive_6 (18-0 y 2 empates)<br>
+agressive_9 vs agressive_11 -&gt; Gana agressive_9 (4-3 y 13 empates)<br>
+dumb_13 vs random_16 -&gt; Gana dumb_13 (14-6 y 0 empates)</p>
+<p>=== Ronda 3 (4 jugadores) ===<br>
+dumb_4 vs agressive_6 -&gt; Gana agressive_6 (18-0 y 2 empates)<br>
+agressive_9 vs dumb_13 -&gt; Gana agressive_9 (18-0 y 2 empates)</p>
+<p>=== Ronda 4 (2 jugadores) ===<br>
+agressive_6 vs agressive_9 -&gt; Gana agressive_9 (8-1 y 11 empates)</p>
+<p>¡El ganador de los playoffs es agressive_9!</p>
+</div>
+</div>
+
+
+</section>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/eclaucich-sinc\.github\.io\/cplusplus\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
