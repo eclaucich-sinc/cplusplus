@@ -1,0 +1,395 @@
+---
+title: "GTP5: Programación en C++ para Ciencia e Ingeniería"
+page-layout: full
+author: "Estanislao Claucich"
+format:
+  #pdf:
+  html: 
+    theme: litera	
+    toc: true
+    toc-location: left    # Ubica el índice en la barra lateral
+    toc-title: "Ejercicios" # Título de la barra lateral
+    toc-depth: 2          # Solo incluye los títulos ## en el índice
+    smooth-scroll: true   # Desplazamiento suave al hacer clic en el índice
+    code-line-numbers: true # Agrega números de línea a los bloques de código
+resources:
+    - ej1.cpp
+    - ej2.cpp
+    - ej3.cpp
+    - ej4.cpp
+---
+
+<style>
+p {
+    text-align: justify;
+}
+
+/* Estilo para el borde y el fondo general del callout */
+div.callout.consola-terminal {
+    background-color: #1e1e1e !important; /* Gris muy oscuro, estilo VS Code */
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra del título */
+div.callout.consola-terminal .callout-header {
+    background-color: #2d2d2d !important;
+    color: #cccccc !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Estilo para el texto de la salida (cuerpo) */
+div.callout.consola-terminal .callout-body-container {
+    color: #10B981 !important; /* Verde brillante estilo Matrix/Consola clásica */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+/* Contenedor título + botón de descarga */
+.exercise-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
+.exercise-download-btn {
+	font-size: 0.85rem;
+	text-decoration: none;
+	border: 1px solid #0d6efd;
+	color: #0d6efd;
+	border-radius: 6px;
+	padding: 0.2rem 0.55rem;
+	line-height: 1.2;
+	transition: all 0.15s ease;
+}
+
+.exercise-download-btn:hover {
+	background-color: #0d6efd;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+@media (max-width: 640px) {
+	.exercise-download-btn {
+		font-size: 0.8rem;
+	}
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	const downloadMap = {
+		"Ejercicio 1": [{ file: "ej1.cpp", label: "Descargar ej1.cpp" }],
+		"Ejercicio 2": [{ file: "ej2.cpp", label: "Descargar ej2.cpp" }],
+		"Ejercicio 3": [{ file: "ej3.cpp", label: "Descargar ej3.cpp" }],
+        "Ejercicio 4": [{ file: "ej4.cpp", label: "Descargar ej4.cpp" }]
+	};
+
+	const headings = document.querySelectorAll("main h2");
+
+	headings.forEach((h2) => {
+		const title = h2.textContent.trim();
+		const files = downloadMap[title];
+		if (!files) return;
+
+		const row = document.createElement("span");
+		row.className = "exercise-title-row";
+
+		const titleSpan = document.createElement("span");
+		titleSpan.textContent = title;
+		row.appendChild(titleSpan);
+
+		files.forEach((item) => {
+			const link = document.createElement("a");
+			link.href = item.file;
+			link.download = item.file;
+			link.className = "exercise-download-btn";
+			link.textContent = item.label;
+			row.appendChild(link);
+		});
+
+		h2.textContent = "";
+		h2.appendChild(row);
+	});
+});
+</script>
+
+
+A continuación se presentan las soluciones a los ejercicios propuestos en el GTP5.
+
+## Ejercicio 1
+
+::: {.callout-note title="Consigna"}
+Modificar el ejercicio 1 de la guía anterior (figuras geométricas) agregando una función `label()` genérica que imprima el nombre dinámico del objeto utilizando la herramienta `typeid` de RTTI.
+:::
+
+En C++, el polimorfismo permite tratar clases derivadas a través de una referencia o puntero a su clase base. La herramienta `typeid` de la librería `<typeinfo>` permite consultar el tipo de dato subyacente exacto en tiempo de ejecución (*Run-Time Type Identification*).
+
+```cpp
+#include <typeinfo>
+
+void label(geoshape_t &g) {
+    cout << "Nombre del objeto (RTTI): " << typeid(g).name() << endl;
+}
+```
+
+Al invocar esta función sobre objetos derivados instanciados, como `square_t` o `circle_t`, el operador evalúa el tipo dinámico e imprime el nombre resultante de la decoración de variables (*name mangling*) generada por el compilador (por ejemplo, el compilador `g++` antepone al nombre original de la clase la cantidad de caracteres que este posee).
+
+```cpp
+cout << "--- Cuadrado (L=2) ---" << endl;
+square_t sq(-1.0, -1.0, 1.0, 1.0);
+label(sq);
+
+cout << "--- Circulo (R=2) ---" << endl;
+circle_t circ(0.0, 0.0, 2.0);
+label(circ);
+
+cout << "--- Elipse (rx=2, ry=1) ---" << endl;
+ellipse_t el(0.0, 0.0, 2.0, 1.0);
+label(el);
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+--- Cuadrado (L=2) ---  
+Nombre del objeto (RTTI): 8square_t  
+--- Circulo (R=2) ---  
+Nombre del objeto (RTTI): 8circle_t  
+--- Elipse (rx=2, ry=1) ---  
+Nombre del objeto (RTTI): 9ellipse_t
+:::
+
+---
+
+## Ejercicio 2
+
+::: {.callout-note title="Consigna"}
+Implementar la función `void diffsym(const vector<set<int>> &vecset, set<int> &output)` que calcule la diferencia simétrica generalizada de un arreglo de $N$ conjuntos empleando la estructura de datos asociativa `std::map<int, int>`.
+:::
+
+La diferencia simétrica generalizada consta en obtener únicamente aquellos elementos que están presentes en exactamente un solo conjunto a lo largo de toda la colección. El uso de `std::map` simplifica la resolución de este problema algorítmico, ya que permite iterar a través de todos los conjuntos e ir contando las ocurrencias independientes de cada valor en un solo ciclo acumulativo:
+
+```cpp
+void diffsym(const vector<set<int>>& vecset, set<int>& output) {
+    map<int, int> count;
+    
+    // Contar apariciones globales
+    for (const auto& s : vecset) {
+        for (int elem : s) {
+            count[elem]++;
+        }
+    }
+    
+    // Filtrar diferencia simétrica (frecuencia estricta igual a 1)
+    output.clear();
+    for (const auto& pair : count) {
+        if (pair.second == 1) {
+            output.insert(pair.first);
+        }
+    }
+}
+```
+
+El resultado de las pruebas para tres conjuntos solapados (`A={1,2,3,4}`, `B={3,4,5,6}`, `C={1,6,7}`) demuestra su efectividad:
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+Conjunto A: { 1, 2, 3, 4 }  
+Conjunto B: { 3, 4, 5, 6 }  
+Conjunto C: { 1, 6, 7 }  
+
+Diferencia simetrica (elementos que estan en un solo conjunto):  
+{ 2 5 7 }
+:::
+
+---
+
+## Ejercicio 3
+
+::: {.callout-note title="Consigna"}
+Reescribir el ejemplo de los vectores (`vector_t`) de la GTP4 utilizando **templates**, de forma tal que se puedan instanciar vectores dinámicos (`fullvec_t` y `sparse_t`) de cualquier tipo primitivo (incluyendo clases que tengan sobrecargado su operador `+` y `<` como el objeto `std::string`).
+:::
+
+El sistema polimórfico de clases abstractas desarrollado en prácticas previas se reescribió en este ejercicio sustituyendo el tipo numérico rígido y estricto (`double`) por un parámetro de plantilla paramétrica `typename T`:
+
+```cpp
+template <typename T>
+class vector_t {
+    public:
+        virtual int size() const = 0;
+        virtual T operator[](int i) const = 0;
+};
+```
+
+Las funciones auxiliares globales que evalúan la jerarquía también fueron transformadas a funciones template (`sum`, `non_null`, `max`, `min` y `reduce`), las cuales logran deducir el tipo subyacente y devuelven este mismo tipo paramétrico original. Para suplir la carencia algorítmica del número nulo absoluto `0.0` en operaciones aritméticas, las nuevas funciones asumen instanciar dinámicamente un constructor vacío `T()` como valor neutro de inicio (ej: `0` para enteros y `""` para strings). 
+
+```cpp
+template <typename T>
+T sum(const vector_t<T> &v) {
+    if (v.size() == 0) return T();
+    T total = v[0];
+    for (int i = 1; i < v.size(); ++i) {
+        total = total + v[i];
+    }
+    return total;
+}
+```
+
+A través de esta migración estructural, el mismo código fuente de clases abstractas y métodos algorítmicos se recicla completamente, pudiendo utilizarse tanto para operaciones analíticas vectoriales estándar como para realizar la concatenación continua de palabras dentro de un vector de strings:
+
+```cpp
+// Prueba con double
+fullvec_t<double> fv_d({1.0, 0.0, -3.0, 4.0, 0.0});
+cout << "--- Full Vector <double> ---" << endl;
+cout << "Non nulls: " << non_null(fv_d) << " | Sum: " << sum(fv_d) << " | Max: " << max(fv_d) << " | Min: " << min(fv_d) << endl;
+
+// Prueba con string (operator+ concatena, > y < son alfabéticos)
+fullvec_t<string> fv_s({"Hola", "", "Mundo", "!", ""});
+cout << "\n--- Full Vector <string> ---" << endl;
+cout << "Non nulls: " << non_null(fv_s) << " | Sum: " << sum(fv_s) << " | Max: " << max(fv_s) << " | Min: " << min(fv_s) << endl;
+
+// Prueba Sparse con int
+sparse_t<int> spv_i(10, {2, 5, 8}, {100, -50, 25});
+cout << "\n--- Sparse Vector <int> ---" << endl;
+cout << "Non nulls: " << non_null(spv_i) << " | Sum: " << sum(spv_i) << " | Max: " << max(spv_i) << " | Min: " << min(spv_i) << endl;
+
+// Prueba Reduce con string
+sum_t<string> string_sum_op;
+cout << "\n--- Prueba Reduce (Full Vector <string>) ---" << endl;
+cout << "Reduce Sum: " << reduce(fv_s, string_sum_op) << endl;
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+--- Full Vector <double> ---  
+Non nulls: 3 | Sum: 2 | Max: 4 | Min: -3  
+
+--- Full Vector <string> ---  
+Non nulls: 3 | Sum: HolaMundo! | Max: Mundo | Min:   
+
+--- Sparse Vector <int> ---  
+Non nulls: 3 | Sum: 75 | Max: 100 | Min: -50  
+
+--- Prueba Reduce (Full Vector <string>) ---  
+Reduce Sum: HolaMundo!
+:::
+
+---
+
+## Ejercicio 4
+
+::: {.callout-note title="Consigna"}
+A partir del vector genérico de punteros `vector<player_t*> players` de la guía anterior (simulador Tic-Tac-Toe), iterar a todos los agentes creados al azar y filtrar con exclusividad aquellos que correspondan a la clase derivada `dumb_t`. Hacerlo utilizando dos variantes del RTTI: `dynamic_cast` con punteros y `dynamic_cast` con referencias (involucrando el uso de excepciones).
+:::
+
+El operador `dynamic_cast` evalúa en tiempo de ejecución si la conversión (*downcasting*) entre un objeto polimórfico padre e hijo en un árbol jerárquico es válida o no. 
+
+En la primera implementación iterativa por medio de **punteros**, una falla en el proceso de *casting* da como resultado la asignación inofensiva de una región nula de memoria (`nullptr`), por lo que el uso de un condicional lógico simple resuelve el problema fácilmente:
+
+```cpp
+cout << "--- Filtrando dumb_t usando dynamic_cast<> con PUNTEROS ---" << endl;
+for(player_t* p : tournament) {
+    dumb_t* dumb_ptr = dynamic_cast<dumb_t*>(p);
+    if (dumb_ptr != nullptr) {
+        cout << "Encontrado: " << dumb_ptr->label() << endl;
+    }
+}
+```
+
+Por otro lado, cuando se obtiene una *referencia nula*, al tratar de desreferenciarla, el lenguaje se encarga de abortar y alertar sobre la operación errónea lanzando una excepción `std::bad_cast` estandarizada. Para tener en cuenta estos casos, se implementa un bloque de excepción `try-catch`.  
+
+```cpp
+cout << "\n--- Filtrando dumb_t usando dynamic_cast<> con REFERENCIAS y EXCEPCIONES ---" << endl;
+for(player_t* p : tournament) {
+    try {
+        dumb_t& dumb_ref = dynamic_cast<dumb_t&>(*p);
+        cout << "Encontrado: " << dumb_ref.label() << endl;
+    } catch (const bad_cast& e) {
+        // Ignorado silenciosamente: el objeto no recae en la clase dumb_t
+    }
+}
+```
+
+Probando un ejemplo con varios jugadores de distintos tipos:  
+
+```cpp
+srand(time(NULL));
+vector<player_t*> tournament;
+
+// Generamos 8 jugadores de tipos aleatorios
+for(int i = 1; i <= 8; i++) {
+    int r = rand() % 5;
+    string id = to_string(i);
+    if (r == 0) tournament.push_back(new dumb_t(id));
+    else if (r == 1) tournament.push_back(new random_t(id));
+    else if (r == 2) tournament.push_back(new agressive_t(id));
+    else if (r == 3) tournament.push_back(new minimax_t(id));
+    else tournament.push_back(new rule_based_t(id));
+}
+
+// Imprimimos la lista completa solo para contexto
+cout << "=== Lista completa de jugadores generados ===" << endl;
+for(player_t* p : tournament) {
+    cout << p->label() << endl;
+}
+cout << "=============================================\n" << endl;
+
+// 1er Método: Usando dynamic_cast<> con punteros
+cout << "--- Filtrando dumb_t usando dynamic_cast<> con PUNTEROS ---" << endl;
+for(player_t* p : tournament) {
+    dumb_t* dumb_ptr = dynamic_cast<dumb_t*>(p);
+    if (dumb_ptr != nullptr) {
+        cout << "Encontrado: " << dumb_ptr->label() << endl;
+    }
+}
+
+cout << "\n--- Filtrando dumb_t usando dynamic_cast<> con REFERENCIAS y EXCEPCIONES ---" << endl;
+for(player_t* p : tournament) {
+    try {
+        // Se desreferencia p para obtener una referencia
+        dumb_t& dumb_ref = dynamic_cast<dumb_t&>(*p);
+        cout << "Encontrado: " << dumb_ref.label() << endl;
+    } catch (const bad_cast& e) {
+        // El objeto subyacente no es un dumb_t, la excepción es capturada silenciosamente.
+    }
+}
+
+// Limpieza de memoria
+for(player_t* p : tournament) {
+    delete p;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+=== Lista completa de jugadores generados ===  
+agressive_1  
+random_2  
+agressive_3  
+dumb_4  
+agressive_5  
+dumb_6  
+minimax_7  
+rule_based_8  
+rule_based_9  
+random_10  
+rule_based_11  
+minimax_12  
+dumb_13  
+random_14  
+dumb_15  
+dumb_16  
+=============================================  
+
+--- Filtrando dumb_t usando dynamic_cast<> con PUNTEROS ---  
+Encontrado: dumb_4  
+Encontrado: dumb_6  
+Encontrado: dumb_13  
+Encontrado: dumb_15  
+Encontrado: dumb_16  
+
+--- Filtrando dumb_t usando dynamic_cast<> con REFERENCIAS y EXCEPCIONES ---  
+Encontrado: dumb_4  
+Encontrado: dumb_6  
+Encontrado: dumb_13  
+Encontrado: dumb_15  
+Encontrado: dumb_16  
+:::
