@@ -1,0 +1,61 @@
+[
+    {
+        "type": "circle",
+        "xc": 2,
+        "yc": 3,
+        "R": 1
+    },
+    {
+        "type": "square",
+        "xc": 4,
+        "yc": 3,
+        "L": 2
+    },
+    {
+        "type": "circle",
+        "xc": 0,
+        "yc": 3,
+        "R": 2
+    },
+    {
+        "type": "convex_polygon",
+        "pts": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            1
+        ]
+    },
+    {
+        "type": "union",
+        "A": {
+            "type": "circle",
+            "xc": 2,
+            "yc": 3,
+            "R": 1
+        },
+        "B": {
+            "type": "square",
+            "xc": 2,
+            "yc": 3,
+            "L": 1
+        }
+    },
+    {
+        "type": "intersection",
+        "A": {
+            "type": "circle",
+            "xc": 2,
+            "yc": 3,
+            "R": 1
+        },
+        "B": {
+            "type": "square",
+            "xc": 2,
+            "yc": 3,
+            "L": 1
+        }
+    }
+]

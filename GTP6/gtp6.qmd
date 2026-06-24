@@ -1,0 +1,493 @@
+---
+title: "GTP6: Programación en C++ para Ciencia e Ingeniería"
+page-layout: full
+author: "Estanislao Claucich"
+format:
+  html: 
+    theme: litera	
+    toc: true
+    toc-location: left    # Ubica el índice en la barra lateral
+    toc-title: "Ejercicios" # Título de la barra lateral
+    toc-depth: 2          # Solo incluye los títulos ## en el índice
+    smooth-scroll: true   # Desplazamiento suave al hacer clic en el índice
+    code-line-numbers: true # Agrega números de línea a los bloques de código
+resources:
+    - ej1.cpp
+    - ej2.cpp
+    - ej3.cpp
+    - ej4.cpp
+---
+
+<style>
+p {
+    text-align: justify;
+}
+
+/* Estilo para el borde y el fondo general del callout */
+div.callout.consola-terminal {
+    background-color: #1e1e1e !important; /* Gris muy oscuro, estilo VS Code */
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra del título */
+div.callout.consola-terminal .callout-header {
+    background-color: #2d2d2d !important;
+    color: #cccccc !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Estilo para el texto de la salida (cuerpo) */
+div.callout.consola-terminal .callout-body-container {
+    color: #10B981 !important; /* Verde brillante estilo Matrix/Consola clásica */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+/* Contenedor título + botón de descarga */
+.exercise-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
+.exercise-download-btn {
+	font-size: 0.85rem;
+	text-decoration: none;
+	border: 1px solid #0d6efd;
+	color: #0d6efd;
+	border-radius: 6px;
+	padding: 0.2rem 0.55rem;
+	line-height: 1.2;
+	transition: all 0.15s ease;
+}
+
+.exercise-download-btn:hover {
+	background-color: #0d6efd;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+@media (max-width: 640px) {
+	.exercise-download-btn {
+		font-size: 0.8rem;
+	}
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	const downloadMap = {
+		"Ejercicio 1": [{ file: "ej1.cpp", label: "Descargar ej1.cpp" }],
+		"Ejercicio 2": [{ file: "ej2.cpp", label: "Descargar ej2.cpp" }],
+		"Ejercicio 3": [
+            { file: "ej3.cpp", label: "Descargar ej3.cpp" },
+            { file: "input.json", label: "Descargar input.json" },
+            { file: "output_unique.json", label: "Descargar output_unique.json" }
+        ],
+        "Ejercicio 4": [
+            { file: "ej4.cpp", label: "Descargar ej4.cpp" },
+            { file: "input.json", label: "Descargar input.json" },
+            { file: "output_shared.json", label: "Descargar output_shared.json" }
+        ]
+	};
+
+	const headings = document.querySelectorAll("main h2");
+
+	headings.forEach((h2) => {
+		const title = h2.textContent.trim();
+		const files = downloadMap[title];
+		if (!files) return;
+
+		const row = document.createElement("span");
+		row.className = "exercise-title-row";
+
+		const titleSpan = document.createElement("span");
+		titleSpan.textContent = title;
+		row.appendChild(titleSpan);
+
+		files.forEach((item) => {
+			const link = document.createElement("a");
+			link.href = item.file;
+			link.download = item.file;
+			link.className = "exercise-download-btn";
+			link.textContent = item.label;
+			row.appendChild(link);
+		});
+
+		h2.textContent = "";
+		h2.appendChild(row);
+	});
+});
+</script>
+
+
+A continuación se presentan las soluciones a los ejercicios propuestos en el GTP6, enfocados en el manejo seguro de memoria mediante _smart pointers_ y el análisis e importación de archivos de formato JSON.
+
+## Ejercicio 1
+
+::: {.callout-note title="Consigna"}
+Refactorizar la simulación de campeonato `playoffs` compuesto de objetos abstractos `player_t` del *Tic-Tac-Toe* implementando una gestión de ciclo de vida seguro de memoria a través de `std::unique_ptr`.
+:::
+
+El uso de `unique_ptr` garantiza que exista un único propietario autorizado sobre la memoria asignada de un objeto dinámico. Cuando un objeto `player_t` queda fuera del torneo y ya no se utiliza, este puntero inteligente permite liberar la memoria automáticamente al salir del ciclo sin depender explícitamente de la directiva manual `delete`, eliminando potenciales *memory leaks*. 
+
+Dado que un puntero de este tipo es estricto e in-copiable, los jugadores que avanzan de ronda deben ser reubicados a la siguiente estructura moviendo el puntero en sí mediante `std::move`:
+
+```cpp
+void playoffs(vector<unique_ptr<player_t>> players) {
+    while(players.size() > 1) {
+        vector<unique_ptr<player_t>> next_round;
+        
+        for (size_t i = 0; i < players.size(); i += 2) {
+            // ... (Se simulan multiples partidos entre players[i] y players[i+1]) ...
+            
+            // Reasignación del ganador a la siguiente ronda
+            if (p1_wins > p2_wins) {
+                next_round.push_back(std::move(players[i]));
+            } else {
+                next_round.push_back(std::move(players[i+1]));
+            }
+        }
+        
+        // Al sobreescribir la capa base actual, todos los punteros abandonados 
+        // (perdedores) se autodestruyen liberando correctamente su memoria.
+        players = std::move(next_round);
+    }
+}
+```
+
+---
+
+## Ejercicio 2
+
+::: {.callout-note title="Consigna"}
+Implementar las funciones de figuras geométricas (`geoshape_t`) de los GTPs anteriores, asegurando de forma estricta el ciclo de vida de los objetos compuestos (`union_t`, `intersection_t`, `difference_t`) mediante `std::unique_ptr`. Validar relaciones lógicas numéricas con áreas compuestas.
+:::
+
+Al componer figuras, los objetos que envuelven a múltiples sub-figuras se convierten en el propietario exclusivo de su memoria. Para simplificar la lectura y escritura de la jerarquía, se definió un alias sobre el puntero inteligente:
+
+```cpp
+typedef unique_ptr<geoshape_t> gsp_t;
+```
+
+Este alias es utilizado por las clases contenedoras (como `union_t`, `intersection_t` y `difference_t`) para alojar la estructura interna de sub-figuras, garantizando que éstas sean destruidas automáticamente cuando el contendor principal deje de existir. A continuación se observa su implementación en la intersección:
+
+```cpp
+class intersection_t : public geoshape_t {
+public:
+    vector<gsp_t> shapes; // Vector de punteros de propiedad única
+
+    bool inside(const vector<double> &x) override {
+        if (shapes.empty()) return false;
+        for (const auto& shape : shapes) {
+            if (!shape->inside(x)) return false; // Llama recursivamente a inside()
+        }
+        return true;
+    }
+    // ...
+};
+```
+
+En el bucle principal, aprovechar `make_unique` al inyectar figuras en este arreglo `shapes` protege la aplicación en caso de una falla o excepción durante la cadena de inicialización. Para comprobar el correcto funcionamiento de toda esta estructura de punteros polimórficos, se calculó por integración numérica la propiedad topológica disjunta de conjuntos para dos círculos cualesquiera: $A \cup B = (A-B) \cup (B-A) \cup (A \cap B)$.
+
+```cpp
+int main() {
+    cout << fixed << setprecision(4);
+
+    cout << "\n--- Pruebas de Operaciones Booleanas con Circulos ---" << endl;
+    circle_t C1(0.0, 0.0, 1.0);
+    circle_t C2(1.0, 1.0, 1.0);
+
+    cout << "Area(C1) (Num / Exacta): " << area(C1) << " / " << 3.14159265 << endl;
+    cout << "Area(C2) (Num / Exacta): " << area(C2) << " / " << 3.14159265 << endl;
+
+    intersection_t int_c1_c1;
+    int_c1_c1.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    int_c1_c1.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    cout << "Area(intersection(C1, C1)) (Num / Exacta): " << area(int_c1_c1) << " / " << 3.14159265 << endl;
+
+    union_t uni_c1_c1;
+    uni_c1_c1.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    uni_c1_c1.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    cout << "Area(union(C1, C1)) (Num / Exacta): " << area(uni_c1_c1) << " / " << 3.14159265 << endl;
+
+    difference_t diff_c1_c1;
+    diff_c1_c1.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    diff_c1_c1.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    cout << "Area(difference(C1, C1)) (Num / Exacta): " << area(diff_c1_c1) << " / " << 0.0 << endl;
+
+    intersection_t int_c1_c2;
+    int_c1_c2.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    int_c1_c2.shapes.push_back(make_unique<circle_t>(1.0, 1.0, 1.0));
+    cout << "Area(intersection(C1, C2)) (Num / Exacta): " << area(int_c1_c2) << " / " << (3.14159265 / 2.0 - 1.0) << endl;
+
+    union_t uni_c1_c2;
+    uni_c1_c2.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    uni_c1_c2.shapes.push_back(make_unique<circle_t>(1.0, 1.0, 1.0));
+    cout << "Area(union(C1, C2)) (Num / Exacta): " << area(uni_c1_c2) << " / " << (3.0 * 3.14159265 / 2.0 + 1.0) << endl;
+
+    difference_t diff_c1_c2;
+    diff_c1_c2.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    diff_c1_c2.shapes.push_back(make_unique<circle_t>(1.0, 1.0, 1.0));
+    cout << "Area(difference(C1, C2)) (Num / Exacta): " << area(diff_c1_c2) << " / " << (3.14159265 / 2.0 + 1.0) << endl;
+
+    difference_t diff_c2_c1;
+    diff_c2_c1.shapes.push_back(make_unique<circle_t>(1.0, 1.0, 1.0));
+    diff_c2_c1.shapes.push_back(make_unique<circle_t>(0.0, 0.0, 1.0));
+    cout << "Area(difference(C2, C1)) (Num / Exacta): " << area(diff_c2_c1) << " / " << (3.14159265 / 2.0 + 1.0) << endl;
+
+    // 6. Relacion de conjuntos
+    cout << "\n--- Verificacion Relacion de Conjuntos ---" << endl;
+    // A = circle_t(0.3, 0.3, 2.0), B = circle_t(1.0, 0.7, 3.0)
+    
+    union_t uni_A_B;
+    uni_A_B.shapes.push_back(make_unique<circle_t>(0.3, 0.3, 2.0));
+    uni_A_B.shapes.push_back(make_unique<circle_t>(1.0, 0.7, 3.0));
+    double area_uni_A_B = area(uni_A_B);
+
+    difference_t diff_A_B;
+    diff_A_B.shapes.push_back(make_unique<circle_t>(0.3, 0.3, 2.0));
+    diff_A_B.shapes.push_back(make_unique<circle_t>(1.0, 0.7, 3.0));
+    double area_diff_A_B = area(diff_A_B);
+
+    difference_t diff_B_A;
+    diff_B_A.shapes.push_back(make_unique<circle_t>(1.0, 0.7, 3.0));
+    diff_B_A.shapes.push_back(make_unique<circle_t>(0.3, 0.3, 2.0));
+    double area_diff_B_A = area(diff_B_A);
+
+    intersection_t int_A_B;
+    int_A_B.shapes.push_back(make_unique<circle_t>(0.3, 0.3, 2.0));
+    int_A_B.shapes.push_back(make_unique<circle_t>(1.0, 0.7, 3.0));
+    double area_int_A_B = area(int_A_B);
+
+    cout << "Area(A U B) = " << area_uni_A_B << endl;
+    cout << "Area(A-B) + Area(B-A) + Area(A int B) = " 
+         << area_diff_A_B << " + " << area_diff_B_A << " + " << area_int_A_B 
+         << " = " << (area_diff_A_B + area_diff_B_A + area_int_A_B) << endl;
+
+    return 0;
+}
+```
+
+:::{.callout-note .consola-terminal icon=false title="bash"}
+--- Pruebas de Operaciones Booleanas con Circulos ---  
+Area(C1) (Num / Exacta): 3.1418 / 3.1416  
+Area(C2) (Num / Exacta): 3.1418 / 3.1416  
+Area(intersection(C1, C1)) (Num / Exacta): 3.1418 / 3.1416  
+Area(union(C1, C1)) (Num / Exacta): 3.1418 / 3.1416  
+Area(difference(C1, C1)) (Num / Exacta): 0.0000 / 0.0000  
+Area(intersection(C1, C2)) (Num / Exacta): 0.5709 / 0.5708  
+Area(union(C1, C2)) (Num / Exacta): 5.7129 / 5.7124  
+Area(difference(C1, C2)) (Num / Exacta): 2.5709 / 2.5708  
+Area(difference(C2, C1)) (Num / Exacta): 2.5709 / 2.5708  
+
+--- Verificacion Relacion de Conjuntos ---  
+Area(A U B) = 28.2764  
+Area(A-B) + Area(B-A) + Area(A int B) = 0.0000 + 15.7095 + 12.5673 = 28.2768  
+:::
+
+---
+
+## Ejercicio 3
+
+::: {.callout-note title="Consigna"}
+Desarrollar un procesador geométrico capaz de instanciar arreglos de objetos directamente leyendo desde un formato serializado `.json`. Empleando RTTI y punteros de propiedad única `unique_ptr`, generar reportes para todas las combinaciones generables sin duplicación de recursos y guardar un `output.json`. 
+:::
+
+Primero necesitamos leer el archivo y extraer de este el tipo de figura y sus parámetros. Esto se conoce como *parsear* el json y nos permitirá crear las figuras apropiadas según se establezcan en el archivo de *input* y las operaciones correspondientes:  
+
+```cpp
+gsp_t parse_shape(const json& j) {
+    if (!j.contains("type")) return nullptr;
+    string type = j["type"];
+    if (type == "circle") {
+        return make_unique<circle_t>(j["xc"], j["yc"], j["R"]);
+    } else if (type == "square") {
+        double xc = j["xc"];
+        double yc = j["yc"];
+        double L = j["L"];
+        return make_unique<square_t>(xc - L/2.0, yc - L/2.0, xc + L/2.0, yc + L/2.0);
+    } else if (type == "ellipse") {
+        return make_unique<ellipse_t>(j["cx"], j["cy"], j["rx"], j["ry"]);
+    } else if (type == "convex_polygon") {
+        vector<double> pts = j["pts"].get<vector<double>>();
+        return make_unique<convex_polygon_t>(pts);
+    } else if (type == "union") {
+        auto u = make_unique<union_t>();
+        if (j.contains("A")) u->shapes.push_back(parse_shape(j["A"]));
+        if (j.contains("B")) u->shapes.push_back(parse_shape(j["B"]));
+        return u;
+    } else if (type == "intersection") {
+        auto i = make_unique<intersection_t>();
+        if (j.contains("A")) i->shapes.push_back(parse_shape(j["A"]));
+        if (j.contains("B")) i->shapes.push_back(parse_shape(j["B"]));
+        return i;
+    } else if (type == "difference") {
+        auto d = make_unique<difference_t>();
+        if (j.contains("A")) d->shapes.push_back(parse_shape(j["A"]));
+        if (j.contains("B")) d->shapes.push_back(parse_shape(j["B"]));
+        return d;
+    }
+    return nullptr;
+}
+```
+
+Es crucial resaltar que para construir pares dinámicos dentro de estructuras operativas como `union_t` utilizando un `unique_ptr`, es un requisito estricto **trasladar permanentemente la titularidad** del puntero inteligente hacia el objeto que calculará su área transitoria, y devolverla al *array* principal en cuanto el objeto agote su vida útil.
+
+```cpp
+// Función de comparación para pares 'i' y 'j'
+union_t uni;
+uni.shapes.push_back(std::move(shapes[i])); // Traspaso de la propiedad a la Unión
+uni.shapes.push_back(std::move(shapes[j])); // Traspaso de la propiedad a la Unión
+
+double uniAB = area(uni, N); // El área interna invoca los shapes movidos
+
+shapes[i] = std::move(uni.shapes[0]); // Devolución de titularidad a 'shapes'
+shapes[j] = std::move(uni.shapes[1]); // Devolución de titularidad a 'shapes'
+```
+
+La función principal `checkgeo` primero se encargará de realizar el `parse` del json e itera sobre cada par de figuras encontradas, realizando las operaciones correspondientes y guardando los resultados en un archivo json:  
+
+```cpp
+json checkgeo(json &in, int N=100) {
+    vector<gsp_t> shapes;
+    for (auto& item : in) {
+        shapes.push_back(parse_shape(item));
+    }
+
+    json out = json::array();
+    
+    int n = shapes.size();
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            json pair_res;
+            pair_res["idA"] = i;
+            pair_res["idB"] = j;
+            pair_res["typeA"] = typeid(*shapes[i]).name();
+            pair_res["typeB"] = typeid(*shapes[j]).name();
+            
+            double a_val = area(*shapes[i], N);
+            double b_val = area(*shapes[j], N);
+            pair_res["A"] = a_val;
+            pair_res["B"] = b_val;
+            //...
+        }
+    //...
+    }
+    
+    return out;
+}
+```
+
+Como ejemplo de uso, se utiliza el siguiente `input.json`:  
+```{.json filename="input.json"}
+[
+    {
+        "type": "circle",
+        "xc": 2,
+        "yc": 3,
+        "R": 1
+    },
+    {
+        "type": "square",
+        "xc": 4,
+        "yc": 3,
+        "L": 2
+    },
+    {
+        "type": "union",
+        "A": {
+            "type": "circle",
+            "xc": 2,
+            "yc": 3,
+            "R": 1
+        },
+        "B": {
+            "type": "square",
+            "xc": 2,
+            "yc": 3,
+            "L": 1
+        }
+    }
+]
+```
+
+Obteniendo como salida el siguiente json:  
+
+```{.json filename="output_unique.json"}
+[
+    {
+        "A": 3.143999999999719,
+        "B": 3.9999999999996247,
+        "diffAB": 3.143999999999719,
+        "diffBA": 3.9999999999996247,
+        "error": 0.004799999999999471,
+        "idA": 0,
+        "idB": 1,
+        "intsAB": 0.0,
+        "typeA": "8circle_t",
+        "typeB": "8square_t",
+        "uniAB": 7.148799999999343
+    },
+    {
+        "A": 3.143999999999719,
+        "B": 3.143999999999719,
+        "diffAB": 0.0,
+        "diffBA": 0.0,
+        "error": 0.0,
+        "idA": 0,
+        "idB": 2,
+        "intsAB": 3.143999999999719,
+        "typeA": "8circle_t",
+        "typeB": "7union_t",
+        "uniAB": 3.143999999999719
+    },
+    {
+        "A": 3.9999999999996247,
+        "B": 3.143999999999719,
+        "diffAB": 3.9999999999996247,
+        "diffBA": 3.143999999999719,
+        "error": 0.004799999999999471,
+        "idA": 1,
+        "idB": 2,
+        "intsAB": 0.0,
+        "typeA": "8square_t",
+        "typeB": "7union_t",
+        "uniAB": 7.148799999999343
+    }
+]
+```
+
+
+---
+
+
+## Ejercicio 4
+
+::: {.callout-note title="Consigna"}
+Reescribir el análisis y guardado JSON del ejercicio anterior remplazando la directiva de memoria de pertenencia estricta por un sistema multi-pertenencia compartida: `std::shared_ptr`.
+:::
+
+A diferencia de `unique_ptr`, el uso de `shared_ptr` permite simplificar ampliamente la arquitectura geométrica que requiera de entrelazar repetidamente elementos a lo largo de diversas combinaciones. Mediante la incorporación nativa en memoria de un "bloque de control", este tipo de puntero es capaz de contabilizar la cantidad de referencias vivas instanciadas de manera transparente, permitiendo la clonación local o superficial del puntero sin copiar los costosos objetos lógicos del interior.
+
+De esta forma, ya no tenemos la necesidad de usar la semántica destructiva `std::move()` al inyectar punteros al objeto envolvente `union_t`:
+
+```cpp
+typedef shared_ptr<geoshape_t> gsp_t;
+
+// ...
+
+// Formulación relacional sin transferencias manuales
+union_t uni;
+uni.shapes.push_back(shapes[i]); // Referencia compartida
+uni.shapes.push_back(shapes[j]); // Referencia compartida
+double uniAB = area(uni, N);
+
+// Una vez destruido `uni`, su bloque de control reduce las referencias en -1.
+// La figura original sobrevive intacta dentro de shapes[]. No hubo fugas.
+```
+
+La salida obtenida es exactamente igual al caso anterior, pero su implementacion es mucho mas limpia y elegante, ademas de que se reduce la cantidad de codigo innecesario.

@@ -26,6 +26,9 @@ website:
       - section: "GTP 5"
         contents:
           - GTP5/gtp5.qmd
+      - section: "GTP 6"
+        contents:
+          - GTP6/gtp6.qmd
 format:
   html:
     theme: cosmo
