@@ -1,0 +1,41 @@
+Leyendo de input100.h5...
+Procesando 100 casos...
+Resultados guardados en output.h5.
+
+Verificando contra outputref100.h5...
+Estadísticas de error para areaA:
+  Error Absoluto Medio: 0.0128531
+  Media: calc = 3.46095 | ref = 3.4481
+  Media de los Cuadrados: calc = 15.4778 | ref = 15.3627
+  Media de las Raíces Cuadradas: calc = 1.78444 | ref = 1.78113
+
+Estadísticas de error para areaB:
+  Error Absoluto Medio: 0.0120674
+  Media: calc = 3.25999 | ref = 3.24792
+  Media de los Cuadrados: calc = 13.8526 | ref = 13.7499
+  Media de las Raíces Cuadradas: calc = 1.73567 | ref = 1.73246
+
+Estadísticas de error para diffAB:
+  Error Absoluto Medio: 0.00860359
+  Media: calc = 1.58709 | ref = 1.57849
+  Media de los Cuadrados: calc = 4.4992 | ref = 4.45303
+  Media de las Raíces Cuadradas: calc = 1.08257 | ref = 1.07943
+
+Estadísticas de error para diffBA:
+  Error Absoluto Medio: 0.00788576
+  Media: calc = 1.38622 | ref = 1.37834
+  Media de los Cuadrados: calc = 3.76495 | ref = 3.72569
+  Media de las Raíces Cuadradas: calc = 0.9792 | ref = 0.976196
+
+Estadísticas de error para intsAB:
+  Error Absoluto Medio: 0.00534784
+  Media: calc = 1.87417 | ref = 1.86882
+  Media de los Cuadrados: calc = 4.99868 | ref = 4.97054
+  Media de las Raíces Cuadradas: calc = 1.30227 | ref = 1.30041
+
+Estadísticas de error para unionAB:
+  Error Absoluto Medio: 0.0142703
+  Media: calc = 4.84585 | ref = 4.83158
+  Media de los Cuadrados: calc = 26.32 | ref = 26.1669
+  Media de las Raíces Cuadradas: calc = 2.16522 | ref = 2.16202
+

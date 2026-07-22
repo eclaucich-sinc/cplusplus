@@ -19,6 +19,9 @@ resources:
     - outputref1000.h5
     - output100.h5
     - output1000.h5
+    - plot_results.py
+    - comparacion_resultados_100.png
+    - comparacion_resultados_1000.png
 ---
 
 <style>
@@ -90,7 +93,8 @@ document.addEventListener("DOMContentLoaded", function() {
             { file: "input1000.h5", label: "Descargar input1000.h5" },
             { file: "outputref1000.h5", label: "Descargar outputref1000.h5" },
             { file: "output100.h5", label: "Descargar output100.h5" },
-            { file: "output1000.h5", label: "Descargar output1000.h5" }
+            { file: "output1000.h5", label: "Descargar output1000.h5" },
+            { file: "plot_results.py", label: "Descargar script Python (plot)" }
         ]
 	};
 
@@ -216,33 +220,110 @@ void write_h5_dataset(H5File& file, const string& dataset_name, const vector<dou
 
 ### 3. Ejecución y Verificación 
 
-El programa `ej1.cpp` recibe por argumentos de línea de comandos tanto el archivo a procesar como el archivo de referencia que almacena los valores matemáticos exactos a validar. Si se ejecuta el proyecto contra los 1000 casos proporcionados por `input1000.h5` y `outputref1000.h5`, obtendremos:
+El programa `ej1.cpp` recibe por argumentos de línea de comandos tanto el archivo a procesar como el archivo de referencia que almacena los valores matemáticos exactos a validar. Para corroborar el correcto funcionamiento y uso de los archivos, tenemos las salidas de referencia esperadas (ground truth) para el caso 100 y el caso 1000. Durante la validación, el programa calculará 4 métricas estadísticas fundamentales comparando nuestros resultados numéricos (obtenidos por integración en grilla) con la referencia matemática exacta:
+
+1. El **Error Absoluto Medio** entre los valores obtenidos y los valores de referencia.
+2. La **Media** de los valores obtenidos frente a la media de los de referencia.
+3. La **Media de los Cuadrados** de los valores obtenidos frente a la misma para los de referencia.
+4. La **Media de las Raíces Cuadradas** de los valores obtenidos frente a la misma para los de referencia.
+
+Si ejecutamos el proyecto contra los casos proporcionados por `input100.h5` y `input1000.h5`, obtendremos:
 
 ::: {.callout-note appearance="minimal" icon="false" collapse="false" class="consola-terminal"}
 ## terminal
 ```bash
+$ ./ej1 input100.h5 outputref100.h5
+Leyendo de input100.h5...
+Procesando 100 casos...
+Resultados guardados en output.h5.
+
+Verificando contra outputref100.h5...
+Estadísticas de error para areaA:
+  Error Absoluto Medio: 0.0128531
+  Media: calc = 3.46095 | ref = 3.4481
+  Media de los Cuadrados: calc = 15.4778 | ref = 15.3627
+  Media de las Raíces Cuadradas: calc = 1.78444 | ref = 1.78113
+
+Estadísticas de error para areaB:
+  Error Absoluto Medio: 0.0120674
+  Media: calc = 3.25999 | ref = 3.24792
+  Media de los Cuadrados: calc = 13.8526 | ref = 13.7499
+  Media de las Raíces Cuadradas: calc = 1.73567 | ref = 1.73246
+
+Estadísticas de error para diffAB:
+  Error Absoluto Medio: 0.00860359
+  Media: calc = 1.58709 | ref = 1.57849
+  Media de los Cuadrados: calc = 4.4992 | ref = 4.45303
+  Media de las Raíces Cuadradas: calc = 1.08257 | ref = 1.07943
+
+Estadísticas de error para diffBA:
+  Error Absoluto Medio: 0.00788576
+  Media: calc = 1.38622 | ref = 1.37834
+  Media de los Cuadrados: calc = 3.76495 | ref = 3.72569
+  Media de las Raíces Cuadradas: calc = 0.9792 | ref = 0.976196
+
+Estadísticas de error para intsAB:
+  Error Absoluto Medio: 0.00534784
+  Media: calc = 1.87417 | ref = 1.86882
+  Media de los Cuadrados: calc = 4.99868 | ref = 4.97054
+  Media de las Raíces Cuadradas: calc = 1.30227 | ref = 1.30041
+
+Estadísticas de error para unionAB:
+  Error Absoluto Medio: 0.0142703
+  Media: calc = 4.84585 | ref = 4.83158
+  Media de los Cuadrados: calc = 26.32 | ref = 26.1669
+  Media de las Raíces Cuadradas: calc = 2.16522 | ref = 2.16202
+
 $ ./ej1 input1000.h5 outputref1000.h5
-Reading from input1000.h5...
-Processing 1000 cases...
-Results saved to output.h5.
+Leyendo de input1000.h5...
+Procesando 1000 casos...
+Resultados guardados en output.h5.
 
-Verifying against outputref1000.h5...
-Error stats for areaA:
-  Mean Error: 0.0127401
-  Mean Squared Error: 0.000215442
-  Root Mean Squared Error (RMSE): 0.0146779
+Verificando contra outputref1000.h5...
+Estadísticas de error para areaA:
+  Error Absoluto Medio: 0.0127401
+  Media: calc = 3.41228 | ref = 3.39954
+  Media de los Cuadrados: calc = 15.1359 | ref = 15.0229
+  Media de las Raíces Cuadradas: calc = 1.77235 | ref = 1.76905
 
-Error stats for areaB:
-  Mean Error: 0.0128434
-  Mean Squared Error: 0.000216887
-  Root Mean Squared Error (RMSE): 0.0147271
+Estadísticas de error para areaB:
+  Error Absoluto Medio: 0.0128434
+  Media: calc = 3.42474 | ref = 3.41189
+  Media de los Cuadrados: calc = 15.0616 | ref = 14.9485
+  Media de las Raíces Cuadradas: calc = 1.77953 | ref = 1.7762
 
-Error stats for diffAB:
-  Mean Error: 0.00829482
-  Mean Squared Error: 0.000134918
-  Root Mean Squared Error (RMSE): 0.0116154
-...
+Estadísticas de error para diffAB:
+  Error Absoluto Medio: 0.00830668
+  Media: calc = 1.45699 | ref = 1.4487
+  Media de los Cuadrados: calc = 4.44916 | ref = 4.40344
+  Media de las Raíces Cuadradas: calc = 0.988176 | ref = 0.984939
+
+Estadísticas de error para diffBA:
+  Error Absoluto Medio: 0.00872324
+  Media: calc = 1.46956 | ref = 1.46084
+  Media de los Cuadrados: calc = 4.14311 | ref = 4.09856
+  Media de las Raíces Cuadradas: calc = 1.01694 | ref = 1.01349
+
+Estadísticas de error para intsAB:
+  Error Absoluto Medio: 0.00575915
+  Media: calc = 1.95566 | ref = 1.94991
+  Media de los Cuadrados: calc = 5.18276 | ref = 5.15248
+  Media de las Raíces Cuadradas: calc = 1.33774 | ref = 1.33577
+
+Estadísticas de error para unionAB:
+  Error Absoluto Medio: 0.0146829
+  Media: calc = 4.88054 | ref = 4.86586
+  Media de los Cuadrados: calc = 26.6816 | ref = 26.5205
+  Media de las Raíces Cuadradas: calc = 2.17194 | ref = 2.16868
 ```
 :::
 
-Los valores computados presentan un nivel de error cuadrático medio (RMSE) sumamente aceptable $(\sim0.014)$, lo cual se justifica y está inherentemente vinculado a la discretización numérica en grillas regulares de $N=100$ empleada para la integración del área por cajas cartesianas en los cálculos superpuestos. El programa valida y gestiona exitosamente miles de componentes HDF5 jerárquicos utilizando implementaciones modernas en C++.
+Los valores computados presentan un nivel de error medio sumamente aceptable ($\sim 0.01$), lo cual se justifica y está inherentemente vinculado a la discretización numérica en grillas regulares de $N=100$ empleada para la integración del área por cajas cartesianas. Analizando los promedios ("Media"), se observa cómo las curvas generadas por nuestra implementación se solapan casi idénticamente sobre los valores exactos.
+
+A continuación, se adjunta un script auxiliar en Python que, valiéndose de la librería `h5py` y `matplotlib`, extrae estos estadísticos de los archivos generados y los ilustra en gráficos de barras, contrastando nuestra salida numérica contra los valores analíticos (referencia) para ambos archivos de entrada.
+
+![Comparación de valores medios calculados vs de referencia (100 Casos)](comparacion_resultados_100.png)
+
+![Comparación de valores medios calculados vs de referencia (1000 Casos)](comparacion_resultados_1000.png)
+
+Como se puede apreciar lado a lado en la gráfica, el programa valida y gestiona exitosamente miles de componentes jerárquicos, logrando aproximaciones equivalentes utilizando las implementaciones modernas de HDF5 en C++.

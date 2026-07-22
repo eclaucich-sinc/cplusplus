@@ -165,11 +165,11 @@ void verify_error(const string& name, const vector<double>& calc, const vector<d
     double mean_sqrt_calc = sum_sqrt_calc / N;
     double mean_sqrt_ref = sum_sqrt_ref / N;
 
-    cout << "Error stats for " << name << ":\n";
-    cout << "  Mean Absolute Error: " << mae << "\n";
-    cout << "  Mean: calc = " << mean_calc << " | ref = " << mean_ref << "\n";
-    cout << "  Mean Squared: calc = " << mean_sq_calc << " | ref = " << mean_sq_ref << "\n";
-    cout << "  Mean Square Root: calc = " << mean_sqrt_calc << " | ref = " << mean_sqrt_ref << "\n\n";
+    cout << "Estadísticas de error para " << name << ":\n";
+    cout << "  Error Absoluto Medio: " << mae << "\n";
+    cout << "  Media: calc = " << mean_calc << " | ref = " << mean_ref << "\n";
+    cout << "  Media de los Cuadrados: calc = " << mean_sq_calc << " | ref = " << mean_sq_ref << "\n";
+    cout << "  Media de las Raíces Cuadradas: calc = " << mean_sqrt_calc << " | ref = " << mean_sqrt_ref << "\n\n";
 }
 
 int main(int argc, char** argv) {
@@ -179,7 +179,7 @@ int main(int argc, char** argv) {
         input_file = argv[1];
         ref_file = argv[2];
     }
-    cout << "Reading from " << input_file << "...\n";
+    cout << "Leyendo de " << input_file << "...\n";
 
     H5File in_file(input_file, H5F_ACC_RDONLY);
 
@@ -200,7 +200,7 @@ int main(int argc, char** argv) {
 
     vector<double> areaA(ncases), areaB(ncases), diffAB(ncases), diffBA(ncases), intsAB(ncases), unionAB(ncases);
 
-    cout << "Processing " << ncases << " cases...\n";
+    cout << "Procesando " << ncases << " casos...\n";
     for (size_t i = 0; i < ncases; ++i) {
         auto A = make_shared<circle_t>(x1[2*i], x1[2*i+1], R1[i]);
         auto B = make_shared<circle_t>(x2[2*i], x2[2*i+1], R2[i]);
@@ -240,10 +240,10 @@ int main(int argc, char** argv) {
     write_h5_dataset(out_file, "unionAB", unionAB);
     out_file.close();
     
-    cout << "Results saved to " << output_file << ".\n\n";
+    cout << "Resultados guardados en " << output_file << ".\n\n";
 
     // Verification
-    cout << "Verifying against " << ref_file << "...\n";
+    cout << "Verificando contra " << ref_file << "...\n";
     H5File ref_in(ref_file, H5F_ACC_RDONLY);
     
     vector<double> r_areaA = read_h5_dataset(ref_in, "areaA", ncases);
