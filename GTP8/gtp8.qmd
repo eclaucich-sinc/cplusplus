@@ -1,0 +1,298 @@
+---
+title: "GTP8: Programación en C++ para Ciencia e Ingeniería"
+page-layout: full
+author: "Estanislao Claucich"
+format:
+  html: 
+    theme: litera	
+    toc: true
+    toc-location: left    # Ubica el índice en la barra lateral
+    toc-title: "Ejercicios" # Título de la barra lateral
+    toc-depth: 2          # Solo incluye los títulos ## en el índice
+    smooth-scroll: true   # Desplazamiento suave al hacer clic en el índice
+    code-line-numbers: true # Agrega números de línea a los bloques de código
+resources:
+    - ej1.cpp
+    - ej2.cpp
+    - ej3.cpp
+    - countdiff.json
+    - isograph.json
+---
+
+<style>
+p {
+    text-align: justify;
+}
+
+/* Estilo para el borde y el fondo general del callout */
+div.callout.consola-terminal {
+    background-color: #1e1e1e !important; /* Gris muy oscuro, estilo VS Code */
+    border: 1px solid #444 !important;
+    border-radius: 5px;
+}
+
+/* Estilo para la barra del título */
+div.callout.consola-terminal .callout-header {
+    background-color: #2d2d2d !important;
+    color: #cccccc !important;
+    font-family: 'Consolas', 'Courier New', monospace;
+    border-bottom: 1px solid #444 !important;
+}
+
+/* Estilo para el texto de la salida (cuerpo) */
+div.callout.consola-terminal .callout-body-container {
+    color: #10B981 !important; /* Verde brillante estilo Matrix/Consola clásica */
+    font-family: 'Consolas', 'Courier New', monospace;
+    font-size: 0.95em;
+}
+
+/* Contenedor título + botón de descarga */
+.exercise-title-row {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
+.exercise-download-btn {
+	font-size: 0.85rem;
+	text-decoration: none;
+	border: 1px solid #0d6efd;
+	color: #0d6efd;
+	border-radius: 6px;
+	padding: 0.2rem 0.55rem;
+	line-height: 1.2;
+	transition: all 0.15s ease;
+}
+
+.exercise-download-btn:hover {
+	background-color: #0d6efd;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+@media (max-width: 640px) {
+	.exercise-download-btn {
+		font-size: 0.8rem;
+	}
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	const downloadMap = {
+		"Ejercicio 1": [
+            { file: "ej1.cpp", label: "Descargar ej1.cpp" },
+        ],
+        "Ejercicio 2": [
+            { file: "ej2.cpp", label: "Descargar ej2.cpp" },
+            { file: "countdiff.json", label: "Descargar countdiff.json" }
+        ],
+        "Ejercicio 3": [
+            { file: "ej3.cpp", label: "Descargar ej3.cpp" },
+            { file: "isograph.json", label: "Descargar isograph.json" }
+        ]
+	};
+
+	const headings = document.querySelectorAll("main h2");
+
+	headings.forEach((h2) => {
+		const title = h2.textContent.trim();
+		const files = downloadMap[title];
+		if (!files) return;
+
+		const row = document.createElement("span");
+		row.className = "exercise-title-row";
+
+		const titleSpan = document.createElement("span");
+		titleSpan.textContent = title;
+		row.appendChild(titleSpan);
+
+		files.forEach((item) => {
+			const link = document.createElement("a");
+			link.href = item.file;
+			link.download = item.file;
+			link.className = "exercise-download-btn";
+			link.textContent = item.label;
+			row.appendChild(link);
+		});
+
+		h2.textContent = "";
+		h2.appendChild(row);
+	});
+});
+</script>
+
+A continuación se presenta la solución propuesta para la GTP8, enfocada en el de funciones de hash y grafos.
+
+## Ejercicio 1: Introducción a Hashes
+
+Para comenzar a abordar problemas de isomorfismo y conteo eficiente, primero necesitamos definir una abstracción que nos permita mapear ("hashear") una secuencia de datos a un valor único representativo. Para ello, se propone una clase base puramente virtual en C++ llamada `inthasher_t` que permite reiniciar el estado, ingerir un nuevo entero paso a paso y obtener el valor hash computado final.
+
+Sobre esta interfaz, implementamos dos estrategias:
+1. **`sumhasher`**: Una implementación ingenua que simplemente suma acumulativamente los elementos. 
+2. **`cubhasher`**: Aplica un modelo iterativo no lineal donde el estado $S$ se actualiza con cada nuevo valor $x$ mediante la expresión $S = (c_1 + c_2 \cdot S + x)^3$, utilizando $c_1=56789234$ y $c_2=12345678$ como constantes arbitrarias. Para que esta operación aritmética sea consistente y no introduzca un *Undefined Behavior* por *overflow* de variables con signo (estándar en C++), la computación se procesa internamente como variables sin signo (`unsigned int`), lo que garantiza un truncamiento determinístico a nivel de bits.
+
+### La importancia del orden (Colisiones)
+
+El principal inconveniente de emplear funciones reductoras simples como el `sumhasher` es su altísima susceptibilidad a presentar **colisiones** (producir el mismo hash para datos de entrada diferentes) simplemente por la propiedad conmutativa. El `cubhasher`, por su parte, mezcla iterativamente la historia del estado anterior con la entrada nueva, volviéndolo intrínsecamente dependiente del orden de llegada, lo que elimina este problema.
+
+A modo de verificación, en el código fuente desarrollamos 3 escenarios: un par de vectores idénticos, un par con dos posiciones permutadas, y un par distinto:
+
+::: {.callout-note appearance="minimal" icon="false" collapse="false" class="consola-terminal"}
+## terminal
+```bash
+$ ./ej1
+=== Caso 1: Vectores Iguales ===
+Vector 1: 1 2 3 4 5 10 20 100 
+ -> sumhasher: 145 | cubhasher: 922392664
+Vector 2: 1 2 3 4 5 10 20 100 
+ -> sumhasher: 145 | cubhasher: 922392664
+
+=== Caso 2: Vectores con posiciones intercambiadas ===
+Vector 1: 1 2 3 4 5 10 20 100 
+ -> sumhasher: 145 | cubhasher: 922392664
+Vector 2: 1 3 2 4 5 10 20 100 
+ -> sumhasher: 145 | cubhasher: -292882344
+
+=== Caso 3: Vectores diferentes ===
+Vector 1: 1 2 3 4 5 10 20 100 
+ -> sumhasher: 145 | cubhasher: 922392664
+Vector 2: 1 2 3 4 5 10 20 99 
+ -> sumhasher: 144 | cubhasher: 1909132893
+```
+:::
+
+Como podemos advertir claramente en el **Caso 2**, el `sumhasher` sufre una colisión directa al no poder discriminar la inversión de orden entre los elementos `2` y `3`. Por el contrario, el `cubhasher` diverge produciendo hashes categóricamente distintos, comprobando ser una función apta y robusta para mapear estructuras ordenadas.
+
+## Ejercicio 2: Conteo de Vectores Únicos
+
+Habiendo validado la robustez del `cubhasher` para distinguir secuencias ordenadas de manera única y determinística, podemos aprovechar esta herramienta para resolver eficientemente el problema de contar vectores distintos dentro de un gran conjunto de datos.
+
+La función `count_different` utiliza este enfoque. La idea central es iterar sobre el arreglo de vectores, procesar cada uno de sus elementos con `hasher.hash()`, e insertar el hash final resultante en una estructura `std::set<int>`. 
+
+```cpp
+int count_different(vector<vector<int>> &vectors, inthasher_t &hasher) {
+    set<int> unique_hashes;
+    
+    for (const auto& vec : vectors) {
+        hasher.reset();
+        for (int x : vec) {
+            hasher.hash(x);
+        }
+        unique_hashes.insert(hasher.val());
+    }
+    
+    return unique_hashes.size();
+}
+```
+
+Como la estructura de datos `std::set` en C++ almacena claves únicas y descarta automáticamente las inserciones de valores repetidos, una vez procesado todo el conjunto de entrada, el número total de vectores distintos coincide exactamente con el tamaño final del *set* (`unique_hashes.size()`). Este enfoque resulta inmensamente más eficiente para detectar duplicados a gran escala que comparar los vectores de manera exhaustiva uno por uno.
+
+### Validación de datos
+
+Para probar rigurosamente el algoritmo, el programa `ej2.cpp` lee un archivo llamado `countdiff.json` utilizando la librería externa de *parseo* `nlohmann::json`. El documento posee una serie de 52 casos de prueba (listados bajo el campo `ucase`). Para cada uno de ellos, se extrae un arreglo bidimensional (`datain.vectors`) y se corre nuestra función computacional usando el `cubhasher`. Luego, se verifica si la cantidad de vectores únicos coincide con la referencia matemática provista en `output.count`.
+
+Al ejecutar nuestro código, obtenemos una precisión absoluta:
+
+::: {.callout-note appearance="minimal" icon="false" collapse="false" class="consola-terminal"}
+## terminal
+```bash
+$ ./ej2
+Evaluando casos de countdiff.json usando cubhasher...
+--------------------------------------------------------
+Caso 0: OK (count=3)
+Caso 1: OK (count=2)
+Caso 2: OK (count=52)
+Caso 3: OK (count=52)
+...
+Caso 49: OK (count=46)
+Caso 50: OK (count=55)
+Caso 51: OK (count=56)
+--------------------------------------------------------
+Resumen: 52 casos pasaron, 0 fallaron.
+```
+:::
+
+## Ejercicio 3: Isomorfismo de Grafos usando Hashes
+
+El último y principal ejercicio de este trabajo consiste en resolver el problema del isomorfismo de grafos. Dados dos grafos `g1` y `g2` que son isomorfos (estructuralmente idénticos pero con sus vértices etiquetados o numerados en distinto orden), el objetivo es encontrar la **permutación** exacta que mapea cada vértice del primer grafo a su correspondiente en el segundo.
+
+Dado que los índices de los vértices son arbitrarios, no podemos depender de ellos. En su lugar, debemos construir una **firma estructural o invariante topológico** para cada vértice que lo identifique unívocamente en base a su rol en el grafo (su propia valencia, la valencia de sus vecinos, los vecinos de sus vecinos, etc.).
+
+### Algoritmo de Identificación Iterativa
+
+Para lograr esta identificación estructural sin importar el etiquetado, utilizamos un proceso iterativo de propagación de información apoyándonos fuertemente en nuestro `cubhasher` (por su capacidad determinística y sensible al orden). 
+
+El algoritmo implementado (`compute_graph_hashes`) procede de la siguiente manera:
+
+1. **Inicialización**: Se crea un arreglo de hashes (`hashv`) del tamaño del grafo (`nv`), inicializando todos los vértices con un hash de `0`.
+2. **Propagación**: Se realiza un bucle que iterará `3 * nv` veces para asegurar que la topología global se propague a cada vértice. En cada paso:
+    - Se analiza cada vértice individualmente.
+    - Se registra su valencia (cantidad de vecinos directos).
+    - Se recolectan los hashes que tenían sus vecinos en el paso anterior.
+    - **Ordenamiento clave**: Como el orden de los vecinos en la lista de adyacencia es arbitrario, ordenamos (`std::sort`) los hashes de los vecinos de menor a mayor. Esto garantiza que dos vértices topológicamente idénticos presenten los datos exactamente en el mismo orden.
+    - Se resetea el hasher, y se ingiere la valencia seguida por los hashes ordenados de los vecinos. El valor resultante de esta operación iterativa pasa a ser el nuevo hash del vértice.
+3. **Reemplazo**: Una vez calculados los nuevos hashes para toda la red, se sobreescribe el estado general y se avanza al siguiente paso.
+
+Al finalizar las iteraciones, cada vértice poseerá un hash único que describe su topología local y global.
+
+```cpp
+vector<int> compute_graph_hashes(const vector<vector<int>>& g) {
+    int nv = g.size();
+    vector<int> hashv(nv, 0);
+    cubhasher hasher;
+
+    for (int step = 0; step < 3 * nv; ++step) {
+        vector<int> new_hashv(nv);
+        for (int i = 0; i < nv; ++i) {
+            hasher.reset();
+            int valencia = g[i].size();
+            hasher.hash(valencia);
+            
+            vector<int> v_hashes;
+            for (int j : g[i]) {
+                v_hashes.push_back(hashv[j]);
+            }
+            sort(v_hashes.begin(), v_hashes.end());
+            
+            for (int h : v_hashes) {
+                hasher.hash(h);
+            }
+            
+            new_hashv[i] = hasher.val();
+        }
+        hashv = new_hashv;
+    }
+    
+    return hashv;
+}
+```
+
+### Extracción de la Permutación y Validación
+
+Como ambos grafos son isomorfos, el conjunto final de hashes de `g1` será matemáticamente idéntico al conjunto de hashes de `g2` (solo que desordenados). Para hallar la permutación que los asocia, simplemente iteramos sobre cada vértice `j1` en `g1`, leemos su firma hash, y buscamos linealmente qué índice `j2` en `g2` ostenta esa misma firma. Cuando lo encontramos, definimos la correspondencia `perm[j1] = j2`.
+
+Para evaluar nuestra solución, el programa `ej3.cpp` procesa el documento `isograph.json`, el cual presenta distintos escenarios desafiantes, y compara la permutación que nuestro algoritmo infiere contra la permutación real (`output.perm`). 
+
+Al ejecutar el proyecto contra la base de datos, el algoritmo de invariantes con hashes demuestra ser tremendamente eficaz, encontrando los isomorfismos correctos para la totalidad de los grafos propuestos:
+
+::: {.callout-note appearance="minimal" icon="false" collapse="false" class="consola-terminal"}
+## terminal
+```bash
+$ ./ej3
+Evaluando casos de isograph.json...
+--------------------------------------------------------
+Caso 0: OK
+Caso 1: OK
+Caso 2: OK
+Caso 3: OK
+...
+Caso 10: OK
+Caso 11: OK
+Caso 12: OK
+Caso 13: OK
+--------------------------------------------------------
+Resumen: 14 casos pasaron, 0 fallaron.
+```
+:::
